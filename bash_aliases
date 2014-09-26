@@ -1,9 +1,11 @@
 alias so='source ~/.bashrc'
-alias aa='vim ~/.bash_aliases'
-
+alias se='vim ~/.bash_aliases'
+alias cake='./Console/cake'
+alias tmux='TERM=xterm-256color /usr/bin/tmux'
+alias sot='tmux source-file ~/.tmux.conf'
+alias soet='vim ~/.tmux.conf'
 
 alias cmp='composer'
-alias gtvm='cd ~/repos/visitmv/app/'
 
 
 bake() {
@@ -40,4 +42,13 @@ bake() {
 		echo $"Usage: bake [cake|foundation]"
 	 
 	esac
+}
+
+
+dtmux(){
+	tmux new-session -d 
+	tmux new-window 'vim'
+	tmux new-window 'mysql -u root -pn0password!'
+	tmux select-window -t :2
+	tmux -2 attach-session -d 
 }
