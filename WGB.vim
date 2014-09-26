@@ -54,6 +54,6 @@ hi link javascriptStringD Number
 hi link Define Statement				"Selects function keyword in PHP
 hi link javascriptIdentifier Statement	"Selects var keyword in JS
 hi link javascriptFunction Statement	"Selects function keyword in JS
-hi link htmlTag Statement				"Selects </> of tags in HTML
+hi link htmlEndTag Statement			"Selects </> of tags in HTML
 hi link htmlTagN Statement				"Selects all tags in HTML
 
