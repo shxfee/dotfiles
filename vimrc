@@ -77,6 +77,7 @@ set wildignore=*.swp	" Ignore these files
 set title				" change the terminal's title
 set visualbell          " don't beep
 set noerrorbells        " don't beep
+set hidden				" don't close buffers
 
 
 " Show syntax highlighting groups for word under cursor
