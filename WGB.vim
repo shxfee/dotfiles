@@ -30,18 +30,18 @@ hi Type ctermfg=blue cterm=none
 
 " Language Specific overrides 
 " White & Bold
-hi Delimiter ctermfg=15 cterm=bold	"Selects <?php opening in PHP
+hi Delimiter ctermfg=15 cterm=bold		"Selects <?php opening in PHP
 
 
 " White
-hi link Operator Normal				"Selects =, ::, => 
-hi link Function Normal				"Selects function names
-hi link phpMemberSelector Normal	"Selects -> in PHP
-hi link javascriptBraces Normal		"Selects { } in JS
+hi link Operator Normal					"Selects =, ::, => 
+hi link Function Normal					"Selects function names
+hi link phpMemberSelector Normal		"Selects -> in PHP
+hi link javascriptBraces Normal			"Selects { } in JS
 
 
 " Green
-hi link phpVarSelector Identifier	"Selects $ in PHP
+hi link phpVarSelector Identifier		"Selects $ in PHP
 
 
 " Orange
