@@ -1,12 +1,15 @@
 alias so='source ~/.bashrc'
 alias se='vim ~/.bash_aliases'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+
 alias cake='./Console/cake'
+
 alias tmux='TERM=xterm-256color /usr/bin/tmux'
-alias sot='tmux source-file ~/.tmux.conf'
-alias soet='vim ~/.tmux.conf'
+alias ktmux='tmux kill-server'
 
-alias cmp='composer'
-
+alias sqlmap='python ~/.bin/sqlmap/sqlmap.py'
 
 bake() {
 	case "$1" in
