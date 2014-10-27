@@ -16,6 +16,7 @@ highlight CursorLineNr ctermfg=249 ctermbg=235 cterm=none
 highlight CursorLine ctermbg=237 cterm=none
 highlight Visual ctermbg=238 cterm=none
 highlight VertSplit ctermbg=237 ctermfg=237 cterm=none
+highlight ColorColumn ctermbg=237 ctermfg=237 cterm=none
 
 " Main Highlight Groups
 hi Normal ctermbg=236 ctermfg=white cterm=none
@@ -53,6 +54,7 @@ hi link phpVarSelector Identifier		"Selects $ in PHP
 hi Number ctermfg=214 cterm=none
 hi link javascriptStringS Number
 hi link javascriptStringD Number
+hi link cssColor Number
 
 
 " Blue
