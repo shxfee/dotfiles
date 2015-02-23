@@ -3,6 +3,7 @@ alias se='vim ~/.bash_aliases'
 alias ..='cd ..'
 alias ...='cd ../..'
 
+alias vim='vim -O2'
 
 alias cake='./Console/cake'
 alias cbc='cake bake controller'
@@ -16,7 +17,7 @@ alias mysqll='mysql -u root -pn0password! test_blog'
 alias sqlmap='python ~/.bin/sqlmap/sqlmap.py'
 
 alias gpu='git push -u origin master'
-alias gpl='git push -u origin master'
+alias gpl='git pull'
 alias gs='git status'
 alias gf='git fetch'
 alias ga='git add --all :/'
@@ -59,10 +60,10 @@ bake() {
 }
 
 
-dtmux(){
+de(){
     tmux new-session -d
-    tmux new-window 'vim'
-    tmux new-window 'mysql -u root -pn0password!'
+    tmux new-window 'vim -O2'
+#   tmux new-window 'mysql -u root -pn0password!'
     tmux select-window -t :2
     tmux -2 attach-session -d
 }

@@ -35,6 +35,8 @@ nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 inoremap <leader>kj <esc>
+vnoremap <leader>c :s!^!//!<CR>
+vnoremap <leader>uc :s!^//!!<CR>
 
 
 " Leader mappings for vim-fugitive
@@ -50,10 +52,11 @@ nnoremap <leader>gpu :Git pull<CR>
 inoremap <C-w> <Esc>
 " Parses JSON to be readable
 nnoremap =j :%!python -m json.tool<CR>
-autocmd FileType sql let b:vimpipe_command="emysql"
 
 " Center screen after motion
 nnoremap G Gzz
+nnoremap <c-u> <c-u>M
+nnoremap <c-d> <c-d>M
 
 
 " Set up the theme and status line
@@ -69,8 +72,8 @@ let g:CommandTMaxHeight=7
 let g:UltiSnipsEditSplit="vertical"
 let g:netrw_liststyle=0
 
-autocmd BufNewFile,BufRead *.ctp  set syntax=phtml
-autocmd BufNewFile,BufRead *.html set syntax=phtml
+autocmd BufNewFile,BufRead *.ctp  set syntax=php
+autocmd BufNewFile,BufRead *.html set syntax=php
 
 " Set other misc options
 set number

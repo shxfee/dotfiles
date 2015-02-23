@@ -65,4 +65,5 @@ hi link javascriptFunction Statement	"Selects function keyword in JS
 hi link htmlEndTag Statement			"Selects </> of tags in HTML
 hi link htmlTag Statement				"Selects all tags in HTML
 hi link htmlTagN Statement				"Selects custom tags in HTML
+hi link pythonBuiltin Statement			"Selects custom tags in HTML
 
