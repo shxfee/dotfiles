@@ -25,6 +25,8 @@ filetype plugin indent on    " required
 
 " Leader mappings
 let mapleader = ","
+let python_highlight_all = 1
+
 nnoremap <leader>p "+p
 nnoremap <leader>P o<Esc>"+p
 vnoremap <leader>y "+y
@@ -37,6 +39,7 @@ nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 inoremap <leader>kj <esc>
 vnoremap <leader>c :s!^!//!<CR>
 vnoremap <leader>uc :s!^//!!<CR>
+nnoremap <leader>pr :!clear;python %<CR>
 
 
 " Leader mappings for vim-fugitive
@@ -51,7 +54,7 @@ nnoremap <leader>gpu :Git pull<CR>
 " Remove <C-w> for delete word in insert mode
 inoremap <C-w> <Esc>
 " Parses JSON to be readable
-nnoremap =j :%!python -m json.tool<CR>
+"nnoremap =j :%!python -m json.tool<CR>
 
 " Center screen after motion
 nnoremap G Gzz

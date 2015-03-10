@@ -35,7 +35,7 @@ hi Type ctermfg=blue cterm=none
 " Language Specific overrides
 " White & Bold
 hi Delimiter ctermfg=15 cterm=bold		"Selects <?php opening in PHP
-
+hi link pythonBuiltinFunc  Delimiter
 
 " White
 hi link Operator Normal					"Selects =, ::, =>
@@ -48,6 +48,7 @@ hi link vimGroup Normal
 
 " Green
 hi link phpVarSelector Identifier		"Selects $ in PHP
+hi link pythonString Identifier
 
 
 " Orange
@@ -65,5 +66,6 @@ hi link javascriptFunction Statement	"Selects function keyword in JS
 hi link htmlEndTag Statement			"Selects </> of tags in HTML
 hi link htmlTag Statement				"Selects all tags in HTML
 hi link htmlTagN Statement				"Selects custom tags in HTML
-hi link pythonBuiltin Statement			"Selects custom tags in HTML
+hi link pythonBuiltinObj Statement
+hi link pythonOperator Statement
 
