@@ -23,6 +23,8 @@ alias gf='git fetch'
 alias ga='git add --all :/'
 alias gc='git commit'
 
+alias python=python3
+
 bake() {
     case "$1" in
         cake)

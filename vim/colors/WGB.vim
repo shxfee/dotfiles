@@ -49,6 +49,8 @@ hi link vimGroup Normal
 " Green
 hi link phpVarSelector Identifier		"Selects $ in PHP
 hi link pythonString Identifier
+hi link pythonStrFormatting Identifier
+hi link pythonStrFormat Identifier
 
 
 " Orange

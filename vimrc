@@ -39,7 +39,7 @@ nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 inoremap <leader>kj <esc>
 vnoremap <leader>c :s!^!//!<CR>
 vnoremap <leader>uc :s!^//!!<CR>
-nnoremap <leader>pr :!clear;python %<CR>
+nnoremap <leader>rp :!clear;python3 %<CR>
 
 
 " Leader mappings for vim-fugitive

@@ -96,7 +96,7 @@ syn keyword pythonStatement	yield lambda
 syn keyword pythonStatement	with
 
 " Class definitions
-syn region  pythonClass start="^\s*class" end=")\s*:" contains=pythonClassDef,pythonClassName,pythonSuperclasses
+syn region  pythonClass start="^\s*class" end=")\?\s*:" contains=pythonClassDef,pythonClassName,pythonSuperclasses
 syn keyword pythonClassDef class contained nextgroup=pythonClassName
 syn match   pythonClassName	"[a-zA-Z_][a-zA-Z0-9_]*" display contained nextgroup=pythonSuperclasses skipwhite
 syn region  pythonSuperclasses start="("ms=s+1 end=")"me=e-1 keepend contained contains=pythonSuperclass transparent
@@ -106,7 +106,7 @@ syn match   pythonSuperclass "[a-zA-Z_][a-zA-Z_0-9]*" contained
 syn region  pythonFunc start="^\s*def\>" end=")\s*:" keepend contains=pythonFuncDef,pythonFuncName,pythonFuncParams
 syn keyword pythonFuncDef def contained nextgroup=pythonFuncName skipwhite
 syn match   pythonFuncName	"[a-zA-Z_][a-zA-Z0-9_]*" display contained nextgroup=pythonFuncParams skipwhite
-syn region  pythonFuncParams start="("ms=s+1 end=")"me=e-1 contained transparent contains=pythonParam 
+syn region  pythonFuncParams start="("ms=s+1 end=")"me=e-1 contained transparent contains=pythonParam
 syn region   pythonParam start="[a-zA-Z_]" end="\(,\|)\s*:\)" contained contains=pythonParamName,pythonParamDefault,pythonDefaultAssignment transparent nextgroup=pythonParam
 syn match pythonParamName "[a-zA-Z_][a-zA-Z0-9_]*" contained nextgroup=pythonDefaultAssignment skipwhite skipnl
 syn match pythonDefaultAssignment "=" nextgroup=pythonParamDefault skipwhite contained skipnl
@@ -117,7 +117,7 @@ syn keyword pythonRepeat	for while
 syn keyword pythonConditional	if elif else
 syn keyword pythonPreCondit	import from as
 syn keyword pythonException	try except finally
-syn keyword pythonOperator	and in is not or 
+syn keyword pythonOperator	and in is not or
 
 syn match pythonAssignment "+=\|-=\|\*=\|/=\|//=\|%=\|&=\||=\|\^=\|>>=\|<<=\|\*\*="
 syn match pythonAssignment "="
@@ -249,7 +249,7 @@ if exists("python_highlight_builtins") && python_highlight_builtins != 0
   syn keyword pythonBuiltinFunc	chr classmethod cmp coerce compile complex
   syn keyword pythonBuiltinFunc	delattr dict dir divmod enumerate eval
   syn keyword pythonBuiltinFunc	execfile file filter float format frozenset getattr
-  syn keyword pythonBuiltinFunc	globals hasattr hash help hex id 
+  syn keyword pythonBuiltinFunc	globals hasattr hash help hex id
   syn keyword pythonBuiltinFunc	input int intern isinstance
   syn keyword pythonBuiltinFunc	issubclass iter len list locals long map max
   syn keyword pythonBuiltinFunc	min next object oct open ord
