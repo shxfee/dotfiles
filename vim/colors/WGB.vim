@@ -12,6 +12,7 @@ let g:colors_name = "WGB"
 
 "General Editor highlights
 highlight LineNr ctermfg=243 ctermbg=233 cterm=none
+highlight NonText ctermfg=243 cterm=none
 highlight CursorLineNr ctermfg=249 ctermbg=235 cterm=none
 highlight CursorLine ctermbg=237 cterm=none
 highlight Visual ctermbg=238 cterm=none
