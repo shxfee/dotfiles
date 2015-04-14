@@ -1,115 +1,122 @@
-" Vundle Configuration.
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Maintainer:	Hussain Shafeeu (shxfee@gmail.com)
+" Version:      2.0
+" Last Change:	April 7, 2015
 
-" set the runtime path to include Vundle and initialize
+
+" ================== Vundle Setup  ============================================
+set nocompatible
+filetype off
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" Initialize plugins
 Plugin 'gmarik/Vundle.vim'
-Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'kien/ctrlp.vim'
 Plugin 'bling/vim-airline'
-Plugin 'tpope/vim-fugitive'
-Plugin 'godlygeek/tabular'
 Plugin 'SirVer/ultisnips'
-Plugin 'krisajenkins/vim-pipe'
-Plugin 'StanAngeloff/php.vim'
 Plugin 'tpope/vim-repeat'
-" Plugin 'vim-scripts/dbext.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'gerw/vim-HiLinkTrace'
+
+call vundle#end()
+filetype plugin indent on
 
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+" ================== Plugin Settings  =========================================
+" Plugin settings
+let g:ctrlp_map = '<leader>f'
+let g:ctrlp_working_path_mode = ''
+
+let g:airline_powerline_fonts = 1
+let g:airline_theme='badwolf'
+
+let g:UltiSnipsEditSplit="vertical"
 
 
-" Leader mappings
-let mapleader = ","
-let python_highlight_all = 1
+" ================== General Config   =========================================
+" Indentation
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set expandtab
+set shiftround                  " Relative indentation
 
-nnoremap <leader>p "+p
-nnoremap <leader>P o<Esc>"+p
-vnoremap <leader>y "+y
-nnoremap <leader>y "+yy
-nnoremap <leader>o o<Esc>k
-nnoremap <leader>O O<Esc>j
+" UI settings
+set nonumber
+set relativenumber
+set cursorline
+set title
+set t_Co=256                    " 256 color terminal
+colorscheme mustang
+set laststatus=2                " Always display status line
+set winwidth=115
+set winminwidth=25
+set winheight=30
+set scrolloff=5
+set sidescrolloff=0
+
+" Editor settings
+set nowrap
+set ignorecase
+set smartcase
+set showmatch                   " Show matching parenthesis
+set incsearch                   " Show search matches as you type
+set backspace=indent,eol,start  " allow backspacing over everything in insert mode
+
+" General settings
+set viminfo+=n~/.vim/info
+set visualbell                  " don't beep
+set noerrorbells                " don't beep
+
+" Undo Settings
+set undofile
+set undodir=~/.vim/undo/
+set history=1000
+set undolevels=1000
+
+" Completion
+set wildignore=*.swp
+set wildignore+=tmp/**
+set wildignore+=log/**
+set wildignore+=*.png,*.jpg,*jpeg,*.gif,*.pyc
+
+
+" ================== Key bindings     =========================================
+let mapleader = ','
+
 nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
-inoremap <leader>kj <esc>
-vnoremap <leader>c :s!^!//!<CR>
-vnoremap <leader>uc :s!^//!!<CR>
 nnoremap <leader>rp :!clear;python3 %<CR>
-
-
-" Leader mappings for vim-fugitive
-nnoremap <leader>gw  :Gwrite<CR>
-nnoremap <leader>gr  :Gread<CR>
-nnoremap <leader>gc  :Gcommit<CR>
-nnoremap <leader>gs  :Gstatus<CR>
-nnoremap <leader>gpl :Git push -u origin master<CR>
-nnoremap <leader>gpu :Git pull<CR>
-
 
 " Remove <C-w> for delete word in insert mode
 inoremap <C-w> <Esc>
 " Parses JSON to be readable
-"nnoremap =j :%!python -m json.tool<CR>
+" nnoremap =j :%!python -m json.tool<CR>
 
 " Center screen after motion
 nnoremap G Gzz
-nnoremap <c-u> <c-u>M
-nnoremap <c-d> <c-d>M
+nnoremap n nzz
+nnoremap N Nzz
+
+" Practical Vim
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 
-" Set up the theme and status line
-set t_Co=256
-colorscheme WGB
-
-" Plugin settings
-set laststatus=2
-let g:airline_theme = 'badwolf'
-let g:airline_powerline_fonts = 1
-let g:CommandTTraverseSCM='pwd'
-let g:CommandTMaxHeight=7
-let g:UltiSnipsEditSplit="vertical"
-let g:netrw_liststyle=0
-
-autocmd BufNewFile,BufRead *.ctp  set syntax=php
-autocmd BufNewFile,BufRead *.html set syntax=php
-
-" Set other misc options
-set number
-set tabstop=4
-set shiftwidth=4
-set expandtab           " Replace tabs with spaces
-set smarttab            " Spaces will be deleted in bunches of tabstops
-set autoindent          " always set autoindenting on
-
-set winwidth=102        " Set selected window width
-set winheight=30        " Set selected window height
-
-set nowrap              " don't wrap lines
-set backspace=indent,eol,start  " allow backspacing over everything in insert mode
-set shiftround          " use multiple of shiftwidth when indenting with '<' and '>'
-set showmatch           " set show matching parenthesis
-set ignorecase          " ignore case when searching
-set smartcase           " ignore case if search pattern is all lowercase,
-set incsearch           " show search matches as you type
-set history=1000        " remember more commands and search history
-set undolevels=1000     " use many muchos levels of undo
-set wildignore=*.swp    " Ignore these files
-set title               " change the terminal's title
-set visualbell          " don't beep
-set noerrorbells        " don't beep
-set cursorline          " Highlight current line
-
-
-" Show syntax highlighting groups for word under cursor
-nmap <C-S-P> :call <SID>SynStack()<CR>
-function! <SID>SynStack()
-    if !exists("*synstack")
-        return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
+" ================== Auto commands    =========================================
+augroup general
+    autocmd!
+    autocmd BufNewFile,BufRead *.html       set syntax=php
+    autocmd BufNewFile,BufRead *.blade.php  set syntax=php
+    autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.ctp  setlocal filetype=html syntax=php shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufWritePost *Spec.php !clear && phpspec -v run
+    autocmd BufWritePost *test.php !clear && phpunit %
+    autocmd BufWritePost *test.py  !clear && python3  % -f -b -v
+augroup END
