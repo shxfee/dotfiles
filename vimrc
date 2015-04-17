@@ -7,8 +7,8 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+set rtp+=~/.vim_bundle/Vundle.vim
+call vundle#begin('~/.vim_bundle')
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
@@ -72,7 +72,7 @@ set incsearch                   " Show search matches as you type
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 
 " General settings
-set viminfo+=n~/.vim/info
+set viminfo+=n~/.vim_info
 set visualbell                  " don't beep
 set noerrorbells                " don't beep
 
