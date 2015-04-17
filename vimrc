@@ -12,13 +12,16 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
-Plugin 'bling/vim-airline'
 Plugin 'SirVer/ultisnips'
+
+Plugin 'bling/vim-airline'
+Plugin 'gerw/vim-HiLinkTrace'
+
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-commentary'
-Plugin 'gerw/vim-HiLinkTrace'
 
 call vundle#end()
 filetype plugin indent on
@@ -87,7 +90,8 @@ set wildignore+=*.png,*.jpg,*jpeg,*.gif,*.pyc
 
 
 " ================== Key bindings     =========================================
-let mapleader = ','
+let mapleader=','
+noremap \ ,
 
 nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
