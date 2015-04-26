@@ -7,7 +7,7 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim_bundle/Vundle.vim
+set rtp+=~/.dotfiles/vim/bundle/Vundle.vim
 call vundle#begin('~/.vim_bundle')
 
 Plugin 'gmarik/Vundle.vim'
@@ -25,17 +25,22 @@ Plugin 'tpope/vim-commentary'
 
 call vundle#end()
 filetype plugin indent on
+runtime macros/matchit.vim
 
 
 " ================== Plugin Settings  =========================================
 " Plugin settings
 let g:ctrlp_map = '<leader>f'
 let g:ctrlp_working_path_mode = ''
+let g:ctrlp_open_new_file = 'r'
+let g:ctrlp_clear_cache_on_exit = 1
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme='badwolf'
 
 let g:UltiSnipsEditSplit="vertical"
+
+let g:netrw_banner=0
 
 
 " ================== General Config   =========================================
@@ -83,10 +88,23 @@ set history=1000
 set undolevels=1000
 
 " Completion
-set wildignore=*.swp
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 set wildignore+=tmp/**
 set wildignore+=log/**
-set wildignore+=*.png,*.jpg,*jpeg,*.gif,*.pyc
+
+
+" ================== Abbreviations  ===========================================
+cabbrev amc !php artisan make:controller
+cabbrev amm !php artisan make:model
+cabbrev amg !php artisan make:migration
+cabbrev amr !php artisan make:request
+
+cabbrev arm !php artisan migrate
+
+cabbrev cdc app/Http/Controllers
+cabbrev cdm app
+cabbrev cdv resources/views
+cabbrev cdr app/Http/Requests
 
 
 " ================== Key bindings     =========================================
@@ -113,13 +131,14 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 
+
 " ================== Auto commands    =========================================
 augroup general
     autocmd!
-    autocmd BufNewFile,BufRead *.html       set syntax=php
     autocmd BufNewFile,BufRead *.blade.php  set syntax=php
     autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufNewFile,BufRead *.ctp  setlocal filetype=html syntax=php shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.html setlocal syntax=php shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufWritePost *Spec.php !clear && phpspec -v run
     autocmd BufWritePost *test.php !clear && phpunit %
     autocmd BufWritePost *test.py  !clear && python3  % -f -b -v
