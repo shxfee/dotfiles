@@ -1,7 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/home/shxfee/repos/hrm'
-let g:netrw_dirhist_2='/home/shxfee/repos/hrm/public'
-let g:netrw_dirhist_3='/home/shxfee/repos/hrm'
-let g:netrw_dirhist_4='/home/shxfee/repos/hrm/public'
-let g:netrw_dirhist_5='/home/shxfee/repos/hrm/public/css'
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/home/shxfee/repos/ekufema.com/config'
+let g:netrw_dirhist_2='/home/shxfee/repos/101/todo'

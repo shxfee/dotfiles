@@ -54,33 +54,45 @@ snippet html:b "HTML skeleton for Bootstrap"
 
   <title>$1</title>
 
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-  <body>
-    $0
+<body>
+  $0
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
 </html>
 endsnippet
 
 
-snippet '<[a-z]+[0-9]*' "Generic HTML tag builder multi-line" r
-<`!p snip.rv = match.group()[1:]`$1>
-  $0
-</`!p snip.rv = match.group()[1:]`>
+snippet '<([a-z]{1,8}[0-9]*)' "Generic HTML tag builder multi-line" rb
+<`!p snip.rv = match.group(1)`$0>
+  $1
+</`!p snip.rv = match.group(1)`>
 endsnippet
 
 
-snippet '>[a-z]+[0-9]*' "Generic HTML tag builder inline" ir
-<`!p snip.rv = match.group()[1:]`$1>$0</`!p snip.rv = match.group()[1:]`>
+snippet '>([a-z]{1,8}[0-9]*)' "Generic HTML tag builder inline" ri
+<`!p snip.rv = match.group(1)`$0>$1</`!p snip.rv = match.group(1)`>
 endsnippet
+
+
+snippet '<([a-z]{1,8}[0-9]*)\.([a-z|\s|-]+)' "Tag with class" rb
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>
+  $1
+</`!p snip.rv = match.group(1)`>
+endsnippet
+
+
+snippet '>([a-z]{1,8}[0-9]*)\.([a-z|\s|-]+)' "Tag with class" rb
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>$1</`!p snip.rv = match.group(1)`>
+endsnippet
+
 
 
 snippet .lorem "Generates lorem ipsum" i
@@ -97,6 +109,18 @@ iaculis consequat. Vestibulum dignissim lorem dui, in dignissim lectus rutrum id
 endsnippet
 
 
-snippet ! "Generates a set of curly braces" i
+snippet '@([a-z]+)' "Blade control structures" rb
+@`!p snip.rv = match.group(1)`($1)
+  $0
+@end`!p snip.rv = match.group(1)`
+endsnippet
+
+
+snippet {! "Generates a set of curly braces for blade" i
 {!! $0 !!}
+endsnippet
+
+
+snippet {{ "Blade echo" i
+{{ $0 }}
 endsnippet

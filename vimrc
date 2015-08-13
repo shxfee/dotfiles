@@ -35,6 +35,13 @@ let g:ctrlp_working_path_mode = ''
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_clear_cache_on_exit = 1
 
+if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+        \ --ignore .git
+        \ --ignore "**/*.pyc"
+        \ -g ""'
+endif
+
 let g:airline_powerline_fonts = 1
 let g:airline_theme='badwolf'
 
@@ -99,12 +106,16 @@ cabbrev amm !php artisan make:model
 cabbrev amg !php artisan make:migration
 cabbrev amr !php artisan make:request
 
-cabbrev arm !php artisan migrate
+cabbrev agm !php artisan migrate
+cabbrev ags !php artisan db:seed
 
 cabbrev cdc app/Http/Controllers
 cabbrev cdm app
 cabbrev cdv resources/views
 cabbrev cdr app/Http/Requests
+cabbrev cdg database/migrations
+
+cabbrev mpu nmap ,t :!phpunit <C-r>=shellescape(expand('%'), 1)<cr>
 
 
 " ================== Key bindings     =========================================
@@ -116,15 +127,8 @@ nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 nnoremap <leader>rp :!clear;python3 %<CR>
 
-" Remove <C-w> for delete word in insert mode
-inoremap <C-w> <Esc>
 " Parses JSON to be readable
 " nnoremap =j :%!python -m json.tool<CR>
-
-" Center screen after motion
-nnoremap G Gzz
-nnoremap n nzz
-nnoremap N Nzz
 
 " Practical Vim
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
