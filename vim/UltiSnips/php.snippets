@@ -1,0 +1,14 @@
+snippet 'm\.(\w+)' "public method" rb
+public function `!p snip.rv = match.group(1)`($1)
+{
+    $0
+}
+endsnippet
+
+
+snippet 'f\.(\w+)' "plain function" rb
+function `!p snip.rv = match.group(1)`($1)
+{
+    $0
+}
+endsnippet

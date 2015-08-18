@@ -1,3 +1,67 @@
+#--------------------------------------------------
+# BLADE TEMPLATE ENGINE
+#--------------------------------------------------
+snippet '@([a-z]+)' "Blade control structures" rb
+@`!p snip.rv = match.group(1)`($1)
+  $0
+@end`!p snip.rv = match.group(1)`
+endsnippet
+
+
+snippet {! "Generates a set of curly braces for blade" i
+{!! $0 !!
+endsnippet
+
+
+snippet 'i.([a-z]+):([a-z]+)' "Input fields" rb
+<div class="form-group">
+  {!! Form::label('${1:`!p snip.rv = match.group(2).title()`}') !!}
+  {!! Form::`!p snip.rv = match.group(1)`('`!p snip.rv = match.group(2)`', null,
+      ['class' => 'form-control', 'placeholder' => '$2'${0:, 'required'}]) !!}
+</div>
+endsnippet
+
+
+snippet i.submit "Submit button" b
+<div class="form-group">
+  {!! Form::submit('${0:Submit}', ['class' => 'btn btn-primary']) !!}
+</div>
+endsnippet
+
+
+snippet 'f\.model:([a-z|\.]+)' "Open a form with model binding" rb
+{!! Form::model(\$`!p snip.rv = match.group(1)`, ['method' => 'put', 'route' => ['${1:`!p snip.rv = match.group(1)`s}.update', \$`!p snip.rv = match.group(1)`->id], 'class' => 'form']) !!}
+  $0
+{!! Form::close() !!}
+endsnippet
+
+
+snippet 'f\.open:([a-z|\.]+)' "Open a form" rb
+{!! Form::open(['route' => '`!p snip.rv = match.group(1)`', 'class' => 'form']) !!}
+  $0
+{!! Form::close() !!}
+endsnippet
+
+
+#--------------------------------------------------
+# BOOTSTRAP CSS FRAMEWORK
+#--------------------------------------------------
+snippet b:dropdown "dropdown menu" b
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    ${1:Dropdown}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">$0</a></li>
+  </ul>
+</div>
+endsnippet
+
+
+#--------------------------------------------------
+# GENERIC HTML
+#--------------------------------------------------
 snippet html:5 "Basic HTML skeleton"
 <!doctype html>
 <html lang="en" class="no-js">
@@ -82,17 +146,16 @@ snippet '>([a-z]{1,8}[0-9]*)' "Generic HTML tag builder inline" ri
 endsnippet
 
 
-snippet '<([a-z]{1,8}[0-9]*)\.([a-z|\s|-]+)' "Tag with class" rb
+snippet '<([a-z]{1,8}[0-9]*)\.([a-z|0-9|\s|\-|_]+)' "Tag with class" rb
 <`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>
   $1
 </`!p snip.rv = match.group(1)`>
 endsnippet
 
 
-snippet '>([a-z]{1,8}[0-9]*)\.([a-z|\s|-]+)' "Tag with class" rb
+snippet '>([a-z]{1,8}[0-9]*)\.([a-z|0-9|\s|\-|_]+)' "Tag with class" rb
 <`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>$1</`!p snip.rv = match.group(1)`>
 endsnippet
-
 
 
 snippet .lorem "Generates lorem ipsum" i
@@ -106,21 +169,4 @@ Curabitur nec ornare risus. Vivamus gravida neque vel nibh efficitur, non fermen
 urna rutrum. Nam vitae sollicitudin enim. Fusce maximus leo at risus volutpat pellentesque.
 Fusce semper ex ut turpis viverra, a cursus massa maximus. In eget sem sed turpis
 iaculis consequat. Vestibulum dignissim lorem dui, in dignissim lectus rutrum id.
-endsnippet
-
-
-snippet '@([a-z]+)' "Blade control structures" rb
-@`!p snip.rv = match.group(1)`($1)
-  $0
-@end`!p snip.rv = match.group(1)`
-endsnippet
-
-
-snippet {! "Generates a set of curly braces for blade" i
-{!! $0 !!}
-endsnippet
-
-
-snippet {{ "Blade echo" i
-{{ $0 }}
 endsnippet

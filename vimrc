@@ -13,6 +13,8 @@ call vundle#begin('~/.vim_bundle')
 Plugin 'gmarik/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'SirVer/ultisnips'
+Plugin 'Raimondi/delimitMate'
+Plugin 'godlygeek/tabular'
 
 Plugin 'bling/vim-airline'
 Plugin 'gerw/vim-HiLinkTrace'
@@ -35,6 +37,7 @@ let g:ctrlp_working_path_mode = ''
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_clear_cache_on_exit = 1
 
+" Ignored files in ctrlp listing
 if executable('ag')
     let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
         \ --ignore .git
@@ -46,8 +49,11 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='badwolf'
 
 let g:UltiSnipsEditSplit="vertical"
-
 let g:netrw_banner=0
+
+let delimitMate_matchpairs = "(:),[:],{:}"
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
 
 
 " ================== General Config   =========================================
@@ -106,7 +112,7 @@ cabbrev amm !php artisan make:model
 cabbrev amg !php artisan make:migration
 cabbrev amr !php artisan make:request
 
-cabbrev agm !php artisan migrate
+cabbrev agg !php artisan migrate
 cabbrev ags !php artisan db:seed
 
 cabbrev cdc app/Http/Controllers
