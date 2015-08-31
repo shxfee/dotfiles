@@ -63,5 +63,6 @@ hi link vimCommentTitle Comment
 hi link phpVarSelector Normal
 hi link phpMemberSelector Normal
 hi link phpDocTags Comment
+hi link phpKeyword Boolean
 
 hi link htmlTagName Normal

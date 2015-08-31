@@ -11,10 +11,14 @@ set rtp+=~/.dotfiles/vim/bundle/Vundle.vim
 call vundle#begin('~/.vim_bundle')
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
+
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'Raimondi/delimitMate'
+
 Plugin 'godlygeek/tabular'
+Plugin 'StanAngeloff/php.vim'
+Plugin 'majutsushi/tagbar'
 
 Plugin 'bling/vim-airline'
 Plugin 'gerw/vim-HiLinkTrace'
@@ -36,6 +40,7 @@ let g:ctrlp_map = '<leader>f'
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_clear_cache_on_exit = 1
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:100'
 
 " Ignored files in ctrlp listing
 if executable('ag')
@@ -77,7 +82,6 @@ colorscheme mustang
 set laststatus=2                " Always display status line
 set winwidth=115
 set winminwidth=25
-set winheight=30
 set scrolloff=5
 set sidescrolloff=0
 
@@ -97,8 +101,8 @@ set noerrorbells                " don't beep
 " Undo Settings
 set undofile
 set undodir=~/.vim/undo/
-set history=1000
-set undolevels=1000
+set history=100
+set undolevels=100
 
 " Completion
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
@@ -112,7 +116,7 @@ cabbrev amm !php artisan make:model
 cabbrev amg !php artisan make:migration
 cabbrev amr !php artisan make:request
 
-cabbrev agg !php artisan migrate
+cabbrev agg !php artisan migrate:refresh
 cabbrev ags !php artisan db:seed
 
 cabbrev cdc app/Http/Controllers
@@ -120,8 +124,12 @@ cabbrev cdm app
 cabbrev cdv resources/views
 cabbrev cdr app/Http/Requests
 cabbrev cdg database/migrations
+cabbrev cda resources/assets
 
 cabbrev mpu nmap ,t :!phpunit <C-r>=shellescape(expand('%'), 1)<cr>
+
+cabbrev cpb CtrlPBufTag
+cabbrev cpt CtrlPTag
 
 
 " ================== Key bindings     =========================================
@@ -132,6 +140,7 @@ nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 nnoremap <leader>rp :!clear;python3 %<CR>
+nnoremap <leader>b :TagbarToggle<CR>
 
 " Parses JSON to be readable
 " nnoremap =j :%!python -m json.tool<CR>
@@ -153,3 +162,10 @@ augroup general
     autocmd BufWritePost *test.php !clear && phpunit %
     autocmd BufWritePost *test.py  !clear && python3  % -f -b -v
 augroup END
+
+
+" Avoid command-line redraw on every entered character by turning off Arabic
+" shaping (which is implemented poorly).
+if has('arabic')
+    set noarabicshape
+endif

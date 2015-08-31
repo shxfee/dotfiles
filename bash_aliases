@@ -10,11 +10,11 @@ alias ktmux='tmux kill-server'
 alias mysqll='mysql -u root -pn0password! test_blog'
 alias sqlmap='python ~/.bin/sqlmap/sqlmap.py'
 
-alias gpu='git push -u origin master'
+alias gpu='git push'
 alias gpl='git pull'
 alias gs='git status'
 alias gf='git fetch'
-alias ga='git add --all :/'
+alias ga='git add'
 alias gc='git commit'
 
 alias python=python3
