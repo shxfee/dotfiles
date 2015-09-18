@@ -1,0 +1,128 @@
+global !p
+''' main functions for generating resource controller methods '''
+def model_name():
+	snip.rv = re.sub('s?Controller\.php', '', fn).title()
+
+
+def plural_name():
+	snip.rv = get_plural_name()
+
+
+def singular_name():
+	snip.rv = re.sub('s?Controller\.php', '', fn).lower()
+
+
+def view_name():
+	snip.rv = get_plural_name()
+
+	if has_namespace():
+		snip.rv = get_namespace() + '.' + get_plural_name()
+
+
+''' Helper functions '''
+def has_namespace():
+	return re.match('.+Controllers/.+/.+\.php', path) is not None
+
+
+def get_namespace():
+	return re.match('.+Controllers/(.+)/.+\.php', path).group(1).lower()
+
+
+def get_plural_name():
+	return fn.replace('Controller.php', '').lower()
+
+endglobal
+
+
+snippet met.in "index method" b
+/**
+* Display a listing of the resource.
+*
+* @return Response
+*/
+public function index()
+{
+	$`!p plural_name()` = `!p model_name()`::all();
+	return view('`!p view_name()`.index', compact('`!p plural_name()`'));
+}
+
+endsnippet
+
+
+snippet met.cr "create method" b
+/**
+* Show the form for creating a new resource.
+*
+* @return Response
+*/
+public function create()
+{
+	return view('`!p view_name()`.create', compact('`!p plural_name()`'));
+}
+
+endsnippet
+
+
+snippet met.st "store method" b
+/**
+* Store a newly created resource in storage.
+*
+* @param  Request  $request
+* @return Response
+*/
+public function store(Request $request)
+{
+	`!p model_name()`::create($request->all());
+	return redirect()->route('`!p plural_name()`.index')
+		->with('message', 'New `!p model_name()` created.');
+}
+
+endsnippet
+
+
+snippet met.sh "show method" b
+/**
+* Display the specified resource.
+*
+* @param  `!p model_name()`  $`!p singular_name()`
+* @return Response
+*/
+public function show(`!p model_name()` $`!p singular_name()`)
+{
+	return view('`!p view_name()`.show', compact('`!p singular_name()`'));
+}
+
+endsnippet
+
+
+snippet met.ed "edit method" b
+/**
+* Show the form for editing the specified resource.
+*
+* @param  `!p model_name()`  $`!p singular_name()`
+* @return Response
+*/
+public function edit(`!p model_name()` $`!p singular_name()`)
+{
+	return view('`!p view_name()`.edit', compact('`!p singular_name()`'));
+}
+
+endsnippet
+
+
+snippet met.up "update method" b
+/**
+* Update the specified resource in storage.
+*
+* @param  Request  $request
+* @param  `!p model_name()`  $`!p singular_name()`
+* @return Response
+*/
+public function update($request, `!p model_name()` $`!p singular_name()`)
+{
+	$`!p singular_name()`->update($request->all());
+	return redirect()->route('`!p plural_name()`.index')
+		->with('message', '`!p model_name()` updated.');
+}
+
+endsnippet

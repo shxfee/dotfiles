@@ -1,3 +1,4 @@
+alias vi='TERM=xterm-256colors nvim'
 alias so='source ~/.bashrc'
 alias se='vim ~/.bash_aliases'
 alias ..='cd ..'
@@ -22,7 +23,7 @@ alias python=python3
 de(){
     tmux new-session -d
     tmux new-window 'vim -O2'
-#   tmux new-window 'mysql -u root -pn0password!'
+    #   tmux new-window 'mysql -u root -pn0password!'
     tmux select-window -t :2
     tmux -2 attach-session -d
 }

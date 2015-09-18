@@ -31,6 +31,7 @@ Plugin 'tpope/vim-commentary'
 
 call vundle#end()
 filetype plugin indent on
+syntax on
 runtime macros/matchit.vim
 
 
@@ -77,7 +78,7 @@ set nonumber
 set relativenumber
 set cursorline
 set title
-set t_Co=256                    " 256 color terminal
+" set t_Co=256                    " 256 color terminal
 colorscheme mustang
 set laststatus=2                " Always display status line
 set winwidth=115
@@ -87,6 +88,7 @@ set sidescrolloff=0
 
 " Editor settings
 set nowrap
+set clipboard=unnamedplus
 set ignorecase
 set smartcase
 set showmatch                   " Show matching parenthesis
@@ -105,6 +107,7 @@ set history=100
 set undolevels=100
 
 " Completion
+set wildmode=longest,full
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 set wildignore+=tmp/**
 set wildignore+=log/**
@@ -126,7 +129,8 @@ cabbrev cdr app/Http/Requests
 cabbrev cdg database/migrations
 cabbrev cda resources/assets
 
-cabbrev mpu nmap ,t :!phpunit <C-r>=shellescape(expand('%'), 1)<cr>
+cabbrev mpu nmap ,t :!clear & phpunit --colors <C-r>=shellescape(expand('%'), 1)<cr>
+cabbrev mps nmap ,t :!clear & phpspec run <C-r>=shellescape(expand('%'), 1)<cr>
 
 cabbrev cpb CtrlPBufTag
 cabbrev cpt CtrlPTag
@@ -140,13 +144,10 @@ nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>dt :%s/\s\+$//e<CR>:w<CR>
 nnoremap <leader>rp :!clear;python3 %<CR>
-nnoremap <leader>b :TagbarToggle<CR>
-
-" Parses JSON to be readable
-" nnoremap =j :%!python -m json.tool<CR>
+nnoremap <leader>tb :TagbarToggle<CR>
 
 " Practical Vim
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 
@@ -158,14 +159,4 @@ augroup general
     autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufNewFile,BufRead *.ctp  setlocal filetype=html syntax=php shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufNewFile,BufRead *.html setlocal syntax=php shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd BufWritePost *Spec.php !clear && phpspec -v run
-    autocmd BufWritePost *test.php !clear && phpunit %
-    autocmd BufWritePost *test.py  !clear && python3  % -f -b -v
 augroup END
-
-
-" Avoid command-line redraw on every entered character by turning off Arabic
-" shaping (which is implemented poorly).
-if has('arabic')
-    set noarabicshape
-endif

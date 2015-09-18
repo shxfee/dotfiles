@@ -1,6 +1,56 @@
 #--------------------------------------------------
 # BLADE TEMPLATE ENGINE
 #--------------------------------------------------
+snippet 'i\.(\S+):(\S+)\.(\S+)' "Generic input field for text, email, password, date & datetime" rb
+<div class="form-group">
+  <label for="`!p \
+	snip.rv = match.group(3)`">`!p \
+	snip.rv = match.group(3).title().replace('_', ' ').replace('Id', '') \
+ `</label>
+  <input class="form-control" type="`!p	\
+    snip.rv = match.group(1)`" name="`!p \
+	snip.rv = match.group(3)`"
+    value="{{ old('`!p \
+	snip.rv = match.group(3)`', \$`!p \
+	snip.rv = match.group(2) + '->' + \
+			  match.group(3)`) }}" required>
+</div>
+endsnippet
+
+
+
+
+priority 1
+
+snippet 'i\.checkbox:(\S+)' "checkbox field" rb
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="`!p snip.rv = match.group(1)`"> ${1:`!p \
+	  snip.rv = match.group(1).title().replace('_', ' ').replace('Id', ''`}
+  </label>
+</div>
+endsnippet
+
+
+snippet 'i\.textarea:(\S+)\.(\S+)' "Generic input field for text, email, password, date & datetime" rb
+<div class="form-group">
+  <label for="`!p \
+	snip.rv = match.group(2)`">`!p \
+	snip.rv = match.group(2).title().replace('_', ' ') \
+ `</label>
+  <textarea class="form-control" name="`!p \
+	snip.rv = match.group(2)`" required>{{ old('`!p \
+	snip.rv = match.group(2)`', \$`!p \
+	snip.rv = match.group(1) + '->' + \
+			  match.group(2)`) }}</textarea>
+</div>
+endsnippet
+
+priority 0
+
+
+
+
 snippet '@([a-z]+)' "Blade control structures" rb
 @`!p snip.rv = match.group(1)`($0)
 @end`!p snip.rv = match.group(1)`
@@ -12,7 +62,7 @@ snippet {! "Generates a set of curly braces for blade" i
 endsnippet
 
 
-snippet i.text "text field"
+snippet bi.text "text field"
 <div class="form-group">
   {!! Form::label('${1:name}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::text('$1', null, ['class' => 'form-control', 'required'$0]) !!}
@@ -20,7 +70,7 @@ snippet i.text "text field"
 endsnippet
 
 
-snippet i.email "email field"
+snippet bi.email "email field"
 <div class="form-group">
   {!! Form::label('${1:email}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::email('$1', null, ['class' => 'form-control', 'required'$0]) !!}
@@ -28,7 +78,7 @@ snippet i.email "email field"
 endsnippet
 
 
-snippet i.password "password field"
+snippet bi.password "password field"
 <div class="form-group">
   {!! Form::label('${1:password}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::password('$1', ['class' => 'form-control', 'required'$0]) !!}
@@ -36,7 +86,7 @@ snippet i.password "password field"
 endsnippet
 
 
-snippet i.date "password field"
+snippet bi.date "password field"
 <div class="form-group">
   {!! Form::label('${1:date}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::date('$1', \Carbon\Carbon::now(), ['class' => 'form-control', 'required'$0]) !!}
@@ -44,7 +94,7 @@ snippet i.date "password field"
 endsnippet
 
 
-snippet i.checkbox "Checkbox"
+snippet bi.checkbox "Checkbox"
 <div class="checkbox">
   <label>
     {!! Form::checkbox('${1:name}') !!} ${2:${1/\w+\s*/\u$0/}}
@@ -53,7 +103,7 @@ snippet i.checkbox "Checkbox"
 endsnippet
 
 
-snippet i.select "select field"
+snippet bi.select "select field"
 <div class="form-group">
   {!! Form::label('${1:name}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::select('$1', \$${3:options}, ${4:default}, ['class' => 'form-control', 'required'$0]) !!}
@@ -61,7 +111,7 @@ snippet i.select "select field"
 endsnippet
 
 
-snippet i.textarea "textarea"
+snippet bi.textarea "textarea"
 <div class="form-group">
   {!! Form::label('${1:content}', '${2:${1/\w+\s*/\u$0/}}') !!}
   {!! Form::textarea('$1', null, ['class' => 'form-control', 'required'$0]) !!}
@@ -69,25 +119,8 @@ snippet i.textarea "textarea"
 endsnippet
 
 
-snippet i.hidden "hidden field"
+snippet bi.hidden "hidden field"
   {!! Form::hidden('$1', ${2:${2:'value'}}) !!}
-endsnippet
-
-
-snippet i.submit "Submit button" b
-<button type="submit" class="btn btn-primary">$0</button>
-endsnippet
-
-
-snippet f.model "open a form"
-{!! Form::model(\$${1:model}, ['route' => ['$1s.update', \$$1->id]$0], 'method' => 'PATCH') !!}
-{!! Form::close() !!}
-endsnippet
-
-
-snippet f.open "open a form with model binding"
-{!! Form::open(['route' => ['$1.store']$0]) !!}
-{!! Form::close() !!}
 endsnippet
 
 

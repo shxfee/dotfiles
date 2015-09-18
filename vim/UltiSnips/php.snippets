@@ -1,26 +1,50 @@
-snippet 'm\.(\w+)' "public method" rb
-public function `!p snip.rv = match.group(1)`($1)
+snippet .cpu "PHP unit test class" b
+class $1 extends PHPUnit_Framework_TestCase
 {
     $0
 }
 endsnippet
 
 
-snippet 'f\.(\w+)' "plain function" rb
-function `!p snip.rv = match.group(1)`($1)
+snippet met "public method" b
+public function $1($3)
 {
-    $0
+    $2
 }
+$0
 endsnippet
 
 
 snippet r.auth "laravel auth routes" b
 // Authentication routes...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::group(['as' => 'auth.'], function() {
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', [
+        'as' => 'login',
+        'uses' => 'Auth\AuthController@postLogin',
+    ]);
 
-// Registration routes...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
+    Route::get('auth/logout', [
+        'as' => 'logout',
+        'uses' => 'Auth\AuthController@getLogout',
+    ]);
+
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', [
+        'as' => 'register',
+        'uses' => 'Auth\AuthController@postRegister',
+    ]);
+
+    Route::get('password/email', 'Auth\PasswordController@getEmail');
+    Route::post('password/email', [
+        'as' => 'password',
+        'uses' => 'Auth\PasswordController@postEmail',
+    ]);
+
+    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+    Route::post('password/reset', [
+        'as' => 'reset',
+        'uses' => 'Auth\PasswordController@postReset',
+    ]);
+});
 endsnippet
