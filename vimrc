@@ -8,28 +8,29 @@ set nocompatible
 filetype off
 
 set rtp+=~/.dotfiles/vim/bundle/Vundle.vim
-call vundle#begin('~/.vim_bundle')
+call plug#begin('~/.vim_plugins')
 
-Plugin 'gmarik/Vundle.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'SirVer/ultisnips'
+Plug 'Raimondi/delimitMate'
 
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'Raimondi/delimitMate'
+Plug 'godlygeek/tabular'
+Plug 'StanAngeloff/php.vim'
+Plug 'majutsushi/tagbar'
 
-Plugin 'godlygeek/tabular'
-Plugin 'StanAngeloff/php.vim'
-Plugin 'majutsushi/tagbar'
+Plug 'gerw/vim-HiLinkTrace'
 
-Plugin 'bling/vim-airline'
-Plugin 'gerw/vim-HiLinkTrace'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-commentary'
+Plug 'kana/vim-fakeclip'
 
-call vundle#end()
+
+call plug#end()
+
 filetype plugin indent on
 syntax on
 runtime macros/matchit.vim
@@ -51,9 +52,6 @@ if executable('ag')
         \ -g ""'
 endif
 
-let g:airline_powerline_fonts = 1
-let g:airline_theme='badwolf'
-
 let g:UltiSnipsEditSplit="vertical"
 let g:netrw_banner=0
 
@@ -74,17 +72,22 @@ set expandtab
 set shiftround                  " Relative indentation
 
 " UI settings
-set nonumber
-set relativenumber
+set number
 set cursorline
 set title
-" set t_Co=256                    " 256 color terminal
+set t_Co=256                    " 256 color terminal
 colorscheme mustang
 set laststatus=2                " Always display status line
 set winwidth=115
 set winminwidth=25
 set scrolloff=5
 set sidescrolloff=0
+
+let &t_ti.="\e[1 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+let &t_te.="\e[0 q"
+
 
 " Editor settings
 set nowrap
