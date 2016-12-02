@@ -118,11 +118,30 @@ snippet met.up "update method" b
 * @param  `!p model_name()`  $`!p singular_name()`
 * @return Response
 */
-public function update($request, `!p model_name()` $`!p singular_name()`)
+public function update(Request $request, `!p model_name()` $`!p singular_name()`)
 {
 	$`!p singular_name()`->update($request->all());
 	return redirect()->route('`!p plural_name()`.index')
 		->with('message', '`!p model_name()` updated.');
 }
+
+endsnippet
+
+
+snippet met.de "Destroy method" b
+/**
+ * Destroy the specified resource from storage.
+ *
+ * @param  `!p model_name()`  $`!p singular_name()`
+ * @return Response
+ */
+Public function destroy(`!p model_name()` ${1:$`!p singular_name()`})
+{
+	$`!p singular_name()`->delete();
+	
+	return redirect()->route('`!p plural_name()`.index')
+		->with('message', '`!p model_name()` deleted.');
+}
+
 
 endsnippet

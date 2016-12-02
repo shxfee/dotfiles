@@ -14,8 +14,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 
-Plug 'godlygeek/tabular'
 Plug 'StanAngeloff/php.vim'
+Plug 'othree/html5.vim'
 Plug 'majutsushi/tagbar'
 
 Plug 'gerw/vim-HiLinkTrace'
@@ -26,10 +26,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 
-Plug 'kana/vim-fakeclip'
-
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
+
 
 filetype plugin indent on
 syntax on
@@ -59,6 +60,13 @@ let delimitMate_matchpairs = "(:),[:],{:}"
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 
+" Remove airline separators
+let g:airline_left_sep  = ' '
+let g:airline_left_sep  = ' '
+let g:airline_right_sep = ' '
+let g:airline_right_sep = ' '
+let g:airline_theme='badwolf'
+
 
 " ================== General Config   =========================================
 " Indentation
@@ -73,6 +81,7 @@ set shiftround                  " Relative indentation
 
 " UI settings
 set number
+set relativenumber
 set cursorline
 set title
 set t_Co=256                    " 256 color terminal
@@ -91,7 +100,6 @@ let &t_te.="\e[0 q"
 
 " Editor settings
 set nowrap
-set clipboard=unnamedplus
 set ignorecase
 set smartcase
 set showmatch                   " Show matching parenthesis
@@ -150,7 +158,9 @@ nnoremap <leader>rp :!clear;python3 %<CR>
 nnoremap <leader>tb :TagbarToggle<CR>
 
 " Practical Vim
+" Ctrl-L to clear search highlight
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR>
+inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<CR>a
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 

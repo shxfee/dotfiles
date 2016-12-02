@@ -1,7 +1,7 @@
 #--------------------------------------------------
 # BLADE TEMPLATE ENGINE
 #--------------------------------------------------
-snippet 'i\.(\S+):(\S+)\.(\S+)' "Generic input field for text, email, password, date & datetime" rb
+snippet 'i\.(\S+):(\S+)\.(\S+)' "Laravel input. Usage: i.type:model.field<tab>" rb
 <div class="form-group">
   <label for="`!p \
 	snip.rv = match.group(3)`">`!p \
@@ -13,7 +13,7 @@ snippet 'i\.(\S+):(\S+)\.(\S+)' "Generic input field for text, email, password, 
     value="{{ old('`!p \
 	snip.rv = match.group(3)`', \$`!p \
 	snip.rv = match.group(2) + '->' + \
-			  match.group(3)`) }}" required>
+			  match.group(3)`) }}">
 </div>
 endsnippet
 
@@ -39,7 +39,7 @@ snippet 'i\.textarea:(\S+)\.(\S+)' "Generic input field for text, email, passwor
 	snip.rv = match.group(2).title().replace('_', ' ') \
  `</label>
   <textarea class="form-control" name="`!p \
-	snip.rv = match.group(2)`" required>{{ old('`!p \
+	snip.rv = match.group(2)`">{{ old('`!p \
 	snip.rv = match.group(2)`', \$`!p \
 	snip.rv = match.group(1) + '->' + \
 			  match.group(2)`) }}</textarea>
@@ -51,76 +51,9 @@ priority 0
 
 
 
-snippet '@([a-z]+)' "Blade control structures" rb
+snippet '@([a-z]+)' "Blade control structures. Usage: @section<tab>" rb
 @`!p snip.rv = match.group(1)`($0)
 @end`!p snip.rv = match.group(1)`
-endsnippet
-
-
-snippet {! "Generates a set of curly braces for blade" i
-{!! $0 !!
-endsnippet
-
-
-snippet bi.text "text field"
-<div class="form-group">
-  {!! Form::label('${1:name}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::text('$1', null, ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.email "email field"
-<div class="form-group">
-  {!! Form::label('${1:email}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::email('$1', null, ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.password "password field"
-<div class="form-group">
-  {!! Form::label('${1:password}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::password('$1', ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.date "password field"
-<div class="form-group">
-  {!! Form::label('${1:date}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::date('$1', \Carbon\Carbon::now(), ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.checkbox "Checkbox"
-<div class="checkbox">
-  <label>
-    {!! Form::checkbox('${1:name}') !!} ${2:${1/\w+\s*/\u$0/}}
-  </label>
-</div>
-endsnippet
-
-
-snippet bi.select "select field"
-<div class="form-group">
-  {!! Form::label('${1:name}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::select('$1', \$${3:options}, ${4:default}, ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.textarea "textarea"
-<div class="form-group">
-  {!! Form::label('${1:content}', '${2:${1/\w+\s*/\u$0/}}') !!}
-  {!! Form::textarea('$1', null, ['class' => 'form-control', 'required'$0]) !!}
-</div>
-endsnippet
-
-
-snippet bi.hidden "hidden field"
-  {!! Form::hidden('$1', ${2:${2:'value'}}) !!}
 endsnippet
 
 
@@ -215,27 +148,27 @@ snippet html:b "HTML skeleton for Bootstrap"
 endsnippet
 
 
-snippet '<([a-z]{1,8}[0-9]*)' "Generic HTML tag builder multi-line" rb
+snippet '<([a-z]{1,8}[0-9]*)' "Block HTML Tag without class. Usage: <tag[tab]" rb
 <`!p snip.rv = match.group(1)`$0>
   $1
 </`!p snip.rv = match.group(1)`>
 endsnippet
 
 
-snippet '>([a-z]{1,8}[0-9]*)' "Generic HTML tag builder inline" ri
+snippet '>([a-z]{1,8}[0-9]*)' "Inline HTML Tag without class. Usage >tag[tab]" ri
 <`!p snip.rv = match.group(1)`$0>$1</`!p snip.rv = match.group(1)`>
 endsnippet
 
 
-snippet '<([a-z]{1,8}[0-9]*)\.([a-z|0-9|\s|\-|_]+)' "Tag with class" rb
-<`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>
+snippet '<([a-z]{1,8}[0-9]*)\.([a-z|0-9|\.|\-|_]+)' "Block HTML Tag with class. Usage <tag.c1.c2.etc[tab]" rb
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = " ".join(match.group(2).split('.'))`"$0>
   $1
 </`!p snip.rv = match.group(1)`>
 endsnippet
 
 
-snippet '>([a-z]{1,8}[0-9]*)\.([a-z|0-9|\s|\-|_]+)' "Tag with class" rb
-<`!p snip.rv = match.group(1)` class="`!p snip.rv = match.group(2)`"$0>$1</`!p snip.rv = match.group(1)`>
+snippet '>([a-z]{1,8}[0-9]*)\.([a-z|0-9|\.|\-|_]+)' "Inline HTML Tag with class. Usage >tag.c1.c2.etc[tab]" ri
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = " ".join(match.group(2).split('.'))`"$0>$1</`!p snip.rv = match.group(1)`>
 endsnippet
 
 
