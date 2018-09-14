@@ -1,6 +1,6 @@
-alias vi='TERM=xterm-256colors nvim'
+alias vi='nvim'
 alias so='source ~/.bashrc'
-alias se='vim ~/.bash_aliases'
+alias se='nvim ~/.bash_aliases'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias tree='tree -L 2 --dirsfirst -a'
