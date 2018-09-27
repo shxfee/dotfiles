@@ -60,6 +60,7 @@ public function create()
 	return view('`!p view_name()`.create', compact('`!p plural_name()`'));
 }
 
+
 endsnippet
 
 
@@ -77,6 +78,7 @@ public function store(Request $request)
 		->with('message', 'New `!p model_name()` created.');
 }
 
+
 endsnippet
 
 
@@ -92,6 +94,7 @@ public function show(`!p model_name()` $`!p singular_name()`)
 	return view('`!p view_name()`.show', compact('`!p singular_name()`'));
 }
 
+
 endsnippet
 
 
@@ -106,6 +109,7 @@ public function edit(`!p model_name()` $`!p singular_name()`)
 {
 	return view('`!p view_name()`.edit', compact('`!p singular_name()`'));
 }
+
 
 endsnippet
 
@@ -124,6 +128,7 @@ public function update(Request $request, `!p model_name()` $`!p singular_name()`
 	return redirect()->route('`!p plural_name()`.index')
 		->with('message', '`!p model_name()` updated.');
 }
+
 
 endsnippet
 

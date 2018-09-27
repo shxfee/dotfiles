@@ -1,0 +1,74 @@
+snippet snip "the snippet snippet" b
+snippet $0
+`echo endsnippet`
+endsnippet
+
+
+# ============================ HTML Stuff =======================================================
+snippet '<([a-z|\-]{1,8}[0-9]*)' "Block HTML Tag without class. Usage: <tag[tab]" rb
+<`!p snip.rv = match.group(1)`$0>
+	$1
+</`!p snip.rv = match.group(1)`>
+endsnippet
+
+
+snippet '>([a-z|\-]{1,8}[0-9]*)' "Inline HTML Tag without class. Usage >tag[tab]" ri
+<`!p snip.rv = match.group(1)`$0>$1</`!p snip.rv = match.group(1)`>
+endsnippet
+
+
+snippet '<([a-z|\-]{1,8}[0-9]*)\.([a-z|0-9|\.|\-|_]+)' "Block HTML Tag with class. Usage <tag.c1.c2.etc[tab]" rb
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = " ".join(match.group(2).split('.'))`"$0>
+	$1
+</`!p snip.rv = match.group(1)`>
+endsnippet
+
+
+snippet '>([a-z|\-]{1,8}[0-9]*)\.([a-z|0-9|\.|\-|_]+)' "Inline HTML Tag with class. Usage >tag.c1.c2.etc[tab]" ri
+<`!p snip.rv = match.group(1)` class="`!p snip.rv = " ".join(match.group(2).split('.'))`"$0>$1</`!p snip.rv = match.group(1)`>
+endsnippet
+
+
+# ============================ PHP Stuff =======================================================
+snippet pu "PHPunit test definition" b
+/** @test **/
+public function $1()
+{
+	$0
+}
+endsnippet
+
+
+snippet 'fm\.([a-z]+)' "Factory make: $v = factory('App\Model')->make()" br
+$`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->make($0);
+endsnippet
+
+
+snippet 'fc\.([a-z]+)' "Factory create: $v = factory('App\Model')->make()" br
+$`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->create($0);
+endsnippet
+
+
+snippet func "Define a function" b
+/**
+ *$1
+ */
+public function $2($3)
+{
+	$0
+}
+endsnippet
+
+
+snippet 'fori\.([0-9]+)' "For ($i = 0; $i < num; $i++)" br
+for ($i = 0; $i < ${1:`!p snip.rv = match.group(1)`}; $i++) {
+	$0
+}
+endsnippet
+
+
+
+snippet '@([a-z]+)' "Blade control structures. Usage: @section<tab>" rb
+@`!p snip.rv = match.group(1)`($0)
+@end`!p snip.rv = match.group(1)`
+endsnippet
