@@ -39,12 +39,12 @@ public function $1()
 endsnippet
 
 
-snippet 'fm\.([a-z]+)' "Factory make: $v = factory('App\Model')->make()" br
+snippet 'fm\.([a-zA-Z]+)' "Factory make: $v = factory('App\Model')->make()" br
 $`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->make($0);
 endsnippet
 
 
-snippet 'fc\.([a-z]+)' "Factory create: $v = factory('App\Model')->make()" br
+snippet 'fc\.([a-zA-Z]+)' "Factory create: $v = factory('App\Model')->make()" br
 $`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->create($0);
 endsnippet
 

@@ -20,6 +20,7 @@ Plug 'tpope/vim-dispatch'
 
 Plug 'icymind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
+Plug 'reedes/vim-colors-pencil'
 
 Plug 'posva/vim-vue'
 
@@ -28,7 +29,6 @@ call plug#end()
 
 " ================== Plugin Setup ============================================
 let g:netrw_banner = 0
-let g:lightline = { 'colorscheme': 'one' }
 
 let g:fzf_layout = { 'down': '~15%' }
 let g:fzf_colors = {
@@ -54,9 +54,10 @@ set number
 set relativenumber
 set cursorline
 
-set background=dark
-colorscheme NeoSolarized
+set t_Co=256
 set termguicolors
+colorscheme NeoSolarized
+
 set noshowmode
 
 set shiftwidth=4
@@ -107,13 +108,14 @@ inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 
+" Command abbrevs
+cabbrev dg diffget /
+
+
 " ================== Auto commands =========================================
 augroup general
     autocmd!
-    autocmd BufNewFile,BufRead *.vue set ft=html
-    autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd BufNewFile,BufRead *.ctp  setlocal filetype=html syntax=php shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd BufNewFile,BufRead *.html setlocal syntax=php shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.html,*.vue,*.blade.php setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
 augroup END
 
 augroup other

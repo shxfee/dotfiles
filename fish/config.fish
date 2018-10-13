@@ -1,6 +1,7 @@
 set -x SHELL "/usr/bin/fish"
+
 alias vi='nvim'
-alias so='source ~/.bashrc'
+alias so='source ~/.config/fish/config.fish'
 alias se='nvim ~/.bash_aliases'
 
 alias cdw='cd /mnt/c/www/'
@@ -22,3 +23,9 @@ alias ga='git add'
 alias gc='git commit'
 
 alias python=python3
+
+
+function serve
+    sudo /etc/init.d/apache2 start
+    sudo /etc/init.d/mysql start
+end
