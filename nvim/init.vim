@@ -17,10 +17,12 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-vinegar'
 
 Plug 'icymind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
 Plug 'reedes/vim-colors-pencil'
+Plug 'godlygeek/tabular'
 
 Plug 'posva/vim-vue'
 
@@ -57,6 +59,7 @@ set cursorline
 set t_Co=256
 set termguicolors
 colorscheme NeoSolarized
+set bg=dark
 
 set noshowmode
 
@@ -68,7 +71,7 @@ set shiftround
 
 set splitright
 set splitbelow
-set winwidth=115
+set winwidth=100
 set winminwidth=25
 set scrolloff=5
 set foldmethod=indent
@@ -77,6 +80,8 @@ set foldlevelstart=99
 
 set ignorecase
 set smartcase
+
+set shell=/usr/bin/fish
 
 
 " ================== Key bindings     =========================================
@@ -106,6 +111,7 @@ noremap <C-y> 20k
 nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+cnoremap <C-p> <Up>
 
 
 " Command abbrevs
