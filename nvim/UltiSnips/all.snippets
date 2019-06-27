@@ -3,6 +3,24 @@ snippet $0
 `echo endsnippet`
 endsnippet
 
+snippet .lorem "Lorem generator" b
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Cras at tristique magna, ut viverra ex.
+endsnippet
+
+snippet .lipsum "Longer lorem generator" b
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Cras at tristique magna, ut viverra ex. Interdum et malesuada
+fames ac ante ipsum primis in faucibus. Etiam elementum,
+metus nec rhoncus tincidunt, metus nisi consectetur ipsum,
+et finibus lectus odio vel nibh. Nulla vulputate sem quis vulputate consequat.
+Fusce sem purus, sagittis a dapibus eu, porta eu arcu.
+Aenean tempus consectetur massa, sed vehicula dolor bibendum id.
+Duis mattis purus lectus, sed volutpat sem ornare et.
+Praesent tempor ipsum non augue molestie, ut pellentesque massa sodales.
+Nam euismod turpis a ex tempor euismod.
+endsnippet
+
 
 # ============================ HTML Stuff =======================================================
 snippet '<([a-z|\-]{1,8}[0-9]*)' "Block HTML Tag without class. Usage: <tag[tab]" rb
@@ -40,12 +58,12 @@ endsnippet
 
 
 snippet 'fm\.([a-zA-Z]+)' "Factory make: $v = factory('App\Model')->make()" br
-$`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->make($0);
+$`!p snip.rv = match.group(1)` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->make($0);
 endsnippet
 
 
 snippet 'fc\.([a-zA-Z]+)' "Factory create: $v = factory('App\Model')->make()" br
-$`!p snip.rv = match.group(1)[0]` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->create($0);
+$`!p snip.rv = match.group(1)` = factory('App\\`!p snip.rv = match.group(1).capitalize()`'$1)->create($0);
 endsnippet
 
 

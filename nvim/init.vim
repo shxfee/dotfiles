@@ -1,6 +1,6 @@
 " Maintainer:	Hussain Shafeeu (shxfee@gmail.com)
-" Version:      3.0
-" Last Change:	September 27, 2018
+" Version:      4.0
+" Last Change:	June 27, 2019
 
 " ================== Plugins ============================================
 call plug#begin('~/.vim/plugged')
@@ -10,7 +10,7 @@ Plug 'SirVer/ultisnips'
 
 Plug 'tpope/vim-fugitive'
 Plug 'janko-m/vim-test'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 Plug 'tpope/vim-surround'
@@ -19,24 +19,66 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 
+Plug 'godlygeek/tabular'
+Plug 'posva/vim-vue'
+Plug 'jwalton512/vim-blade'
+Plug 'w0rp/ale'
+
+" Color Schemes and UI
+Plug 'arcticicestudio/nord-vim'
 Plug 'icymind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
 Plug 'reedes/vim-colors-pencil'
-Plug 'godlygeek/tabular'
-
-Plug 'posva/vim-vue'
+Plug 'lifepillar/vim-solarized8'
 
 call plug#end()
-
 
 " ================== Plugin Setup ============================================
 let g:netrw_banner = 0
 
 let g:fzf_layout = { 'down': '~15%' }
 let g:fzf_colors = {
+    \'fg' : ['fg', 'Comment'],
     \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
     \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
 \}
+
+let g:lightline = {
+    \'active': {
+    \  'left': [ [ 'mode', 'paste'],
+    \            [ 'lint' ],
+    \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+    \  'right': [[ 'percent' ],
+    \            [ 'fileformat', 'fileencoding', 'filetype'] ],
+    \},
+    \'component_function': {
+    \  'gitbranch': 'fugitive#head',
+    \},
+    \'component_expand': {
+    \  'lint': 'LinterStatus',
+    \},
+    \'component_type': {
+    \  'lint': 'error',
+    \},
+\}
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? '' : printf(
+    \   '%dE %dW',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+augroup ALE
+    autocmd!
+    autocmd User ALELintPost call lightline#update()
+augroup END
 
 let g:test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 10"
@@ -47,8 +89,8 @@ let g:delimitMate_expand_cr = 2
 
 let g:UltiSnipsEditSplit = 'vertical' 
 
-let g:neosolarized_contrast = 'high'
-
+let g:ale_sign_error = '❌'
+let g:ale_set_signs = 0
 
 " ================== General Config =========================================
 set nowrap
@@ -58,8 +100,8 @@ set cursorline
 
 set t_Co=256
 set termguicolors
-colorscheme NeoSolarized
-set bg=dark
+colorscheme solarized8_high
+set bg=light
 
 set noshowmode
 
@@ -67,12 +109,12 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set expandtab
-set shiftround 
+set shiftround
 
 set splitright
 set splitbelow
 set winwidth=100
-set winminwidth=25
+set winminwidth=10
 set scrolloff=5
 set foldmethod=indent
 set foldminlines=0
@@ -82,7 +124,6 @@ set ignorecase
 set smartcase
 
 set shell=/usr/bin/fish
-
 
 " ================== Key bindings     =========================================
 let mapleader='\'
@@ -103,8 +144,6 @@ nnoremap <leader>ts :TestSuite<cr>
 
 " exit terminal
 tnoremap <C-o> <C-\><C-n>
-noremap <C-e> 20j
-noremap <C-y> 20k
 
 " Practical Vim
 " Ctrl-L to clear search highlight
@@ -121,7 +160,7 @@ cabbrev dg diffget /
 " ================== Auto commands =========================================
 augroup general
     autocmd!
-    autocmd BufNewFile,BufRead *.html,*.vue,*.blade.php setlocal filetype=html shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.html,*.vue,*.blade.php setlocal shiftwidth=2 tabstop=2 softtabstop=2
 augroup END
 
 augroup other

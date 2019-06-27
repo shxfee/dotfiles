@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/shxfee/dotfiles/fish'
+let g:netrw_dirhist_2='/mnt/c/www/reollo'
+let g:netrw_dirhist_3='/home/shxfee'
+let g:netrw_dirhist_4='/usr/bin'
