@@ -5,7 +5,7 @@
 " ================== Plugins ============================================
 call plug#begin('~/.vim/plugged')
 
-" Plug 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 " Plug 'SirVer/ultisnips'
 
 Plug 'tpope/vim-fugitive'
@@ -63,40 +63,26 @@ let g:lightline = {
     \'colorscheme': 'wombat',
     \'active': {
     \  'left': [ [ 'mode', 'paste'],
-    \            [ 'cocstatus' ],
-    \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+    \            [ 'gitbranch', 'readonly', 'filename', 'modified' ],
+    \            [ 'cocstatus' ]],
     \  'right': [[ 'percent' ],
     \            [ 'fileformat', 'fileencoding', 'filetype'] ],
     \},
     \'component_function': {
     \  'gitbranch': 'fugitive#head',
     \  'cocstatus': 'coc#status',
-    \},
-    \'component_expand': {
-    \  'lint': 'LinterStatus',
-    \},
-    \'component_type': {
-    \  'lint': 'error',
+    \  'filename': 'LightlineFilename',
     \},
 \}
 
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? '' : printf(
-    \   '%dE %dW',
-    \   all_non_errors,
-    \   all_errors
-    \)
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
 endfunction
-
-augroup ALE
-    autocmd!
-    autocmd User ALELintPost call lightline#update()
-augroup END
 
 " ================== General Config =========================================
 set nowrap
@@ -201,6 +187,19 @@ endfunction
 
 " ================== Other Config =========================================
 "source ~/.config/nvim/coc.config.vim
+
+let g:coc_global_extensions = [
+    \'coc-eslint',
+    \'coc-html',
+    \'coc-json',
+    \'coc-markdownlint',
+    \'coc-phpls',
+    \'coc-tailwindcss',
+    \'coc-tsserver',
+    \'coc-vetur',
+    \'coc-css',
+    \'coc-git'
+    \]
 
 " Use auocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
@@ -326,7 +325,7 @@ nmap <leader>rn <Plug>(coc-rename)
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " " Mappings using CoCList:
 " " Show all diagnostics.
