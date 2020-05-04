@@ -153,6 +153,7 @@ cmap w!! w :term sudo tee > /dev/null %
 
 " Command abbrevs
 cabbrev dg diffget /
+cabbrev G vertical G
 
 
 " ================== Auto commands =========================================
