@@ -21,7 +21,7 @@ alias gtags='ctags -R --exclude=node_modules --exclude=.git --exclude=tests'
 set PATH /home/shxfee/.composer/vendor/bin $PATH
 
 # Start the Mysql Server and Apache Serve
-# Run also bunch stuff here in the future for starting off the Production Env
+# Run also bunch stuff here in the future for starting off the Development Env
 function serve --description 'Bootstrap the dev environment'
     sudo service php7.3-fpm start; and sudo service nginx start; and sudo service mysql start
 end
