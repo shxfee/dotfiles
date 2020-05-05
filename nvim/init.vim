@@ -13,7 +13,6 @@ Plug 'janko-m/vim-test'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'lambdalisue/gina.vim'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -42,11 +41,11 @@ call plug#end()
 let g:netrw_banner = 0
 
 let g:fzf_layout = { 'down': '~15%' }
-"let g:fzf_colors = {
-"    \'fg' : ['fg', 'Comment'],
-"    \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
-"    \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
-"\}
+let g:fzf_colors = {
+    \'fg' : ['fg', 'Comment'],
+    \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
+    \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
+\}
 
 let test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 10"

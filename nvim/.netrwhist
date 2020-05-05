@@ -1,8 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/mnt/c/www/sdfc/sdfc-cep/resources/js/views/NewLoanApplication'
-let g:netrw_dirhist_2='/mnt/c/www/sdfc/sdfc-cep/resources/js/views'
-let g:netrw_dirhist_3='/mnt/c/www/sdfc/sdfc-cep/resources/js/views/NewLoanApplication'
-let g:netrw_dirhist_4='/mnt/c/www/sdfc/sdfc-cep/resources/js/views'
-let g:netrw_dirhist_5='/mnt/c/www/sdfc/sdfc-cep/resources/js/views/Admin'
-let g:netrw_dirhist_6='/mnt/c/www/sdfc/sdfc-cep'
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/mnt/c/www/sdfc/sdfc-cep/.git'
+let g:netrw_dirhist_3='/mnt/c/www/sdfc/sdfc-cep/.git/hooks'
+let g:netrw_dirhist_2='/mnt/c/www/sdfc/sdfc-cep/.git'
+let g:netrw_dirhist_1='/mnt/c/www/sdfc/sdfc-cep'
