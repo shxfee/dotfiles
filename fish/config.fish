@@ -1,5 +1,3 @@
-alias vi='nvim'
-
 alias so='source ~/.config/fish/config.fish'
 alias se='nvim ~/.config/fish/config.fish'
 
