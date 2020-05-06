@@ -1,4 +1,8 @@
 {
+    "pairs.enableCharacters": ["(", "[", "{", "'", "\""],
+    "pairs.enableBackspace": false,
+
+    "diagnostic.messageTarget": "echo",
     "diagnostic.errorSign": "►",
     "diagnostic.warningSign": "►",
     "diagnostic.hintSign": "►",
@@ -6,8 +10,11 @@
     "coc.preferences.formatOnSaveFiletypes": ["php", "html"],
     "coc.preferences.bracketEnterImprove": true,
 
-    "suggest.maxPreviewWidth": 0,
+    "signature.enable": false,
+
+    "suggest.floatEnable": false,
     "suggest.maxCompleteItemCount": 20,
+
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",
         "variable": "\ue79b",
