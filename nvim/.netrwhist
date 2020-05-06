@@ -1,6 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =4
-let g:netrw_dirhist_4='/mnt/c/www/sdfc/sdfc-cep/.git'
-let g:netrw_dirhist_3='/mnt/c/www/sdfc/sdfc-cep/.git/hooks'
-let g:netrw_dirhist_2='/mnt/c/www/sdfc/sdfc-cep/.git'
-let g:netrw_dirhist_1='/mnt/c/www/sdfc/sdfc-cep'
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/home/shxfee/.config/fish'
+let g:netrw_dirhist_1='/home/shxfee/dotfiles/fish'
+let g:netrw_dirhist_0='/mnt/c/www/centurion/logistics-internal-control/resources/js'
+let g:netrw_dirhist_9='/mnt/c/www/sdfc/sdfc-cep/resources/js/components'
+let g:netrw_dirhist_8='/mnt/c/www/centurion/logistics-internal-control/resources/js/components'
+let g:netrw_dirhist_7='/mnt/c/www/centurion/logistics-internal-control/resources/js'
+let g:netrw_dirhist_6='/mnt/c/www/centurion/logistics-internal-control/resources/js/views'
+let g:netrw_dirhist_5='/mnt/c/www/centurion/logistics-internal-control/resources/js'
+let g:netrw_dirhist_4='/mnt/c/www/centurion/logistics-internal-control/resources'
+let g:netrw_dirhist_3='/mnt/c/www/centurion/logistics-internal-control'

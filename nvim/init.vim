@@ -1,19 +1,21 @@
 " Maintainer:	Hussain Shafeeu (shxfee@gmail.com)
-" Version:      5.1
-" Last Change:	May 02, 2020
+" Version:      2020.01
+" Last Change:	May 06, 2020
 
 " ================== Plugins ============================================
 call plug#begin('~/.vim/plugged')
 
-Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
 
+" IDE
 Plug 'tpope/vim-fugitive'
 Plug 'janko-m/vim-test'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'wakatime/vim-wakatime'
 
+" Helpers
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
@@ -49,10 +51,6 @@ let g:fzf_colors = {
 
 let test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 10"
-
-
-let g:delimitMate_matchpairs = "(:),[:],{:}"
-let g:delimitMate_expand_cr = 2
 
 let g:UltiSnipsEditSplit = 'vertical' 
 
@@ -139,7 +137,7 @@ nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
 
 
-" exit terminal
+" exit terminal insert mode
 tnoremap <C-o> <C-\><C-n>
 
 " Practical Vim
@@ -150,7 +148,7 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 cmap w!! w :term sudo tee > /dev/null %
 
 
-" Command abbrevs
+" Command abbrevs for fugitive
 cabbrev dg diffget /
 cabbrev G vertical G
 
@@ -188,7 +186,8 @@ let g:coc_global_extensions = [
     \'coc-tsserver',
     \'coc-vetur',
     \'coc-css',
-    \'coc-git'
+    \'coc-git',
+    \'coc-pairs',
     \]
 
 " Use auocmd to force lightline update.
