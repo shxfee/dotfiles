@@ -23,3 +23,6 @@ set PATH /home/shxfee/.composer/vendor/bin $PATH
 function serve --description 'Bootstrap the dev environment'
     sudo service php7.3-fpm start; and sudo service nginx start; and sudo service mysql start
 end
+
+set -x STARSHIP_CONFIG ~/.config/fish/starship.toml
+starship init fish | source
