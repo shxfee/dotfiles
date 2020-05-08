@@ -5,7 +5,6 @@
 " ================== Plugins ============================================
 call plug#begin('~/.vim/plugged')
 
-Plug 'SirVer/ultisnips'
 
 " IDE
 Plug 'tpope/vim-fugitive'
@@ -14,6 +13,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wakatime/vim-wakatime'
+Plug 'SirVer/ultisnips'
+Plug 'preservim/nerdtree'
 
 " Helpers
 Plug 'tpope/vim-surround'
@@ -79,6 +80,10 @@ function! LightlineFilename()
   return expand('%')
 endfunction
 
+let NERDTreeShowHidden=1
+let NERDTreeDirArrows=1
+let NERDTreeMinimalUI=1
+
 " ================== General Config =========================================
 set nowrap
 set number
@@ -104,6 +109,7 @@ set splitbelow
 set winwidth=100
 set winminwidth=10
 set scrolloff=5
+
 set foldmethod=indent
 set foldminlines=0
 set foldlevelstart=99
@@ -152,11 +158,18 @@ cmap w!! w :term sudo tee > /dev/null %
 cabbrev dg diffget /
 cabbrev G vertical G
 
+" Markdown Helpers
+nnoremap <leader>mH yypVr=
+nnoremap <leader>mh yypVr-
 
 " ================== Auto commands =========================================
 augroup general
     autocmd!
-    autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md
+            \setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.md
+            \setlocal shiftwidth=2 tabstop=2 softtabstop=2
+            \setlocal foldmethod=manual
 augroup END
 
 augroup other
