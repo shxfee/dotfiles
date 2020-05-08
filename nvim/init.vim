@@ -110,7 +110,9 @@ set winwidth=100
 set winminwidth=10
 set scrolloff=5
 
-set foldmethod=indent
+" save only fold info
+set viewoptions-=options
+set foldmethod=syntax
 set foldminlines=0
 set foldlevelstart=99
 
@@ -165,11 +167,8 @@ nnoremap <leader>mh yypVr-
 " ================== Auto commands =========================================
 augroup general
     autocmd!
-    autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md
-            \setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd BufNewFile,BufRead *.md
-            \setlocal shiftwidth=2 tabstop=2 softtabstop=2
-            \setlocal foldmethod=manual
+    autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.md setlocal shiftwidth=2 tabstop=2 softtabstop=2 foldmethod=manual
 augroup END
 
 augroup other
@@ -177,6 +176,12 @@ augroup other
     autocmd TermOpen * setlocal nonumber norelativenumber
     autocmd FileType fzf set laststatus=0
       \| autocmd BufLeave <buffer> set laststatus=2
+augroup END
+
+augroup remember_folds
+  autocmd!
+  au BufWinLeave ?* mkview 1
+  au BufWinEnter ?* silent! loadview 1
 augroup END
 
 command! -bang Files
