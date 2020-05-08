@@ -1,6 +1,5 @@
 {
     "pairs.enableCharacters": ["(", "[", "{", "'", "\""],
-    "pairs.enableBackspace": false,
 
     "diagnostic.messageTarget": "echo",
     "diagnostic.errorSign": "►",
@@ -8,9 +7,6 @@
     "diagnostic.hintSign": "►",
 
     "coc.preferences.formatOnSaveFiletypes": ["php", "html"],
-    "coc.preferences.bracketEnterImprove": true,
-
-    "signature.enable": false,
 
     "suggest.floatEnable": false,
     "suggest.maxCompleteItemCount": 20,

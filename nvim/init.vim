@@ -3,8 +3,8 @@
 " Last Change:	May 06, 2020
 
 " ================== Plugins ============================================
-call plug#begin('~/.vim/plugged')
 
+call plug#begin('~/.vim/plugged')
 
 " IDE
 Plug 'tpope/vim-fugitive'
@@ -89,7 +89,6 @@ set nowrap
 set number
 set cursorline
 
-set t_Co=256
 set termguicolors
 set bg=dark
 " colorscheme nord
@@ -112,12 +111,13 @@ set scrolloff=5
 
 " save only fold info
 set viewoptions-=options
-set foldmethod=syntax
+set foldmethod=indent
 set foldminlines=0
 set foldlevelstart=99
 
 set ignorecase
 set smartcase
+set smartindent
 
 set shell=/usr/bin/fish
 
@@ -226,6 +226,9 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Let coc handle <CR> for bracket expansion etc
+inoremap <silent><expr> <CR> "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
