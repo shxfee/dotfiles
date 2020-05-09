@@ -14,7 +14,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wakatime/vim-wakatime'
 Plug 'SirVer/ultisnips'
-Plug 'preservim/nerdtree'
+Plug 'justinmk/vim-dirvish'
 
 " Helpers
 Plug 'tpope/vim-surround'
@@ -41,7 +41,6 @@ Plug 'lifepillar/vim-gruvbox8'
 call plug#end()
 
 " ================== Plugin Setup ============================================
-let g:netrw_banner = 0
 
 let g:fzf_layout = { 'down': '~15%' }
 let g:fzf_colors = {
@@ -80,9 +79,10 @@ function! LightlineFilename()
   return expand('%')
 endfunction
 
-let NERDTreeShowHidden=1
-let NERDTreeDirArrows=1
-let NERDTreeMinimalUI=1
+" file explorer & disable netrw
+let g:dirvish_mode = ':sort ,^.*[\/],'
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 " ================== General Config =========================================
 set nowrap
@@ -152,7 +152,6 @@ tnoremap <C-o> <C-\><C-n>
 " Ctrl-L to clear search highlight
 nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 cmap w!! w :term sudo tee > /dev/null %
 
 
@@ -182,6 +181,11 @@ augroup remember_folds
   autocmd!
   au BufWinLeave ?* mkview 1
   au BufWinEnter ?* silent! loadview 1
+augroup END
+
+augroup dirvish_config
+    autocmd!
+    autocmd FileType dirvish setlocal nonumber
 augroup END
 
 command! -bang Files
