@@ -1,6 +1,6 @@
 " Maintainer:	Hussain Shafeeu (shxfee@gmail.com)
 " Version:      2020.01
-" Last Change:	May 06, 2020
+" Last Change:	Wed Jun 24 13:51:24 PKT 2020
 
 " ================== Plugins ============================================
 
@@ -22,17 +22,16 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-vinegar'
 Plug 'godlygeek/tabular'
 
-" Syntax
+" Syntax & filetype
 Plug 'tpope/vim-git'
 Plug 'jwalton512/vim-blade'
 Plug 'posva/vim-vue'
 Plug 'StanAngeloff/php.vim'
 Plug 'othree/html5.vim'
 
-" Color Schemes and UI
+" Color Schemes & UI
 Plug 'itchyny/lightline.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'arcticicestudio/nord-vim'
@@ -45,11 +44,11 @@ call plug#end()
 " ================== Plugin Setup ============================================
 
 let g:fzf_layout = { 'down': '~15%' }
-let g:fzf_colors = {
-    \'fg' : ['fg', 'Comment'],
-    \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
-    \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
-\}
+"let g:fzf_colors = {
+"    \'fg' : ['fg', 'Comment'],
+"    \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
+"    \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
+"\}
 
 let test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 10"
@@ -96,10 +95,6 @@ set number
 set cursorline
 
 set termguicolors
-"colorscheme nord
-"colorscheme PaperColor
-"colorscheme solarized8_high
-"colorscheme gruvbox8
 colorscheme jellybeans
 set bg=dark
 
