@@ -6,7 +6,7 @@
     "diagnostic.warningSign": "►",
     "diagnostic.hintSign": "►",
 
-    "coc.preferences.formatOnSaveFiletypes": ["php", "html"],
+    "coc.preferences.formatOnSaveFiletypes": ["php"],
 
     "suggest.floatEnable": false,
     "suggest.maxCompleteItemCount": 20,
