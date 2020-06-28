@@ -87,7 +87,9 @@ let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
 " Wiki Options
-let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_headers=1
+let g:vimwiki_auto_chdir=0
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'path_html': '~/vimwiki/html/'}]
 
 " ================== General Config =========================================
 set nowrap
@@ -161,9 +163,10 @@ cmap w!! w :term sudo tee > /dev/null %
 " Command abbrevs for fugitive
 cabbrev dg diffget /
 cabbrev G vertical G
+cabbrev h vertical help
 
 " ================== Auto commands =========================================
-augroup general
+augroup general : Customer engagement
     autocmd!
     autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufNewFile,BufRead *.md setlocal shiftwidth=2 tabstop=2 softtabstop=2 foldmethod=manual
@@ -175,8 +178,8 @@ augroup END
 augroup other
     autocmd!
     autocmd TermOpen * setlocal nonumber norelativenumber
-    autocmd FileType fzf set laststatus=0
-      \| autocmd BufLeave <buffer> set laststatus=2
+    autocmd FileType fzf set laststatus=0 signcolumn=no
+      \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
 augroup END
 
 augroup remember_folds
@@ -192,23 +195,41 @@ augroup dirvish_config
 augroup END
 
 augroup coc_config
+    autocmd!
     autocmd BufNewFile,BufRead *.css,*.html,*.blade.php let b:coc_additional_keywords = ["-"]
 augroup END
 
 augroup wiki_config
+    autocmd!
     autocmd FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)
     autocmd FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel
     autocmd FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink
+    autocmd FileType vimwiki setlocal spell textwidth=79
+    "autocmd FileType vimwiki setlocal concealcursor=nv
+
+    autocmd FileType vimwiki hi MyDone guifg=lightgreen
+    autocmd FileType vimwiki hi MyTodo guifg=yellow
+    autocmd FileType vimwiki hi MyXxx guifg=red
+
+    autocmd FileType vimwiki syntax match MyTodo /TODO/
+    autocmd FileType vimwiki syntax match MyDone /DONE/
+    autocmd FileType vimwiki syntax match MyXxx /XXX/
 augroup END
 
 command! -bang Files
-    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd -t f', 'options': '--inline-info'}, <bang>0))
+    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden', 'options': '--inline-info'}, <bang>0))
 
 command! -bang Dirs
-    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd -t d'}, <bang>0))
+    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden'}, <bang>0))
 
 command! -nargs=* T 10split | startinsert | terminal <args>
 
+
+" ================== Helpers ===========================================
+function! SynGroup()                                                            
+    let l:s = synID(line('.'), col('.'), 1)                                       
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
 
 " ================== CoC Config =========================================
 let g:coc_global_extensions = [
