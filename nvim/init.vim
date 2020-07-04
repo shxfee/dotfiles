@@ -2,13 +2,19 @@
 " Version:      2020.01
 " Last Change:	Wed Jun 24 13:51:24 PKT 2020
 
+" ================== Imports ============================================
+
+source <sfile>:h/functions.vim
+
+
 " ================== Plugins ============================================
 
 call plug#begin('~/.vim/plugged')
 
 " IDE
+Plug 'tpope/vim-dispatch'
+
 Plug 'tpope/vim-fugitive'
-Plug 'janko-m/vim-test'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -16,12 +22,12 @@ Plug 'wakatime/vim-wakatime'
 Plug 'SirVer/ultisnips'
 Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki'
+Plug 'janko-m/vim-test'
 
 " Helpers
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-dispatch'
 Plug 'godlygeek/tabular'
 
 " Syntax & filetype
@@ -33,25 +39,20 @@ Plug 'othree/html5.vim'
 
 " Color Schemes & UI
 Plug 'itchyny/lightline.vim'
-Plug 'lifepillar/vim-solarized8'
-Plug 'arcticicestudio/nord-vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'lifepillar/vim-gruvbox8'
 Plug 'nanotech/jellybeans.vim'
 
 call plug#end()
 
 " ================== Plugin Setup ============================================
 
-let g:fzf_layout = { 'down': '~15%' }
-"let g:fzf_colors = {
-"    \'fg' : ['fg', 'Comment'],
-"    \'bg+': ['bg', 'Normal'], 'fg+': ['fg', 'Normal'],
-"    \'hl+': ['fg', 'Error'], 'hl' : ['fg', 'Error']
-"\}
+let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+
+let g:jellybeans_overrides = {
+\    'b2ckground': { 'guibg': '121212' },
+\}
 
 let test#strategy = 'neovim'
-let test#neovim#term_position = "belowright 10"
+let test#neovim#term_position = "belowright 15"
 let test#php#phpunit#executable = './vendor/bin/phpunit'
 
 let g:UltiSnipsEditSplit = 'vertical' 
@@ -59,11 +60,11 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:lightline = {
     \'colorscheme': 'jellybeans',
     \'active': {      
-    \  'left': [ [ 'mode', 'paste'],
+    \  'left': [ [ 'paste'],
     \            [ 'gitbranch', 'readonly', 'filename', 'modified' ],
     \            [ 'cocstatus' ]],
     \  'right': [[ 'percent' ],
-    \            [ 'fileformat', 'fileencoding', 'filetype'] ],
+    \            [ 'fileformat'] ],
     \},
     \'component_function': {
     \  'gitbranch': 'fugitive#head',
@@ -71,15 +72,6 @@ let g:lightline = {
     \  'filename': 'LightlineFilename',
     \},
 \}
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
 
 " file explorer & disable netrw
 let g:dirvish_mode = ':sort ,^.*[\/],'
@@ -89,12 +81,29 @@ let g:loaded_netrwPlugin = 1
 " Wiki Options
 let g:vimwiki_hl_headers=1
 let g:vimwiki_auto_chdir=0
-let g:vimwiki_list = [{'path': '~/vimwiki/', 'path_html': '~/vimwiki/html/'}]
+
+" CoC Config
+let g:coc_global_extensions = [
+    \'coc-eslint',
+    \'coc-html',
+    \'coc-json',
+    \'coc-markdownlint',
+    \'coc-phpls',
+    \'coc-tailwindcss',
+    \'coc-tsserver',
+    \'coc-css',
+    \'coc-git',
+    \'coc-pairs',
+\]
+
 
 " ================== General Config =========================================
+
 set nowrap
 set number
+set relativenumber
 set cursorline
+set colorcolumn=80
 
 set termguicolors
 colorscheme jellybeans
@@ -110,15 +119,16 @@ set shiftround
 
 set splitright
 set splitbelow
-set winwidth=100
 set winminwidth=10
+set winwidth=100
 set scrolloff=5
 
 " save only fold info
-set viewoptions-=options
+set viewoptions-=options,curdir
 set foldmethod=indent
 set foldminlines=0
 set foldlevelstart=99
+set noswapfile
 
 set ignorecase
 set smartcase
@@ -134,12 +144,19 @@ set shortmess+=c
 set signcolumn=yes
 
 " ================== Key bindings     =========================================
-let mapleader='\'
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
-nnoremap <leader>f :Files<cr>
+" Primary leader maps
 nnoremap <leader>d :Dirs<cr>
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>g :vertical Git<cr>
 
-nnoremap <leader>se :leftabove vsplit $MYVIMRC<cr>
+" Window leader maps
+nnoremap <leader>wc :only<cr>:enew<cr>
+
+" Config leader maps
+nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 
 " for command line completion.
@@ -149,6 +166,7 @@ nnoremap <leader>tt :TestNearest<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
 
+nnoremap <leader>te :tabe<cr>
 
 " exit terminal insert mode
 tnoremap <C-o> <C-\><C-n>
@@ -159,14 +177,31 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cmap w!! w :term sudo tee > /dev/null %
 
-
 " Command abbrevs for fugitive
 cabbrev dg diffget /
-cabbrev G vertical G
 cabbrev h vertical help
+iabbrev <expr> dts strftime("%c (MVT)")
+
+" Coc Maps
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+" Let coc handle <CR> for bracket expansion etc
+inoremap <silent><expr> <CR> "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 
 " ================== Auto commands =========================================
-augroup general : Customer engagement
+augroup general
     autocmd!
     autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd BufNewFile,BufRead *.md setlocal shiftwidth=2 tabstop=2 softtabstop=2 foldmethod=manual
@@ -178,8 +213,8 @@ augroup END
 augroup other
     autocmd!
     autocmd TermOpen * setlocal nonumber norelativenumber
-    autocmd FileType fzf set laststatus=0 signcolumn=no
-      \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
+    "autocmd FileType fzf set laststatus=0 signcolumn=no
+    "  \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
 augroup END
 
 augroup remember_folds
@@ -192,85 +227,31 @@ augroup dirvish_config
     autocmd!
     autocmd FileType dirvish setlocal nonumber
     autocmd FileType dirvish nnoremap <buffer> % :edit %
+    autocmd FileType dirvish nnoremap <buffer> d :!mkdir %
 augroup END
 
 augroup coc_config
     autocmd!
     autocmd BufNewFile,BufRead *.css,*.html,*.blade.php let b:coc_additional_keywords = ["-"]
+    autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 
 augroup wiki_config
     autocmd!
+    " - is always bound to dirup no matter where in vim I am
     autocmd FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)
     autocmd FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel
     autocmd FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink
     autocmd FileType vimwiki setlocal spell textwidth=79
     "autocmd FileType vimwiki setlocal concealcursor=nv
-
-    autocmd FileType vimwiki hi MyDone guifg=lightgreen
-    autocmd FileType vimwiki hi MyTodo guifg=yellow
-    autocmd FileType vimwiki hi MyXxx guifg=red
-
-    autocmd FileType vimwiki syntax match MyTodo /TODO/
-    autocmd FileType vimwiki syntax match MyDone /DONE/
-    autocmd FileType vimwiki syntax match MyXxx /XXX/
 augroup END
 
+
+" ================== Commands ===========================================
 command! -bang Files
     \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden', 'options': '--inline-info'}, <bang>0))
 
 command! -bang Dirs
-    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden'}, <bang>0))
+    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden', 'options': '--inline-info'}, <bang>0))
 
 command! -nargs=* T 10split | startinsert | terminal <args>
-
-
-" ================== Helpers ===========================================
-function! SynGroup()                                                            
-    let l:s = synID(line('.'), col('.'), 1)                                       
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
-
-" ================== CoC Config =========================================
-let g:coc_global_extensions = [
-    \'coc-eslint',
-    \'coc-html',
-    \'coc-json',
-    \'coc-markdownlint',
-    \'coc-phpls',
-    \'coc-tailwindcss',
-    \'coc-tsserver',
-    \'coc-css',
-    \'coc-git',
-    \'coc-pairs',
-    \]
-
-" Use auocmd to force lightline update.
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-" Let coc handle <CR> for bracket expansion etc
-inoremap <silent><expr> <CR> "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)

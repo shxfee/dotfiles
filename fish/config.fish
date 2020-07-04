@@ -21,6 +21,9 @@ alias winup='sudo mount -t drvfs C: /mnt/c'
 # update path
 set PATH /home/shxfee/.composer/vendor/bin $PATH
 
+# Open links with wslview
+set BROWSER wslview
+
 # Start the Mysql Server and Apache Serve
 # Run also bunch stuff here in the future for starting off the Development Env
 function serve --description 'Bootstrap the dev environment'
