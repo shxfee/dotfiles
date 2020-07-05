@@ -1,11 +1,8 @@
-" Maintainer:	Hussain Shafeeu (shxfee@gmail.com)
-" Version:      2020.01
-" Last Change:	Wed Jun 24 13:51:24 PKT 2020
-
-" ================== Imports ============================================
+" =======================================================================
+"                       NeoVim Configuration
+" =======================================================================
 
 source <sfile>:h/functions.vim
-
 
 " ================== Plugins ============================================
 
@@ -23,6 +20,7 @@ Plug 'SirVer/ultisnips'
 Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki'
 Plug 'janko-m/vim-test'
+Plug 'jiangmiao/auto-pairs'
 
 " Helpers
 Plug 'tpope/vim-surround'
@@ -74,26 +72,21 @@ let g:lightline = {
 \}
 
 " file explorer & disable netrw
-let g:dirvish_mode = ':sort ,^.*[\/],'
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
+let g:dirvish_mode=':sort ,^.*[\/],'
+let g:loaded_netrw=1
+let g:loaded_netrwPlugin=1
 
 " Wiki Options
 let g:vimwiki_hl_headers=1
-let g:vimwiki_auto_chdir=0
+let g:vimwiki_conceal_onechar_markers=0
 
 " CoC Config
 let g:coc_global_extensions = [
     \'coc-eslint',
-    \'coc-html',
     \'coc-json',
-    \'coc-markdownlint',
     \'coc-phpls',
     \'coc-tailwindcss',
-    \'coc-tsserver',
     \'coc-css',
-    \'coc-git',
-    \'coc-pairs',
 \]
 
 
@@ -104,42 +97,37 @@ set number
 set relativenumber
 set cursorline
 set colorcolumn=80
+set noshowmode
 
 set termguicolors
 colorscheme jellybeans
 set bg=dark
 
-set noshowmode
-
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set expandtab
-set shiftround
+set smartcase
+set smartindent
 
 set splitright
 set splitbelow
 set winminwidth=10
 set winwidth=100
-set scrolloff=5
+set scrolloff=8
 
 " save only fold info
-set viewoptions-=options,curdir
+set viewoptions=cursor,folds
 set foldmethod=indent
 set foldminlines=0
 set foldlevelstart=99
 set noswapfile
 
-set ignorecase
-set smartcase
-set smartindent
-
 set shell=/usr/bin/fish
 
-" Options For CoC
 set hidden
 set cmdheight=2
-set updatetime=300
+set updatetime=50
 set shortmess+=c
 set signcolumn=yes
 
@@ -168,19 +156,11 @@ nnoremap <leader>ts :TestSuite<cr>
 
 nnoremap <leader>te :tabe<cr>
 
-" exit terminal insert mode
-tnoremap <C-o> <C-\><C-n>
-
 " Practical Vim
-" Ctrl-L to clear search highlight
 nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cmap w!! w :term sudo tee > /dev/null %
-
-" Command abbrevs for fugitive
-cabbrev dg diffget /
-cabbrev h vertical help
-iabbrev <expr> dts strftime("%c (MVT)")
+tnoremap <C-o> <C-\><C-n>
 
 " Coc Maps
 " Use <c-space> to trigger completion.
@@ -189,15 +169,13 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
-
-" Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
-" Let coc handle <CR> for bracket expansion etc
-inoremap <silent><expr> <CR> "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" ================== Abbreviations =========================================
+
+cabbrev h vertical help
+iabbrev <expr> dts strftime("%c (MVT)")
 
 
 " ================== Auto commands =========================================
@@ -219,7 +197,8 @@ augroup END
 
 augroup remember_folds
   autocmd!
-  au BufWinLeave ?* mkview 1
+  let blacklist = ['fzf', '', 'dirvish', 'help']
+  autocmd BufWinLeave ?* if index(blacklist, &ft) < 0 | mkview 1
   au BufWinEnter ?* silent! loadview 1
 augroup END
 
@@ -228,6 +207,12 @@ augroup dirvish_config
     autocmd FileType dirvish setlocal nonumber
     autocmd FileType dirvish nnoremap <buffer> % :edit %
     autocmd FileType dirvish nnoremap <buffer> d :!mkdir %
+    autocmd FileType dirvish nnoremap <buffer> gq :q<cr>
+augroup END
+
+augroup vim_plug
+    autocmd!
+    autocmd FileType vim-plug nnoremap <buffer> gq :q<cr>
 augroup END
 
 augroup coc_config
@@ -243,7 +228,7 @@ augroup wiki_config
     autocmd FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel
     autocmd FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink
     autocmd FileType vimwiki setlocal spell textwidth=79
-    "autocmd FileType vimwiki setlocal concealcursor=nv
+    autocmd FileType vimwiki let b:coc_suggest_disable = 1
 augroup END
 
 
