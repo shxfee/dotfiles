@@ -1,6 +1,4 @@
 {
-    "pairs.enableCharacters": ["(", "[", "{", "'", "\""],
-
     "diagnostic.messageTarget": "echo",
     "diagnostic.errorSign": "►",
     "diagnostic.warningSign": "►",
@@ -10,6 +8,7 @@
 
     "suggest.floatEnable": false,
     "suggest.maxCompleteItemCount": 20,
+    "suggest.triggerCompletionWait": 400,
 
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",

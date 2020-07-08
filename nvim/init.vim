@@ -22,20 +22,15 @@ Plug 'vimwiki/vimwiki'
 Plug 'janko-m/vim-test'
 Plug 'jiangmiao/auto-pairs'
 
-" Helpers
+" Vimfu
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
 
-" Syntax & filetype
-Plug 'tpope/vim-git'
-Plug 'jwalton512/vim-blade'
-Plug 'posva/vim-vue'
-Plug 'StanAngeloff/php.vim'
-Plug 'othree/html5.vim'
-
-" Color Schemes & UI
+" Syntax & UI
+Plug 'gillyb/stable-windows'
+Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 
@@ -43,7 +38,8 @@ call plug#end()
 
 " ================== Plugin Setup ============================================
 
-let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+" let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+let g:fzf_layout = { 'down': '~25%' }
 
 let g:jellybeans_overrides = {
 \    'b2ckground': { 'guibg': '121212' },
@@ -117,6 +113,7 @@ set winwidth=100
 set scrolloff=8
 
 " save only fold info
+set inccommand=nosplit
 set viewoptions=cursor,folds
 set foldmethod=indent
 set foldminlines=0
@@ -160,7 +157,7 @@ nnoremap <leader>te :tabe<cr>
 nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cmap w!! w :term sudo tee > /dev/null %
-tnoremap <C-o> <C-\><C-n>
+noremap <C-o> <C-\><C-n>
 
 " Coc Maps
 " Use <c-space> to trigger completion.
@@ -176,6 +173,7 @@ nnoremap <silent> K :call ShowDocumentation()<CR>
 
 cabbrev h vertical help
 iabbrev <expr> dts strftime("%c (MVT)")
+iabbrev <expr> ds strftime("%Y-%m-%d")
 
 
 " ================== Auto commands =========================================
@@ -188,26 +186,19 @@ augroup general
     autocmd BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
 augroup END
 
-augroup other
+augroup term_options
     autocmd!
+    autocmd FileType fzf set laststatus=0 signcolumn=no
+      \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
+
     autocmd TermOpen * setlocal nonumber norelativenumber
-    "autocmd FileType fzf set laststatus=0 signcolumn=no
-    "  \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
 augroup END
 
 augroup remember_folds
   autocmd!
   let blacklist = ['fzf', '', 'dirvish', 'help']
   autocmd BufWinLeave ?* if index(blacklist, &ft) < 0 | mkview 1
-  au BufWinEnter ?* silent! loadview 1
-augroup END
-
-augroup dirvish_config
-    autocmd!
-    autocmd FileType dirvish setlocal nonumber
-    autocmd FileType dirvish nnoremap <buffer> % :edit %
-    autocmd FileType dirvish nnoremap <buffer> d :!mkdir %
-    autocmd FileType dirvish nnoremap <buffer> gq :q<cr>
+  autocmd BufWinEnter ?* silent! loadview 1
 augroup END
 
 augroup vim_plug
@@ -221,16 +212,22 @@ augroup coc_config
     autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 
-augroup wiki_config
-    autocmd!
-    " - is always bound to dirup no matter where in vim I am
-    autocmd FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)
-    autocmd FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel
-    autocmd FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink
-    autocmd FileType vimwiki setlocal spell textwidth=79
-    autocmd FileType vimwiki let b:coc_suggest_disable = 1
-augroup END
+autocmd! FileType vimwiki call AutoCmdVimWiki()
+function! AutoCmdVimWiki()
+    nmap <buffer> - <Plug>(dirvish_up)
+    nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel
+    nmap <buffer> # <Plug>VimwikiNormalizeLink
+    setlocal spell textwidth=79
+    let b:coc_suggest_disable = 1
+endfunction
 
+autocmd! FileType dirvish call AutoCmdDirvish()
+function! AutoCmdDirvish()
+    setlocal nonumber
+    nnoremap <buffer> % :edit %
+    nnoremap <buffer> d :!mkdir %
+    nnoremap <buffer> gq :q<cr>
+endfunction
 
 " ================== Commands ===========================================
 command! -bang Files
