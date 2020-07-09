@@ -7,54 +7,74 @@ set background=light
 
 hi clear
 if exists("syntax_on")
-	syntax reset
+    syntax reset
 endif
 
-let colors_name = "google"
+let g:colors_name = "google"
 
+" Sets the highlighting for the given group
+fun! s:X(group, fg, bg, attr)
+    let highlightstr  = 'highlight ' . a:group . ' '
+
+    let highlightstr .= 'guifg=' . a:fg . ' '
+    let highlightstr .= 'guibg=' . a:bg . ' '
+    let highlightstr .= 'gui=' . a:attr . ' '
+
+    execute highlightstr
+endfunction
+
+" Colors
 let s:black        = '#000000'
+let s:black_light  = '#0b0b0b'
 let s:blue         = '#6694e3'
 let s:blue_dark    = '#2a5db0'
-let s:blue_light   = '#e0ecff'
+let s:blue_light   = '#7799bb'
+let s:blue_lighter = '#e0ecff'
 let s:green        = '#006633'
 let s:green_light  = '#46aa64'
+let s:gray_dark    = '#505050'
 let s:gray         = '#aaaaaa'
-let s:gray_light   = '#bdbdbd'
+let s:gray_light   = '#d6d6d6'
 let s:gray_lighter = '#fafafa'
 let s:red          = '#d96666'
 let s:white        = '#ffffff'
 let s:yellow       = '#ffffb5'
 
-hi ColorColumn guibg=#fafafa
-hi Cursor 		guifg=#ffffff	guibg=s:black	gui=none
-hi CursorLine		          	guibg=#fafafa	gui=none
-hi Folded 		guibg=#bdbdbd	guifg=#000000	gui=none
-hi CursorLineNr guifg=#0b0b0b	guibg=#ffffff	gui=none
-hi Pmenu 		guifg=#ffffff	guibg=#aaaaaa	gui=none
-hi PmenuSel 	guifg=#ffffff	guibg=#bdbdbd	gui=none
-hi Conceal 		guifg=#aaaaaa	guibg=#ffffff	gui=underline
-hi VertSplit	guifg=#aaaaaa	guibg=#f2f2f2	gui=none
-hi StatusLine 	guifg=#ffffff	guibg=#f2f2f2	gui=none
-hi StatusLineNC guifg=#aaaaaa	guibg=#f2f2f2	gui=none
-hi Visual		guifg=#ffffff	guibg=#6694e3	gui=none
+" UI
+call s:X("NonText"      , s:gray         , s:white        , "none")
+call s:X("Normal"       , s:black        , s:white        , "none")
+call s:X("ColorColumn"  , "none",  s:gray_lighter , "none")
+call s:X("Cursor"       , s:white        , s:blue        , "none")
+call s:X("CursorLine"   , "none"         , s:gray_lighter , "none")
+call s:X("Folded"       , s:black        , s:gray_light   , "none")
+call s:X("Conceal"      , s:gray         , "none"         , "underline")
+call s:X("LineNr"       , s:gray         , s:white        , "none")
+call s:X("CursorLineNr" , s:gray_dark    , ""             , "none")
+call s:X("VertSplit"    , s:gray         , s:gray_light   , "none")
+call s:X("StatusLine"   , s:white        , s:gray         , "none")
+call s:X("StatusLineNC" , s:gray         , s:gray         , "none")
+call s:X("Visual"       , s:white        , s:blue         , "none")
+call s:X("Pmenu"        , s:black_light  , s:gray_light   , "none")
+call s:X("PmenuSel"     , s:black_light  , "#ebebeb"      , "none")
+call s:X("PmenuSbar"    , s:gray_light   , s:gray_light   , "none")
 
-hi NonText 		guifg=#f0f0f0	guibg=#ffffff	gui=none
-hi Normal 		guifg=#000000	guibg=#ffffff	gui=none
-hi Comment 		guifg=#aaaaaa	guibg=none  	gui=none
-hi Constant 	guifg=#6694e3	guibg=none  	gui=none
-hi DiffAdd		guifg=#ffffff	guibg=#006633	gui=none
-hi DiffChange	guifg=#000000	guibg=#ffffb5	gui=none
-hi DiffDelete	guifg=#000000	guibg=#d96666	gui=none
-hi DiffText		guifg=#d96666	guibg=#ffffb5	gui=none
-hi Identifier 	guifg=#7799bb	guibg=none  	gui=none
-hi ModeMsg		guifg=#ffffff	guibg=#6694e3	gui=none
-hi PreProc 		guifg=#46aa64	guibg=none  	gui=none
-hi Search		guifg=#000000	guibg=#ffffb5
-hi Special		guifg=#2a5db0	guibg=none  	gui=none
-hi Statement 	guifg=#2a5db0	guibg=none  	gui=none
-hi Error 		guifg=#ffffff	guibg=#d96666	gui=none
-hi Type 		guifg=#006633	guibg=none  	gui=none
-hi Underlined	guifg=#6694e3	guibg=none  	gui=underline
+" Syntax
+call s:X("Comment"      , s:gray         , "none"         , "none")
+call s:X("Constant"     , s:blue         , "none"         , "none")
+call s:X("DiffAdd"      , s:white        , s:green        , "none")
+call s:X("DiffChange"   , s:black        , s:yellow       , "none")
+call s:X("DiffDelete"   , s:black        , s:red          , "none")
+call s:X("DiffText"     , s:red          , s:yellow       , "none")
+call s:X("Identifier"   , s:blue_light   , "none"         , "none")
+call s:X("ModeMsg"      , s:white        , s:blue         , "none")
+call s:X("PreProc"      , s:green_light  , "none"         , "none")
+call s:X("Search"       , s:black        , s:yellow       , "none")
+call s:X("Special"      , s:blue_dark    , "none"         , "none")
+call s:X("Statement"    , s:blue_dark    , "none"         , "none")
+call s:X("Error"        , s:white        , s:red          , "none")
+call s:X("Type"         , s:green        , "none"         , "none")
+call s:X("Underlined"   , s:blue         , "none"         , "underline")
+
 
 hi!	link Macro			PreProc
 hi! link Boolean		Constant
@@ -77,7 +97,6 @@ hi! link IncSearch		Search
 hi! link Keyword		Identifier
 hi! link Keyword		Identifier
 hi! link Label			Statement
-hi! link LineNr			Comment
 hi! link MatchParen		Statement
 hi! link MoreMsg		Identifier
 hi! link NonText		Comment

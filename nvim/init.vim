@@ -1,10 +1,11 @@
-" =======================================================================
+" =============================================================================
 "                       NeoVim Configuration
-" =======================================================================
+" =============================================================================
 
 source <sfile>:h/functions.vim
 
-" ================== Plugins ============================================
+
+" ================== Plugins ==================================================
 
 call plug#begin('~/.vim/plugged')
 
@@ -21,29 +22,34 @@ Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki'
 Plug 'janko-m/vim-test'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-projectionist'
 
 " Vimfu
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
+Plug 'tpope/vim-abolish'
 
 " Syntax & UI
-Plug 'gillyb/stable-windows'
 Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 
+" Temporary
+Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
+
 call plug#end()
 
-" ================== Plugin Setup ============================================
+
+" ================== Plugin Setup =============================================
 
 " let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 let g:fzf_layout = { 'down': '~25%' }
 
-let g:jellybeans_overrides = {
-\    'b2ckground': { 'guibg': '121212' },
-\}
+" jellybeanset g:jellybeans_overrides = {
+" \    'b2ckground': { 'guibg': '121212' },
+" \}
 
 let test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 15"
@@ -52,13 +58,14 @@ let test#php#phpunit#executable = './vendor/bin/phpunit'
 let g:UltiSnipsEditSplit = 'vertical' 
 
 let g:lightline = {
-    \'colorscheme': 'jellybeans',
+    \'colorscheme': 'google',
     \'active': {      
     \  'left': [ [ 'paste'],
-    \            [ 'gitbranch', 'readonly', 'filename', 'modified' ],
+    \            [ 'gitbranch' ],
+    \            [ 'filename', 'modified', 'readonly' ],
     \            [ 'cocstatus' ]],
     \  'right': [[ 'percent' ],
-    \            [ 'fileformat'] ],
+    \            [ 'filetype'] ],
     \},
     \'component_function': {
     \  'gitbranch': 'fugitive#head',
@@ -85,24 +92,28 @@ let g:coc_global_extensions = [
     \'coc-css',
 \]
 
+" Temporary
+let g:vim_be_good_floating = 0
 
-" ================== General Config =========================================
+
+" ================== General Config ===========================================
 
 set nowrap
 set number
 set relativenumber
-set cursorline
+set nocursorline
 set colorcolumn=80
 set noshowmode
 
 set termguicolors
-colorscheme jellybeans
-set bg=dark
+colorscheme google
+"set background=light
 
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set expandtab
+set ignorecase
 set smartcase
 set smartindent
 
@@ -128,7 +139,7 @@ set updatetime=50
 set shortmess+=c
 set signcolumn=yes
 
-" ================== Key bindings     =========================================
+" ================== Key bindings =============================================
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
@@ -157,7 +168,8 @@ nnoremap <leader>te :tabe<cr>
 nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
 inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
 cmap w!! w :term sudo tee > /dev/null %
-noremap <C-o> <C-\><C-n>
+tnoremap <C-o> <C-\><C-n>
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
 " Coc Maps
 " Use <c-space> to trigger completion.
@@ -169,14 +181,28 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
-" ================== Abbreviations =========================================
+
+" ================== Abbreviations ============================================
 
 cabbrev h vertical help
+cabbrev PI PlugInstall
+cabbrev PC PlugClean
+cabbrev CE vsplit ~/dotfiles/nvim/colors/google.vim
 iabbrev <expr> dts strftime("%c (MVT)")
 iabbrev <expr> ds strftime("%Y-%m-%d")
 
 
-" ================== Auto commands =========================================
+" ================== Commands =================================================
+command! -bang Files
+    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden', 'options': '--inline-info'}, <bang>0))
+
+command! -bang Dirs
+    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden', 'options': '--inline-info'}, <bang>0))
+
+command! -nargs=* T 10split | startinsert | terminal <args>
+
+
+" ================== Auto commands ============================================
 augroup general
     autocmd!
     autocmd BufNewFile,BufRead *.html,*.js,*.vue,*.blade.php,*.md setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -223,17 +249,9 @@ endfunction
 
 autocmd! FileType dirvish call AutoCmdDirvish()
 function! AutoCmdDirvish()
-    setlocal nonumber
+    setlocal nonumber norelativenumber
+    setlocal colorcolumn=
     nnoremap <buffer> % :edit %
     nnoremap <buffer> d :!mkdir %
     nnoremap <buffer> gq :q<cr>
 endfunction
-
-" ================== Commands ===========================================
-command! -bang Files
-    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden', 'options': '--inline-info'}, <bang>0))
-
-command! -bang Dirs
-    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden', 'options': '--inline-info'}, <bang>0))
-
-command! -nargs=* T 10split | startinsert | terminal <args>
