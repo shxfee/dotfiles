@@ -48,7 +48,7 @@ call plug#end()
 let g:fzf_layout = { 'down': '~25%' }
 
 " jellybeanset g:jellybeans_overrides = {
-" \    'b2ckground': { 'guibg': '121212' },
+" \    'background': { 'guibg': '121212' },
 " \}
 
 let test#strategy = 'neovim'
