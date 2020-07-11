@@ -136,7 +136,7 @@ set shell=/usr/bin/fish
 set hidden
 set cmdheight=2
 set updatetime=50
-set shortmess+=c
+set shortmess+=cI
 set signcolumn=yes
 
 " ================== Key bindings =============================================
