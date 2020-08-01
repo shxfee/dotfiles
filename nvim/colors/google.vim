@@ -1,7 +1,7 @@
 " description:	color scheme based on google's
 "      author:	shxfee@gmail.com
 "     license:	gpl 3+
-"     version:	0.1 (2020-07-09)
+"     version:	0.1 (2020-07-13)
 
 set background=light
 
@@ -34,7 +34,7 @@ let s:green        = '#006633'
 let s:green_light  = '#46aa64'
 let s:gray_dark    = '#505050'
 let s:gray         = '#aaaaaa'
-let s:gray_light   = '#d6d6d6'
+let s:gray_light   = '#ebebeb'
 let s:gray_lighter = '#fafafa'
 let s:red          = '#d96666'
 let s:white        = '#ffffff'
@@ -43,20 +43,22 @@ let s:yellow       = '#ffffb5'
 " UI
 call s:X("NonText"      , s:gray         , s:white        , "none")
 call s:X("Normal"       , s:black        , s:white        , "none")
-call s:X("ColorColumn"  , "none",  s:gray_lighter , "none")
-call s:X("Cursor"       , s:white        , s:blue        , "none")
+call s:X("ColorColumn"  , "none"         , s:gray_lighter , "none")
+call s:X("Cursor"       , s:white        , s:blue         , "none")
 call s:X("CursorLine"   , "none"         , s:gray_lighter , "none")
 call s:X("Folded"       , s:black        , s:gray_light   , "none")
 call s:X("Conceal"      , s:gray         , "none"         , "underline")
 call s:X("LineNr"       , s:gray         , s:white        , "none")
-call s:X("CursorLineNr" , s:gray_dark    , ""             , "none")
-call s:X("VertSplit"    , s:gray         , s:gray_light   , "none")
+call s:X("CursorLineNr" , s:gray_dark    , "none"         , "none")
+call s:X("VertSplit"    , s:gray         , s:white        , "none")
 call s:X("StatusLine"   , s:white        , s:gray         , "none")
 call s:X("StatusLineNC" , s:gray         , s:gray         , "none")
 call s:X("Visual"       , s:white        , s:blue         , "none")
-call s:X("Pmenu"        , s:black_light  , s:gray_light   , "none")
-call s:X("PmenuSel"     , s:black_light  , "#ebebeb"      , "none")
-call s:X("PmenuSbar"    , s:gray_light   , s:gray_light   , "none")
+call s:X("Pmenu"        , s:gray_dark    , s:gray_light   , "none")
+call s:X("PmenuSel"     , s:gray_lighter , s:gray         , "none")
+call s:X("PmenuSbar"    , s:gray_dark    , s:gray_light   , "none")
+call s:X("Search"       , s:black        , s:yellow       , "none")
+call s:X("Sneak"       , s:black        , s:yellow       , "none")
 
 " Syntax
 call s:X("Comment"      , s:gray         , "none"         , "none")
@@ -68,7 +70,6 @@ call s:X("DiffText"     , s:red          , s:yellow       , "none")
 call s:X("Identifier"   , s:blue_light   , "none"         , "none")
 call s:X("ModeMsg"      , s:white        , s:blue         , "none")
 call s:X("PreProc"      , s:green_light  , "none"         , "none")
-call s:X("Search"       , s:black        , s:yellow       , "none")
 call s:X("Special"      , s:blue_dark    , "none"         , "none")
 call s:X("Statement"    , s:blue_dark    , "none"         , "none")
 call s:X("Error"        , s:white        , s:red          , "none")

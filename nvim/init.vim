@@ -15,14 +15,16 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'wakatime/vim-wakatime'
 Plug 'SirVer/ultisnips'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki'
 Plug 'janko-m/vim-test'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-projectionist'
+Plug 'kkoomen/vim-doge'
+Plug 'wakatime/vim-wakatime'
+Plug 'tpope/vim-dadbod'
 
 " Vimfu
 Plug 'tpope/vim-surround'
@@ -30,6 +32,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-abolish'
+Plug 'justinmk/vim-sneak'
 
 " Syntax & UI
 Plug 'sheerun/vim-polyglot'
@@ -44,7 +47,6 @@ call plug#end()
 
 " ================== Plugin Setup =============================================
 
-" let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 let g:fzf_layout = { 'down': '~25%' }
 
 " jellybeanset g:jellybeans_overrides = {
@@ -57,22 +59,13 @@ let test#php#phpunit#executable = './vendor/bin/phpunit'
 
 let g:UltiSnipsEditSplit = 'vertical' 
 
-let g:lightline = {
-    \'colorscheme': 'google',
-    \'active': {      
-    \  'left': [ [ 'paste'],
-    \            [ 'gitbranch' ],
-    \            [ 'filename', 'modified', 'readonly' ],
-    \            [ 'cocstatus' ]],
-    \  'right': [[ 'percent' ],
-    \            [ 'filetype'] ],
-    \},
-    \'component_function': {
-    \  'gitbranch': 'fugitive#head',
-    \  'cocstatus': 'coc#status',
-    \  'filename': 'LightlineFilename',
-    \},
-\}
+let g:lightline = { 'active': {}, 'inactive': {}, 'component_function': {} }
+let g:lightline.colorscheme = 'google'
+let g:lightline.active.left = [['paste'], ['git'], ['filename', 'modified']]
+let g:lightline.active.right = [['percent'], ['line'], ['filetype'], ['readonly']]
+let g:lightline.inactive.left = []
+let g:lightline.component_function.git = 'fugitive#head'
+let g:lightline.component_function.filename = 'LightlineFilename'
 
 " file explorer & disable netrw
 let g:dirvish_mode=':sort ,^.*[\/],'
@@ -82,6 +75,9 @@ let g:loaded_netrwPlugin=1
 " Wiki Options
 let g:vimwiki_hl_headers=1
 let g:vimwiki_conceal_onechar_markers=0
+
+" Sneak Config
+let g:sneak#use_ic_scs = 1
 
 " CoC Config
 let g:coc_global_extensions = [
@@ -95,19 +91,24 @@ let g:coc_global_extensions = [
 " Temporary
 let g:vim_be_good_floating = 0
 
+let g:AutoPairsShortcutToggle = ''
+let g:AutoPairsMultilineClose = 0
+
+let g:doge_mapping = ''
 
 " ================== General Config ===========================================
 
 set nowrap
-set number
+set noruler
+set nonumber
 set relativenumber
 set nocursorline
 set colorcolumn=80
 set noshowmode
+set scrolloff=3
 
 set termguicolors
 colorscheme google
-"set background=light
 
 set shiftwidth=4
 set tabstop=4
@@ -121,7 +122,6 @@ set splitright
 set splitbelow
 set winminwidth=10
 set winwidth=100
-set scrolloff=8
 
 " save only fold info
 set inccommand=nosplit
@@ -138,22 +138,24 @@ set cmdheight=2
 set updatetime=50
 set shortmess+=cI
 set signcolumn=yes
+set nrformats+=alpha
 
 " ================== Key bindings =============================================
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
 " Primary leader maps
-nnoremap <leader>d :Dirs<cr>
-nnoremap <leader>f :Files<cr>
-nnoremap <leader>g :vertical Git<cr>
+nnoremap <leader>d  :Dirs<cr>
+nnoremap <leader>f  :Files<cr>
+nnoremap <leader>gg :vertical Git<cr>
 
 " Window leader maps
-nnoremap <leader>wc :only<cr>:enew<cr>
+nnoremap <leader>wc :wa<cr>:only<cr>:enew<cr>
 
 " Config leader maps
 nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
+nnoremap <leader>sb :source %<cr>
 
 " for command line completion.
 cnoremap <C-p> <up>
@@ -164,12 +166,20 @@ nnoremap <leader>ts :TestSuite<cr>
 
 nnoremap <leader>te :tabe<cr>
 
+nnoremap <leader>2 :DogeGenerate<cr>
+
 " Practical Vim
-nnoremap <silent> <C-l> :<C-u>nohlsearch<cr>
-inoremap <silent> <C-l> <esc>:<C-u>nohlsearch<cr>a
-cmap w!! w :term sudo tee > /dev/null %
+nnoremap <silent> <c-l> :<C-u>nohlsearch<cr>
+inoremap <silent> <c-l> <esc>:<C-u>nohlsearch<cr>a
+cnoremap w!! w :term sudo tee > /dev/null %
 tnoremap <C-o> <C-\><C-n>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Copy paste from system register
+vnoremap <a-y> "+y
+nnoremap <a-p> "+p
+vnoremap <a-p> "+p
+inoremap <a-p> <c-r>+
 
 " Coc Maps
 " Use <c-space> to trigger completion.
@@ -235,7 +245,6 @@ augroup END
 augroup coc_config
     autocmd!
     autocmd BufNewFile,BufRead *.css,*.html,*.blade.php let b:coc_additional_keywords = ["-"]
-    autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 
 autocmd! FileType vimwiki call AutoCmdVimWiki()
@@ -255,3 +264,44 @@ function! AutoCmdDirvish()
     nnoremap <buffer> d :!mkdir %
     nnoremap <buffer> gq :q<cr>
 endfunction
+
+
+" ================== Temporary ================================================
+nnoremap <silent> <leader>ea :call ExpandArray()<cr>
+fun! ExpandArray() abort
+    execute "normal! $F[a\<cr>\<esc>f]i\<cr>\<esc>k"
+    execute "s/,/,\r/g"
+    execute "normal! =a["
+endfun
+
+" Quickly select the text that was just pasted. This allows you to, e.g.,
+" indent it after pasting.
+noremap gV `[v`]
+
+" Hide search highlights with cr. Need to make this work by default not sure
+" yet
+nnoremap <silent> <cr> :noh<cr><cr>
+
+" Learn Vim Script the hard way
+" nnoremap <silent> <leader>q :silent execute "grep! -r " . shellescape(expand("<cWORD")) . " ."<cr>:copen<cr>
+nnoremap <leader>q :set operatorfunc=GrepOperator<cr>g@
+vnoremap <leader>q :<c-u>call GrepOperator(visualmode())<cr>
+
+function! GrepOperator(type) abort
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    silent execute 'grep! -R ' . shellescape(@@) . ' .'
+    copen
+
+    let @@ = saved_unnamed_register
+endfunction
+
+" write a function that counts characters in the current selection

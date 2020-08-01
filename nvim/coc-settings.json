@@ -5,10 +5,12 @@
     "diagnostic.hintSign": "►",
 
     "coc.preferences.formatOnSaveFiletypes": ["php"],
+    "signature.target": "echo",
 
     "suggest.floatEnable": false,
-    "suggest.maxCompleteItemCount": 20,
-    "suggest.triggerCompletionWait": 400,
+    "suggest.triggerCompletionWait": 50,
+    "suggest.minTriggerInputLength": 3,
+    "suggest.maxPreviewWidth": 50,
 
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",
