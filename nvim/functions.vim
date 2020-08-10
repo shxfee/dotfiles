@@ -108,4 +108,13 @@ command! -nargs=1 Dbd call LaravelDBDescribe(expand("<args>"))
 command! -nargs=1 Dbv call LaravelDBView(expand("<args>"))
 command! Dbl call LaravelDBTables()
 
+
+function! SetGlobalDadbodDBString() abort
+    try
+        let g:db = LaravelDBConnectionString()
+    catch
+        " Ignore errors
+    endtry
+endfunction
+
 " ================== !Laravel =================================================

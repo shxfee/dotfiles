@@ -16,7 +16,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'SirVer/ultisnips'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki'
 Plug 'janko-m/vim-test'
@@ -25,6 +24,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'kkoomen/vim-doge'
 Plug 'wakatime/vim-wakatime'
 Plug 'tpope/vim-dadbod'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Vimfu
 Plug 'tpope/vim-surround'
@@ -81,7 +81,6 @@ let g:sneak#use_ic_scs = 1
 
 " CoC Config
 let g:coc_global_extensions = [
-    \'coc-eslint',
     \'coc-json',
     \'coc-phpls',
     \'coc-tailwindcss',
@@ -132,6 +131,7 @@ set foldlevelstart=99
 set noswapfile
 
 set shell=/usr/bin/fish
+set spellfile=~/.local/share/nvim/spell/en.utf-8.add
 
 set hidden
 set cmdheight=2
@@ -157,8 +157,13 @@ nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
 nnoremap <leader>sb :source %<cr>
 
+" Projection mappings
+nnoremap <leader>pa :AV<cr>
+nnoremap <leader>p <NOP>
+
 " for command line completion.
 cnoremap <C-p> <up>
+cnoremap <C-n> <down>
 
 nnoremap <leader>tt :TestNearest<cr>
 nnoremap <leader>tf :TestFile<cr>
@@ -191,6 +196,10 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
+" Add count jumps to jump list
+nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
+nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
+
 
 " ================== Abbreviations ============================================
 
@@ -220,6 +229,7 @@ augroup general
 
     " silent create all required directories for file
     autocmd BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
+    autocmd VimEnter * silent! call SetGlobalDadbodDBString()
 augroup END
 
 augroup term_options
@@ -230,11 +240,12 @@ augroup term_options
     autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
-augroup remember_folds
+augroup restore_cursor
   autocmd!
-  let blacklist = ['fzf', '', 'dirvish', 'help']
-  autocmd BufWinLeave ?* if index(blacklist, &ft) < 0 | mkview 1
-  autocmd BufWinEnter ?* silent! loadview 1
+  autocmd BufReadPost *
+          \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+          \ |   exe "normal! g`\""
+          \ | endif
 augroup END
 
 augroup vim_plug
@@ -277,31 +288,3 @@ endfun
 " Quickly select the text that was just pasted. This allows you to, e.g.,
 " indent it after pasting.
 noremap gV `[v`]
-
-" Hide search highlights with cr. Need to make this work by default not sure
-" yet
-nnoremap <silent> <cr> :noh<cr><cr>
-
-" Learn Vim Script the hard way
-" nnoremap <silent> <leader>q :silent execute "grep! -r " . shellescape(expand("<cWORD")) . " ."<cr>:copen<cr>
-nnoremap <leader>q :set operatorfunc=GrepOperator<cr>g@
-vnoremap <leader>q :<c-u>call GrepOperator(visualmode())<cr>
-
-function! GrepOperator(type) abort
-    let saved_unnamed_register = @@
-
-    if a:type ==# 'v'
-        normal! `<v`>y
-    elseif a:type ==# 'char'
-        normal! `[v`]y
-    else
-        return
-    endif
-
-    silent execute 'grep! -R ' . shellescape(@@) . ' .'
-    copen
-
-    let @@ = saved_unnamed_register
-endfunction
-
-" write a function that counts characters in the current selection
