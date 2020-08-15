@@ -130,7 +130,8 @@ set foldminlines=0
 set foldlevelstart=99
 set noswapfile
 
-set shell=/usr/bin/fish
+"set shell=/usr/bin/fish
+let $BASH_ENV='~/.bash_aliases'
 set spellfile=~/.local/share/nvim/spell/en.utf-8.add
 
 set hidden
@@ -165,7 +166,7 @@ nnoremap <leader>p <NOP>
 cnoremap <C-p> <up>
 cnoremap <C-n> <down>
 
-nnoremap <leader>tt :TestNearest<cr>
+nnoremap <silent> <leader>tt :<c-u>call RunNearestOrLastTest()<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
 
