@@ -38,6 +38,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
+Plug 'lifepillar/vim-solarized8'
 
 " Temporary
 Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
@@ -165,7 +166,7 @@ nnoremap <leader>p <NOP>
 cnoremap <C-p> <up>
 cnoremap <C-n> <down>
 
-nnoremap <leader>tt :TestNearest<cr>
+nnoremap <silent> <leader>tt :<c-u>call RunNearestOrLastTest()<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
 

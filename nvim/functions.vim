@@ -117,4 +117,14 @@ function! SetGlobalDadbodDBString() abort
     endtry
 endfunction
 
+" Run the nearest test if in a test file
+" Otherwise run the last test
+function! RunNearestOrLastTest() abort
+    if @% =~ 'Test.*$'
+        execute "TestNearest"
+    else
+        execute "TestLast"
+    endif
+endfunction
+
 " ================== !Laravel =================================================
