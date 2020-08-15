@@ -38,6 +38,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
+Plug 'lifepillar/vim-solarized8'
 
 " Temporary
 Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
