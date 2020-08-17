@@ -205,6 +205,8 @@ nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
 
 " ================== Abbreviations ============================================
 
+cabbrev dd vertical DB describe
+cabbrev ds vertical DB show tables
 cabbrev h vertical help
 cabbrev PI PlugInstall
 cabbrev PC PlugClean
