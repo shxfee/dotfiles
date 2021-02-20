@@ -14,7 +14,6 @@
 
     "suggest.floatEnable": false,
     "suggest.triggerCompletionWait": 50,
-    "suggest.minTriggerInputLength": 2,
     "suggest.maxPreviewWidth": 50,
     "suggest.detailMaxLength": 0,
     "suggest.maxCompleteItemCount": 100

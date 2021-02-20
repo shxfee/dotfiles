@@ -4,59 +4,10 @@
 
 source <sfile>:h/functions.vim
 luafile <sfile>:h/functions.lua
-
-
-" ================== Plugins ==================================================
-
-call plug#begin('~/.vim/plugged')
-
-" IDE
-Plug 'tpope/vim-dispatch'
-
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'SirVer/ultisnips'
-Plug 'justinmk/vim-dirvish'
-Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-Plug 'janko-m/vim-test'
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-projectionist'
-Plug 'kkoomen/vim-doge'
-Plug 'wakatime/vim-wakatime'
-Plug 'tpope/vim-dadbod'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Vimfu
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'godlygeek/tabular'
-Plug 'tpope/vim-abolish'
-Plug 'justinmk/vim-sneak'
-
-" Syntax & UI
-Plug 'sheerun/vim-polyglot'
-Plug 'itchyny/lightline.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'lifepillar/vim-solarized8'
-
-call plug#end()
+luafile <sfile>:h/moving.lua
 
 
 " ================== Plugin Setup =============================================
-
-let g:fzf_layout = { 'down': '~25%' }
-
-" jellybeanset g:jellybeans_overrides = {
-" \    'background': { 'guibg': '121212' },
-" \}
-
-let test#strategy = 'neovim'
-let test#neovim#term_position = "belowright 15"
-let test#php#phpunit#executable = './vendor/bin/phpunit'
-
-let g:UltiSnipsEditSplit = 'vertical' 
 
 let g:lightline = { 'active': {}, 'inactive': {}, 'component_function': {} }
 let g:lightline.colorscheme = 'google'
@@ -66,81 +17,6 @@ let g:lightline.inactive.left = []
 let g:lightline.component_function.git = 'fugitive#head'
 let g:lightline.component_function.filename = 'LightlineFilename'
 
-" file explorer & disable netrw
-let g:dirvish_mode=':sort ,^.*[\/],'
-let g:loaded_netrw=1
-let g:loaded_netrwPlugin=1
-
-" Wiki Options
-let g:vimwiki_hl_headers=1
-let g:vimwiki_conceal_onechar_markers=0
-let g:vimwiki_folding='list:quick'
-
-" Sneak Config
-let g:sneak#use_ic_scs = 1
-
-" CoC Config
-let g:coc_global_extensions = [
-    \'coc-json',
-    \'coc-phpls',
-    \'coc-tailwindcss',
-    \'coc-css',
-    \'coc-eslint',
-    \'coc-vetur',
-\]
-
-" Temporary
-let g:vim_be_good_floating = 0
-
-let g:AutoPairsShortcutToggle = ''
-let g:AutoPairsMultilineClose = 0
-
-let g:doge_mapping = ''
-
-" ================== General Config ===========================================
-
-set nowrap
-set noruler
-set nonumber
-set relativenumber
-set nocursorline
-set colorcolumn=80
-set noshowmode
-set scrolloff=3
-
-set termguicolors
-colorscheme google
-
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
-set expandtab
-set ignorecase
-set smartcase
-set smartindent
-
-set splitright
-set splitbelow
-set winminwidth=10
-set winwidth=100
-
-" save only fold info
-set inccommand=nosplit
-set viewoptions=cursor,folds
-set foldmethod=indent
-set foldminlines=0
-set foldlevelstart=99
-set noswapfile
-
-let $BASH_ENV='~/.bash_aliases'
-set spellfile=~/.local/share/nvim/spell/en.utf-8.add
-
-set hidden
-set cmdheight=2
-set updatetime=50
-set shortmess+=cI
-set signcolumn=yes
-set nrformats+=alpha
 
 " ================== Key bindings =============================================
 nnoremap <SPACE> <Nop>
@@ -207,17 +83,6 @@ nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
 " Search for visually selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-
-" ================== Abbreviations ============================================
-
-cabbrev DD DB describe
-cabbrev DS DB show tables
-cabbrev h vertical help
-cabbrev PI PlugInstall
-cabbrev PC PlugClean
-cabbrev CE vsplit ~/dotfiles/nvim/colors/google.vim
-iabbrev <expr> dts strftime("%c (MVT)")
-iabbrev <expr> ds strftime("%Y-%m-%d")
 
 
 " ================== Commands =================================================
