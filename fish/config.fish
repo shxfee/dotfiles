@@ -30,7 +30,7 @@ set BROWSER wslview
 # Start the Mysql Server and Apache Serve
 # Run also bunch stuff here in the future for starting off the Development Env
 function serve --description 'Bootstrap the dev environment'
-    sudo service php7.3-fpm start; and sudo service nginx start; and sudo service mysql start
+    sudo service php7.4-fpm start; and sudo service nginx start; and sudo service mysql start
 end
 
 set -x STARSHIP_CONFIG ~/.config/fish/starship.toml

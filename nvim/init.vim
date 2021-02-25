@@ -2,17 +2,14 @@
 "                       NeoVim Configuration
 " =============================================================================
 
-source <sfile>:h/functions.vim
-luafile <sfile>:h/functions.lua
-
 
 " ================== Plugins ==================================================
 
-call plug#begin('~/.vim/plugged')
+
+call plug#begin('~/.local/share/nvim/site/plug')
 
 " IDE
-Plug 'tpope/vim-dispatch'
-
+Plug 'rafcamlet/nvim-luapad'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -21,11 +18,13 @@ Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 Plug 'janko-m/vim-test'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-projectionist'
 Plug 'kkoomen/vim-doge'
 Plug 'wakatime/vim-wakatime'
 Plug 'tpope/vim-dadbod'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'rafcamlet/coc-nvim-lua'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 
 " Vimfu
 Plug 'tpope/vim-surround'
@@ -36,8 +35,8 @@ Plug 'tpope/vim-abolish'
 Plug 'justinmk/vim-sneak'
 
 " Syntax & UI
+Plug 'glepnir/galaxyline.nvim'
 Plug 'sheerun/vim-polyglot'
-Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'lifepillar/vim-solarized8'
 
@@ -48,9 +47,7 @@ call plug#end()
 
 let g:fzf_layout = { 'down': '~25%' }
 
-" jellybeanset g:jellybeans_overrides = {
-" \    'background': { 'guibg': '121212' },
-" \}
+let g:jellybeans_use_gui_italics = 0
 
 let test#strategy = 'neovim'
 let test#neovim#term_position = "belowright 15"
@@ -59,12 +56,12 @@ let test#php#phpunit#executable = './vendor/bin/phpunit'
 let g:UltiSnipsEditSplit = 'vertical' 
 
 let g:lightline = { 'active': {}, 'inactive': {}, 'component_function': {} }
-let g:lightline.colorscheme = 'google'
+let g:lightline.colorscheme = 'jellybeans'
 let g:lightline.active.left = [['paste'], ['git'], ['filename', 'modified']]
 let g:lightline.active.right = [['percent'], ['line'], ['filetype'], ['readonly']]
 let g:lightline.inactive.left = []
 let g:lightline.component_function.git = 'fugitive#head'
-let g:lightline.component_function.filename = 'LightlineFilename'
+"let g:lightline.component_function.filename = luaeval("require('my.utils.get_git_file_name')")
 
 " file explorer & disable netrw
 let g:dirvish_mode=':sort ,^.*[\/],'
@@ -101,7 +98,7 @@ let g:doge_mapping = ''
 
 set nowrap
 set noruler
-set nonumber
+set number
 set relativenumber
 set nocursorline
 set colorcolumn=80
@@ -109,7 +106,7 @@ set noshowmode
 set scrolloff=3
 
 set termguicolors
-colorscheme google
+colorscheme jellybeans
 
 set shiftwidth=4
 set tabstop=4
@@ -154,6 +151,10 @@ nnoremap <leader>gg :vertical Git<cr>
 " Window leader maps
 nnoremap <leader>wc :wa<cr>:only<cr>:enew<cr>
 
+" Open leader maps
+nnoremap <silent> <leader>od :lua require('my.laravel').open_adminer()<cr>
+nnoremap <silent> <leader>oa :lua require('my.laravel').open_app()<cr>
+
 " Config leader maps
 nnoremap <leader>se :vsplit $MYVIMRC<cr>
 nnoremap <leader>so :source $MYVIMRC<cr>
@@ -167,9 +168,12 @@ nnoremap <leader>p <NOP>
 cnoremap <C-p> <up>
 cnoremap <C-n> <down>
 
-nnoremap <silent> <leader>tt :<c-u>call v:lua.runNearestOrLastTest()<cr>
+nnoremap <silent> <leader>tt :<c-u>lua require('my.utils').run_nearest_or_last_test()<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
+
+nnoremap <leader>rl <Plug>(Luadev-RunLine)
+vnoremap <leader>rs <Plug>(Luadev-Run)
 
 nnoremap <leader>te :tabe<cr>
 
@@ -198,7 +202,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
-nnoremap <silent> K :call v:lua.openDocumentation()<CR>
+nnoremap <silent> K :lua require('my.utils').open_documentation()<CR>
 
 " Add count jumps to jump list
 nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
@@ -238,14 +242,13 @@ augroup general
 
     " silent create all required directories for file
     autocmd BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
-    autocmd VimEnter * silent! call SetGlobalDadbodDBString()
+    autocmd VimEnter * silent! lua require('my.laravel').set_db_connection_string()
 augroup END
 
 
 augroup reload_config
     autocmd!
     autocmd BufWritePost init.vim  source $MYVIMRC
-    autocmd BufWritePost init.vim  call lightline#colorscheme()
 augroup END
 
 
@@ -296,6 +299,7 @@ function! AutoCmdDirvish()
     setlocal colorcolumn=
     nnoremap <buffer> % :edit %
     nnoremap <buffer> d :!mkdir %
+    nnoremap <buffer> m :!mv getline('.')
     nnoremap <buffer> gq :q<cr>
 endfunction
 
@@ -322,3 +326,7 @@ fun! CopyFoldHeader() range
 
     let @+ = @z
 endfun
+
+" Migrating my config over to lua
+" Requiring it as the last item to ensure I am able to override
+luafile ~/.config/nvim/lua/my/init.lua
