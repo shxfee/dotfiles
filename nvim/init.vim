@@ -13,6 +13,7 @@ Plug 'rafcamlet/nvim-luapad'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
 Plug 'SirVer/ultisnips'
 Plug 'justinmk/vim-dirvish'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
@@ -21,10 +22,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'kkoomen/vim-doge'
 Plug 'wakatime/vim-wakatime'
 Plug 'tpope/vim-dadbod'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'rafcamlet/coc-nvim-lua'
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rafcamlet/coc-nvim-lua'
 
 " Vimfu
 Plug 'tpope/vim-surround'
@@ -35,17 +34,15 @@ Plug 'tpope/vim-abolish'
 Plug 'justinmk/vim-sneak'
 
 " Syntax & UI
-Plug 'glepnir/galaxyline.nvim'
 Plug 'sheerun/vim-polyglot'
 Plug 'nanotech/jellybeans.vim'
 Plug 'lifepillar/vim-solarized8'
+Plug 'itchyny/lightline.vim'
 
 call plug#end()
 
 
 " ================== Plugin Setup =============================================
-
-let g:fzf_layout = { 'down': '~25%' }
 
 let g:jellybeans_use_gui_italics = 0
 
@@ -61,7 +58,7 @@ let g:lightline.active.left = [['paste'], ['git'], ['filename', 'modified']]
 let g:lightline.active.right = [['percent'], ['line'], ['filetype'], ['readonly']]
 let g:lightline.inactive.left = []
 let g:lightline.component_function.git = 'fugitive#head'
-"let g:lightline.component_function.filename = luaeval("require('my.utils.get_git_file_name')")
+let g:lightline.component_function.filename = 'LightlineFilename'
 
 " file explorer & disable netrw
 let g:dirvish_mode=':sort ,^.*[\/],'
@@ -138,14 +135,19 @@ set updatetime=50
 set shortmess+=cI
 set signcolumn=yes
 set nrformats+=alpha
+set completeopt=menuone,noinsert,noselect
 
 " ================== Key bindings =============================================
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
 " Primary leader maps
-nnoremap <leader>d  :Dirs<cr>
-nnoremap <leader>f  :Files<cr>
+nnoremap <leader>fd  :Dirs<cr>
+nnoremap <leader>ff  :Files<cr>
+nnoremap <leader>fg  :Ag<cr>
+nnoremap <leader>fh  :Helptags<cr>
+nnoremap <leader>fc  :Commits<cr>
+
 nnoremap <leader>gg :vertical Git<cr>
 
 " Window leader maps
@@ -225,11 +227,18 @@ iabbrev <expr> ds strftime("%Y-%m-%d")
 
 
 " ================== Commands =================================================
+" I have gotten used to using ctrl-k/j to navigate
+" however i feel its better to be consistent and use ctrl-n/p instead. so
+" binding them to ignore
+
+let s:fzf_opts = ['--info=inline', '--prompt=>', '--bind=ctrl-j:ignore,ctrl-k:ignore']
+
 command! -bang Files
-    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden', 'options': '--inline-info'}, <bang>0))
+    \ call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden --exclude .git', 'options': s:fzf_opts}, <bang>0))
 
 command! -bang Dirs
-    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden', 'options': '--inline-info'}, <bang>0))
+    \ call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden --exclude .git', 'options': s:fzf_opts}, <bang>0))
+
 
 command! -nargs=* T 10split | startinsert | terminal <args>
 
@@ -248,15 +257,14 @@ augroup END
 
 augroup reload_config
     autocmd!
-    autocmd BufWritePost init.vim  source $MYVIMRC
+    autocmd BufWritePost init.vim silent! lua require('my.utils').after_config_update()
 augroup END
 
 
 augroup term_options
     autocmd!
-    autocmd FileType fzf set laststatus=0 signcolumn=no
-      \| autocmd BufLeave <buffer> set laststatus=2 signcolumn=yes
-
+    autocmd FileType fzf map <c-j> <nop>
+    autocmd FileType fzf map <c-k> <nop>
     autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
@@ -326,6 +334,16 @@ fun! CopyFoldHeader() range
 
     let @+ = @z
 endfun
+
+" Generate a filename from project root for lightline
+function! LightlineFilename() abort
+    let root = fnamemodify(get(b:, 'git_dir'), ':h')
+    let path = expand('%:p')
+    if path[:len(root)-1] ==# root
+        return path[len(root)+1:]
+    endif
+    return expand('%')
+endfunction
 
 " Migrating my config over to lua
 " Requiring it as the last item to ensure I am able to override
