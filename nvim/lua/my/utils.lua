@@ -36,7 +36,7 @@ end
 -- If filetype is vim or help search vim help
 -- Otherwise execute CocAction
 function M.open_documentation()
-    if vim.tbl_contains({'vim', 'help'}, vim.bo.filetype) then
+    if vim.tbl_contains({'vim', 'help', 'lua'}, vim.bo.filetype) then
         vim.cmd('help ' .. fn.expand('<cexpr>'))
     else
         vim.cmd [[ call CocAction('doHover') ]]

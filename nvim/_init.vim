@@ -32,6 +32,7 @@ Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-abolish'
 Plug 'justinmk/vim-sneak'
+Plug 'takac/vim-hardtime'
 
 " Syntax & UI
 Plug 'sheerun/vim-polyglot'
