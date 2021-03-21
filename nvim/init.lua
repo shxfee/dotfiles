@@ -15,8 +15,10 @@ require('packer').startup(function()
     -- IDE
     use {'wbthomason/packer.nvim', opt = true}
     use 'tpope/vim-fugitive'
-    use {'junegunn/fzf',  run = function() vim.fn['fzf#install']() end }
-    use 'junegunn/fzf.vim'
+    use 'nvim-lua/popup.nvim'
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-telescope/telescope.nvim'
+    use 'nvim-telescope/telescope-fzy-native.nvim'
 
     use 'SirVer/ultisnips'
     use 'justinmk/vim-dirvish'
@@ -79,6 +81,13 @@ g['AutoPairsMultilineClose'] = 0
 g['hardtime_maxcount'] = 2
 g['hardtime_default_on'] = true
 g['hardtime_allow_different_key'] = true
+g['list_of_normal_keys'] = {"h", "j", "k", "l"}
+g['list_of_visual_keys'] = {"h", "j", "k", "l"}
+g['list_of_insert_keys'] = {"<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"}
+g['list_of_disabled_keys'] = {}
+
+-- telescope
+require('telescope').load_extension('fzy_native')
 
 
 ------------------------------ OPTIONS ----------------------------------------
@@ -86,53 +95,52 @@ g['hardtime_allow_different_key'] = true
 -- ref: https://github.com/neovim/neovim/pull/13479
 local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
 
-local function opt(conf)
-    local scope, key, value = unpack(conf)
+local function opt(scope, key, value)
     scopes[scope][key] = value
     if scope ~= 'o' then scopes['o'][key] = value end
 end
 
 cmd [[ colorscheme jellybeans ]]
-opt{'w', 'wrap', false}
-opt{'w', 'number', true}
-opt{'w', 'relativenumber', true}
-opt{'w', 'colorcolumn', '80'}
-opt{'o',  'scrolloff', 3}
-opt{'o',  'termguicolors', true}
+opt('w', 'wrap', false)
+opt('w', 'number', true)
+opt('w', 'relativenumber', true)
+opt('w', 'colorcolumn', '80')
+opt('o',  'scrolloff', 3)
+opt('o',  'termguicolors', true)
 
-opt{'b', 'smartindent', true}
-opt{'b', 'shiftwidth', 4}
-opt{'b', 'tabstop', 4}
-opt{'b', 'softtabstop', 4}
-opt{'b', 'expandtab', true}
-opt{'o', 'ignorecase', true}
-opt{'o', 'smartcase', true}
+opt('b', 'smartindent', true)
+opt('b', 'shiftwidth', 4)
+opt('b', 'tabstop', 4)
+opt('b', 'softtabstop', 4)
+opt('b', 'expandtab', true)
+opt('o', 'ignorecase', true)
+opt('o', 'smartcase', true)
 
-opt{'o', 'winminwidth', 10}
-opt{'o', 'winwidth', 100}
-opt{'o', 'inccommand', 'nosplit'}
-opt{'o', 'viewoptions', 'cursor,folds'}
+opt('o', 'winminwidth', 10)
+opt('o', 'winwidth', 100)
+opt('o', 'inccommand', 'nosplit')
+opt('o', 'viewoptions', 'cursor,folds')
 
-opt{'o', 'hidden', true}
-opt{'o', 'cmdheight', 2}
-opt{'o', 'updatetime', 200}
-opt{'o', 'shortmess', vim.o.shortmess .. 'cI'}
-opt{'o', 'completeopt', 'menuone,noinsert,noselect'}
-opt{'w', 'signcolumn', 'yes:1'}
-opt{'b', 'nrformats', 'alpha'}
-opt{'b', 'spellfile', '~/.local/share/nvim/spell/en.utf-8.add'}
+opt('o', 'hidden', true)
+opt('o', 'cmdheight', 2)
+opt('o', 'updatetime', 200)
+opt('o', 'shortmess', vim.o.shortmess .. 'cI')
+opt('o', 'completeopt', 'menuone,noinsert,noselect')
+opt('w', 'signcolumn', 'yes:1')
+opt('b', 'nrformats', 'alpha')
+opt('b', 'spellfile', '~/.local/share/nvim/spell/en.utf-8.add')
 
 
 ------------------------------ MAPPINGS ---------------------------------------
 local function map(mode, lhs, rhs, opts)
     local options = {noremap = true}
     if opts then options = vim.tbl_extend('force', options, opts) end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 g['mapleader'] = " "
-map('n', '<leader>fd', ':Dirs<cr>')
-map('n', '<leader>ff', ':Files<cr>')
+map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{}<cr>')
+map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}}<cr>')
 map('n', '<leader>fg', ':Ag<cr>')
 map('n', '<leader>fh', ':Helptags<cr>')
 map('n', '<leader>fc', ':Commits<cr>')
@@ -174,7 +182,7 @@ map('n', 'K', ':lua require("my.utils").open_documentation()<CR>', {silent = tru
 
 -- Figure this shit out later
 -- Include (count)k/j in jump list
-vim.api.nvim_exec([[
+api.nvim_exec([[
     nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
     nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
     vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -182,15 +190,15 @@ vim.api.nvim_exec([[
 
 
 -- Commands
-vim.api.nvim_exec([[
-    let fzf_opts = ['--info=inline', '--prompt=>', '--bind=ctrl-j:ignore,ctrl-k:ignore']
-    command! -bang Files call fzf#run(fzf#wrap('my-files', {'source': 'fd --type f --hidden --exclude .git', 'options': fzf_opts}, <bang>0))
-    command! -bang Dirs call fzf#run(fzf#wrap('my-dirs', {'source': 'fd --type d --hidden --exclude .git', 'options': fzf_opts}, <bang>0))
+api.nvim_exec([[
     command! -nargs=* T 10split | startinsert | terminal <args>
 ]], false)
 
 
 ------------------------------ COMMANDS ---------------------------------------
+-- Better API for commands and auto commands is being worked on.
+-- ref: https://github.com/neovim/neovim/pull/11613
+-- ref: https://github.com/neovim/neovim/pull/12378
 cmd [[ augroup my_commands | autocmd! ]]
 vim.tbl_map(function(c) cmd(string.format('autocmd %s', c)) end, {
     -- General
@@ -198,7 +206,7 @@ vim.tbl_map(function(c) cmd(string.format('autocmd %s', c)) end, {
     'BufWritePost init.lua nested luafile $MYVIMRC',
     'BufWritePost init.lua PackerCompile',
     'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
-    'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 200}',
+    'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 300}',
     -- Narrow indent
     'FileType html,js,vue,blade,vimwiki setlocal shiftwidth=2 tabstop=2 softtabstop=2',
     'FileType css,html,blade,vue let b:coc_additional_keywords = ["-"]',
@@ -212,14 +220,14 @@ vim.tbl_map(function(c) cmd(string.format('autocmd %s', c)) end, {
     'FileType vimwiki let b:coc_suggest_disable=1',
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
-    'FileType dirvish nnoremap <buffer> d :!mkdir %',
 })
 cmd [[ augroup end ]]
 
 
+------------------------------ TEMP -------------------------------------------
 -- Figure this shit out yo!
 -- TODO extract this function to lua
-vim.api.nvim_exec([[
+api.nvim_exec([[
     vnoremap zy :call CopyFoldHeader()<cr>
     fun! CopyFoldHeader() range
     let @z = ''

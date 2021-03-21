@@ -44,14 +44,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/coc.nvim"
   },
-  fzf = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/fzf"
-  },
-  ["fzf.vim"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/fzf.vim"
-  },
   ["jellybeans.vim"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/jellybeans.vim"
@@ -65,9 +57,25 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/opt/packer.nvim"
   },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/plenary.nvim"
+  },
+  ["popup.nvim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/popup.nvim"
+  },
   tabular = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/tabular"
+  },
+  ["telescope-fzy-native.nvim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/telescope-fzy-native.nvim"
+  },
+  ["telescope.nvim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
   ultisnips = {
     loaded = true,
