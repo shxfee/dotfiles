@@ -48,9 +48,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/jellybeans.vim"
   },
-  ["lightline.vim"] = {
+  ["oceanic-next"] = {
     loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/lightline.vim"
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/oceanic-next"
   },
   ["packer.nvim"] = {
     loaded = false,

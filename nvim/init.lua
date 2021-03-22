@@ -14,12 +14,12 @@ local use = require('packer').use
 require('packer').startup(function()
     -- IDE
     use {'wbthomason/packer.nvim', opt = true}
-    use 'tpope/vim-fugitive'
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
 
+    use 'tpope/vim-fugitive'
     use 'SirVer/ultisnips'
     use 'justinmk/vim-dirvish'
     use {'vimwiki/vimwiki',  branch = 'dev'}
@@ -42,7 +42,7 @@ require('packer').startup(function()
     -- UI
     use 'sheerun/vim-polyglot'
     use 'nanotech/jellybeans.vim'
-    use 'itchyny/lightline.vim'
+    use 'mhartington/oceanic-next'
 end)
 
 
@@ -54,15 +54,6 @@ g['test#neovim#term_position'] = 'belowright 15'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['UltiSnipsEditSplit'] = 'vertical'
-
-g['lightline'] = {
-    colorscheme = 'jellybeans',
-    active = {
-        left = { {'paste'}, {'gitbranch'}, {'filename', 'modified'} },
-        right = { {'percent'}, {'filetype'}, {'readonly'} },
-    },
-    component_function = { gitbranch = 'fugitive#head' }
-}
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
 g['loaded_netrw'] = 1
@@ -100,13 +91,16 @@ local function opt(scope, key, value)
     if scope ~= 'o' then scopes['o'][key] = value end
 end
 
-cmd [[ colorscheme jellybeans ]]
+cmd [[ colorscheme OceanicNext ]]
+-- cmd [[ colorscheme jellybeans ]]
+
 opt('w', 'wrap', false)
 opt('w', 'number', true)
 opt('w', 'relativenumber', true)
 opt('w', 'colorcolumn', '80')
 opt('o',  'scrolloff', 3)
 opt('o',  'termguicolors', true)
+opt('o',  'showmode', false)
 
 opt('b', 'smartindent', true)
 opt('b', 'shiftwidth', 4)
@@ -139,11 +133,10 @@ local function map(mode, lhs, rhs, opts)
 end
 
 g['mapleader'] = " "
-map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{}<cr>')
-map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}}<cr>')
-map('n', '<leader>fg', ':Ag<cr>')
-map('n', '<leader>fh', ':Helptags<cr>')
-map('n', '<leader>fc', ':Commits<cr>')
+map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{}<cr>', {silent=true})
+map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}}<cr>', {silent=true})
+map('n', '<leader>fp', ':lua require("telescope.builtin").planets{}<cr>', {silent=true})
+map('n', '<leader>fc', ':lua require("telescope.builtin").colorscheme{}<cr>', {silent=true})
 
 map('n', '<leader>gg', ':vertical Git<cr>')
 map('n', '<leader>wc', ':wa<cr>:only<cr>:enew<cr>')
@@ -155,7 +148,7 @@ map('n', '<leader>so', ':luafile $MYVIMRC<cr>')
 map('c', '<c-p>', '<up>')
 map('c', '<c-n>', '<down>')
 
-map('n', '<leader>tt', ':<c-u>lua require("my.utils").run_nearest_or_last_test()<cr>')
+map('n', '<leader>tt', ':lua require("my.utils").run_nearest_or_last_test()<cr>', {silent=true})
 map('n', '<leader>tf', ':TestFile<cr>')
 map('n', '<leader>ts', ':TestSuite<cr>')
 
@@ -190,9 +183,8 @@ api.nvim_exec([[
 
 
 -- Commands
-api.nvim_exec([[
-    command! -nargs=* T 10split | startinsert | terminal <args>
-]], false)
+api.nvim_exec([[ command! -nargs=* T 10split | startinsert | terminal <args> ]], false)
+
 
 
 ------------------------------ COMMANDS ---------------------------------------
@@ -241,4 +233,44 @@ api.nvim_exec([[
 
     let @+ = @z
     endfun
+]], false)
+
+
+-- Attempt no 69 to create my own statusline
+api.nvim_exec([[
+    fun! MyStatusLine() abort
+        return luaeval('my_statusline()')
+    endfun]]
+, false)
+
+opt('o', 'statusline', '%!MyStatusLine()')
+
+function my_statusline()
+    local branch = fn.FugitiveHead()
+    local icon = ''
+    local icon_branch = ''
+
+    if branch and #branch > 0 then
+        icon_branch = ' ' .. icon .. ' ' .. branch
+    end
+
+    local stl = {
+        icon_branch,
+        '  %f',
+        ' %m',
+        '%=',
+        '%{&filetype} ',
+        '%p%% ',
+    }
+
+    return table.concat(stl)
+end
+
+api.nvim_exec([[
+    augroup ColorSchemeOverrides
+        autocmd!
+        autocmd ColorScheme * hi StatusLine guibg=#d8dee9 guifg=#343d46
+        autocmd ColorScheme * hi StatusLineNC guibg=#65737e guifg=#343d46
+        autocmd ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9
+    augroup END
 ]], false)

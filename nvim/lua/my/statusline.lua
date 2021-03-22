@@ -36,3 +36,29 @@ local statusline = {
 }
 
 vim.o.statusline = table.concat(statusline)
+
+
+-- Temporary building status line attempt 2
+
+function status_line()
+    local branch = fn.FugitiveHead()
+    local icon = ''
+    local icon_branch = ''
+
+    if branch then
+        icon_branch = ' ' .. icon .. ' ' .. branch
+    end
+
+    local stl = {
+        icon_branch,
+        '  %f',
+        '%m',
+        '%=',
+        '%l,%c ',
+        '%{&filetype} ',
+    }
+
+    return  table.concat(stl)
+end
+
+opt('o', 'statusline', status_line())

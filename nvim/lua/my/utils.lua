@@ -51,9 +51,4 @@ function M.print_syn_group()
     print(fn.synIDattr(s, 'name') .. ' -> ' .. fn.synIDattr(fn.synIDtrans(s), 'name'))
 end
 
-
-function M.after_config_update()
-    vim.cmd [[ nested source $MYVIMRC ]]
-end
-
 return M
