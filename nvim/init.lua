@@ -50,7 +50,7 @@ end)
 g['jellybeans_use_gui_italics'] = 0
 
 g['test#strategy'] = 'neovim'
-g['test#neovim#term_position'] = 'belowright 15'
+g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['UltiSnipsEditSplit'] = 'vertical'
@@ -79,6 +79,21 @@ g['list_of_disabled_keys'] = {}
 
 -- telescope
 require('telescope').load_extension('fzy_native')
+
+
+------------------------------ STATUSLINES ------------------------------------
+-- Attempt no 69 to create my own statusline
+function my_statusline()
+    local branch = fn.FugitiveHead()
+
+    if branch and #branch > 0 then
+        branch = '  '..branch
+    end 
+
+    return branch..'  %f %m%= %{&filetype} %p%% '
+end
+
+cmd[[ set statusline=%!luaeval('my_statusline()') ]]
 
 
 ------------------------------ OPTIONS ----------------------------------------
@@ -111,7 +126,7 @@ opt('o', 'ignorecase', true)
 opt('o', 'smartcase', true)
 
 opt('o', 'winminwidth', 10)
-opt('o', 'winwidth', 100)
+opt('o', 'winwidth', 120)
 opt('o', 'inccommand', 'nosplit')
 opt('o', 'viewoptions', 'cursor,folds')
 
@@ -183,16 +198,20 @@ api.nvim_exec([[
 
 
 -- Commands
-api.nvim_exec([[ command! -nargs=* T 10split | startinsert | terminal <args> ]], false)
-
+api.nvim_exec([[ command! -nargs=* T split | startinsert | terminal <args> ]], false)
 
 
 ------------------------------ COMMANDS ---------------------------------------
 -- Better API for commands and auto commands is being worked on.
 -- ref: https://github.com/neovim/neovim/pull/11613
 -- ref: https://github.com/neovim/neovim/pull/12378
-cmd [[ augroup my_commands | autocmd! ]]
-vim.tbl_map(function(c) cmd(string.format('autocmd %s', c)) end, {
+function augroup(name, definitions)
+    cmd('augroup '..name..' | autocmd!')
+        vim.tbl_map(function(c) cmd('autocmd '..c) end, definitions)
+    cmd'augroup END'
+end
+
+augroup('my_commands', {
     -- General
     'TermOpen * setlocal nonumber norelativenumber',
     'BufWritePost init.lua nested luafile $MYVIMRC',
@@ -208,12 +227,17 @@ vim.tbl_map(function(c) cmd(string.format('autocmd %s', c)) end, {
     'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
     'FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel',
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
-    'FileType vimwiki setlocal spell wrap linebreak breakindent breakindentopt=shift:0,min:80',
+    'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
 })
-cmd [[ augroup end ]]
+
+augroup('colorscheme_overrides', {
+    'ColorScheme * hi StatusLine guibg=#d8dee9 guifg=#343d46',
+    'ColorScheme * hi StatusLineNC guibg=#65737e guifg=#343d46',
+    'ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9',
+})
 
 
 ------------------------------ TEMP -------------------------------------------
@@ -233,44 +257,4 @@ api.nvim_exec([[
 
     let @+ = @z
     endfun
-]], false)
-
-
--- Attempt no 69 to create my own statusline
-api.nvim_exec([[
-    fun! MyStatusLine() abort
-        return luaeval('my_statusline()')
-    endfun]]
-, false)
-
-opt('o', 'statusline', '%!MyStatusLine()')
-
-function my_statusline()
-    local branch = fn.FugitiveHead()
-    local icon = ''
-    local icon_branch = ''
-
-    if branch and #branch > 0 then
-        icon_branch = ' ' .. icon .. ' ' .. branch
-    end
-
-    local stl = {
-        icon_branch,
-        '  %f',
-        ' %m',
-        '%=',
-        '%{&filetype} ',
-        '%p%% ',
-    }
-
-    return table.concat(stl)
-end
-
-api.nvim_exec([[
-    augroup ColorSchemeOverrides
-        autocmd!
-        autocmd ColorScheme * hi StatusLine guibg=#d8dee9 guifg=#343d46
-        autocmd ColorScheme * hi StatusLineNC guibg=#65737e guifg=#343d46
-        autocmd ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9
-    augroup END
 ]], false)
