@@ -48,6 +48,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/jellybeans.vim"
   },
+  ["nvim-treesitter"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
+  },
   ["oceanic-next"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/oceanic-next"

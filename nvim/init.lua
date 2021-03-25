@@ -18,6 +18,7 @@ require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
+    use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate'}
 
     use 'tpope/vim-fugitive'
     use 'SirVer/ultisnips'
@@ -54,6 +55,7 @@ g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['UltiSnipsEditSplit'] = 'vertical'
+g['UltiSnipsExpandTrigger'] = '<c-j>'
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
 g['loaded_netrw'] = 1
@@ -68,32 +70,50 @@ g['coc_global_extensions'] = { 'coc-json', 'coc-phpls', 'coc-tailwindcss', 'coc-
 g['AutoPairsShortcutToggle'] = ''
 g['AutoPairsMultilineClose'] = 0
 
--- Lets kick some bad habits
+-- kicking some bad habits
 g['hardtime_maxcount'] = 2
 g['hardtime_default_on'] = true
 g['hardtime_allow_different_key'] = true
 g['list_of_normal_keys'] = {"h", "j", "k", "l"}
 g['list_of_visual_keys'] = {"h", "j", "k", "l"}
-g['list_of_insert_keys'] = {"<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"}
-g['list_of_disabled_keys'] = {}
 
 -- telescope
 require('telescope').load_extension('fzy_native')
+require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
 
 
------------------------------- STATUSLINES ------------------------------------
--- Attempt no 69 to create my own statusline
+------------------------------ STATUSLINE -------------------------------------
 function my_statusline()
     local branch = fn.FugitiveHead()
 
     if branch and #branch > 0 then
         branch = '  '..branch
+
+        if vim.o.paste then
+            branch = branch .. ' [PASTE]'
+        end
     end 
 
-    return branch..'  %f %m%= %{&filetype} %p%% '
+    return branch..'  %f%m%=%{&ft} %l:%c '
 end
 
 cmd[[ set statusline=%!luaeval('my_statusline()') ]]
+
+
+------------------------------ TAB LINE ---------------------------------------
+function my_tabline()
+    local s = ''
+    for i = 1, fn.tabpagenr('$') do
+        if i == fn.tabpagenr() then s = s .. '%#TabLineSel#'
+        else s = s .. '%#TabLine#' end
+        s = s .. ' Tab ' .. i
+    end
+
+    s = s .. ' %#TabLineFill#%T'
+    return s
+end
+
+cmd[[ set tabline=%!luaeval('my_tabline()') ]]
 
 
 ------------------------------ OPTIONS ----------------------------------------
@@ -130,6 +150,7 @@ opt('o', 'winwidth', 120)
 opt('o', 'inccommand', 'nosplit')
 opt('o', 'viewoptions', 'cursor,folds')
 
+opt('o', 'hlsearch', false)
 opt('o', 'hidden', true)
 opt('o', 'cmdheight', 2)
 opt('o', 'updatetime', 200)
@@ -148,10 +169,12 @@ local function map(mode, lhs, rhs, opts)
 end
 
 g['mapleader'] = " "
-map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{}<cr>', {silent=true})
-map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}}<cr>', {silent=true})
+map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{previewer=false}<cr>', {silent=true})
+map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}, previewer=false}<cr>', {silent=true})
 map('n', '<leader>fp', ':lua require("telescope.builtin").planets{}<cr>', {silent=true})
 map('n', '<leader>fc', ':lua require("telescope.builtin").colorscheme{}<cr>', {silent=true})
+map('n', '<leader>fb', ':lua require("telescope.builtin").buffers{}<cr>', {silent=true})
+map('n', '<leader>1', ':Cheat php/')
 
 map('n', '<leader>gg', ':vertical Git<cr>')
 map('n', '<leader>wc', ':wa<cr>:only<cr>:enew<cr>')
@@ -223,20 +246,30 @@ augroup('my_commands', {
     'FileType css,html,blade,vue let b:coc_additional_keywords = ["-"]',
     -- Restore cursor
     [[ BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |   exe "normal! g`\"" | endif ]],
+    -- Dirvish
+    'FileType dirvish nnoremap <buffer> % :edit %',
+    'BufEnter * set nocursorline',
     -- Vim wiki
     'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
     'FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel',
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
     'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
-    -- Dirvish
-    'FileType dirvish nnoremap <buffer> % :edit %',
 })
 
 augroup('colorscheme_overrides', {
+    -- 'ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9',
     'ColorScheme * hi StatusLine guibg=#d8dee9 guifg=#343d46',
     'ColorScheme * hi StatusLineNC guibg=#65737e guifg=#343d46',
-    'ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9',
+    'ColorScheme * hi TabLineFill guibg=#65737e guifg=#343d46',
+    'ColorScheme * hi TabLine gui=NONE',
+
+    -- Transparent background
+    'ColorScheme * hi CursorLineNr guibg=NONE ctermbg=NONE',
+    'ColorScheme * hi Normal guibg=NONE ctermbg=NONE',
+    'ColorScheme * hi LineNr guibg=NONE ctermbg=NONE',
+    'ColorScheme * hi SignColumn guibg=NONE ctermbg=NONE',
+    'ColorScheme * hi EndOfBuffer guibg=NONE ctermbg=NONE',
 })
 
 
@@ -258,3 +291,36 @@ api.nvim_exec([[
     let @+ = @z
     endfun
 ]], false)
+
+-- Cheat.sh open scratch buffer
+function get_cheat_sh(query)
+    if not query or #query == 0 then return end
+
+    -- create buffer
+    local buf_name = 'cheat_sh_scratch'
+    local buf_nr = fn.bufadd(buf_name)
+    local win_id = fn.bufwinid(buf_name)
+
+    -- ensure window exist
+    if win_id == -1 then
+        cmd('sb '..buf_nr)
+        win_id = fn.bufwinid(buf_name)
+    end
+
+    -- jump over
+    fn.win_gotoid(win_id)
+
+    -- set options
+    cmd[[setlocal buftype=nofile bufhidden=hide noswapfile ft=php]]
+
+    -- clear screen
+    cmd[[normal ggdG]]
+
+    -- fetch data and read it to buffer
+    query = query:gsub(' ', '+')
+    print'querying cht.sh...'
+    cmd('0read !curl -s cht.sh/'..query..'\\?T')
+    cmd[[normal gg]]
+end
+
+api.nvim_exec([[ command! -nargs=1 Cheat call luaeval('get_cheat_sh(_A[1])', ['<args>']) ]], false)
