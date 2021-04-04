@@ -36,6 +36,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/auto-pairs"
   },
+  ["blue-moon"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/blue-moon"
+  },
   ["coc-nvim-lua"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/coc-nvim-lua"
@@ -44,22 +48,38 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/coc.nvim"
   },
-  ["jellybeans.vim"] = {
+  ["nvim-colorizer.lua"] = {
     loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/jellybeans.vim"
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
+  },
+  ["nvim-lspinstall"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-lspinstall"
   },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
-  ["oceanic-next"] = {
+  ["nvim-ts-context-commentstring"] = {
     loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/oceanic-next"
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-ts-context-commentstring"
+  },
+  ["oceanic-next-vim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/oceanic-next-vim"
+  },
+  ["one-nvim"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/one-nvim"
   },
   ["packer.nvim"] = {
     loaded = false,
     needs_bufread = false,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/opt/packer.nvim"
+  },
+  playground = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/playground"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -81,13 +101,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
-  ultisnips = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/ultisnips"
-  },
   ["vim-abolish"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-abolish"
+  },
+  ["vim-blade"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-blade"
   },
   ["vim-commentary"] = {
     loaded = true,
@@ -109,10 +129,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-hardtime"
   },
-  ["vim-polyglot"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-polyglot"
-  },
   ["vim-repeat"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-repeat"
@@ -124,6 +140,10 @@ _G.packer_plugins = {
   ["vim-test"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-test"
+  },
+  ["vim-vsnip"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-vsnip"
   },
   ["vim-wakatime"] = {
     loaded = true,

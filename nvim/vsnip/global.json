@@ -1,0 +1,67 @@
+{
+    "Snippet Snippet": {
+        "prefix": ["snip"],
+        "body": [
+            "\"${1:snippet_name}\": {",
+            "\t\"prefix\": [\"${2:trigger_prefix}\"],",
+            "\t\"body\": [",
+            "\t\t\"$0\"",
+            "\t],",
+            "\t\"description\": \"${3:description}\"",
+            "}"
+        ],
+        "description": "A snippet to create snippets"
+    },
+
+    "HTML Tags": {
+        "prefix": ["<"],
+        "body" : [
+            "<${1:div}${2: class=\"$3\"}>",
+            "\t$0",
+            "</$1>"
+        ],
+        "description": "Insert multiline html Tag"
+    },
+
+    "HTML Inline Tags": {
+        "prefix": [">"],
+        "body": [
+            "<${1:div}${2: class=\"$3\"}>$0</$1>"
+        ],
+        "description": "Insert inline html tag"
+    },
+
+    "PHP Unit Test": {
+        "prefix": ["pu"],
+        "body": [
+            "/**",
+            " * @test",
+            " */",
+            "public function ${1:functionName}() {",
+            "\t$0",
+            "}"
+        ],
+        "description": "Generate a php unit test function"
+    },
+
+    "Blade Directive": {
+        "prefix": ["@"],
+        "body": [
+            "@${1:section}",
+            "\t$0",
+            "@end$1"
+        ],
+        "description": "Generate a balde directive"
+    },
+
+	"function …": {
+		"prefix": "fun",
+		"body": [
+			"${1:public }function ${2:FunctionName}($3)",
+			"{",
+			"\t${0:# code...}",
+			"}"
+		],
+		"description": "Function"
+	}
+}

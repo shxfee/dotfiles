@@ -1,12 +1,16 @@
-prompt_order = [
-    "username",
-    "hostname",
-    "kubernetes",
-    "directory",
-    # "git_branch",
-    # "git_status",
-    "line_break",
-    "jobs",
-    "time",
-    "character",
-]
+format = """\
+  $username\
+  $hostname\
+  $directory\
+  $git_branch\
+  $cmd_duration\
+  $custom\
+  $line_break\
+  $jobs\
+  $battery\
+  $time\
+  $character\
+  """
+# $git_commit\
+# $git_state\
+# $git_status\

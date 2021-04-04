@@ -1,9 +1,16 @@
 -- neovim config
 -- github.com/shxfee
+
+-- TODO create cheat.sh plugin
+-- TODO fork colorschemes and make my modifications there
+-- TODO switch to native LSP
+-- note taking alternative https://github.com/oberblastmeister/neuron.nvim
+
 local api, cmd, fn, g = vim.api, vim.cmd, vim.fn, vim.g
 
 ------------------------------ PLUGINS ----------------------------------------
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
+config_path = fn.stdpath('config')
 
 if fn.empty(fn.glob(install_path)) > 0 then
     cmd('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
@@ -12,25 +19,30 @@ end
 cmd [[ packadd packer.nvim ]]
 local use = require('packer').use
 require('packer').startup(function()
-    -- IDE
+    -- Core
     use {'wbthomason/packer.nvim', opt = true}
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
     use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate'}
-
+    use 'nvim-treesitter/playground'
     use 'tpope/vim-fugitive'
-    use 'SirVer/ultisnips'
     use 'justinmk/vim-dirvish'
-    use {'vimwiki/vimwiki',  branch = 'dev'}
+    use 'wakatime/vim-wakatime'
+    use 'hrsh7th/vim-vsnip'
+    use 'tpope/vim-dadbod'
+
+    use 'JoosepAlviste/nvim-ts-context-commentstring'
     use 'janko-m/vim-test'
     use 'jiangmiao/auto-pairs'
-    -- use 'kkoomen/vim-doge'
-    use 'wakatime/vim-wakatime'
-    use 'tpope/vim-dadbod'
+    use {'vimwiki/vimwiki', branch = 'dev'}
     use {'neoclide/coc.nvim', branch = 'release'}
     use 'rafcamlet/coc-nvim-lua'
+    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
+
+    -- No treesitter support yet
+    use 'jwalton512/vim-blade'
 
     -- Vimfu
     use 'tpope/vim-surround'
@@ -41,20 +53,22 @@ require('packer').startup(function()
     use 'takac/vim-hardtime'
 
     -- UI
-    use 'sheerun/vim-polyglot'
-    use 'nanotech/jellybeans.vim'
-    use 'mhartington/oceanic-next'
+    use 'kyazdani42/blue-moon'
+    use 'adrian5/oceanic-next-vim'
+    use 'Th3Whit3Wolf/one-nvim'
+
+    -- Temporary
+    use 'nvim-lspinstall'
 end)
 
 
 ------------------------------ PLUGIN CONFIG ----------------------------------
-g['jellybeans_use_gui_italics'] = 0
+g['oceanic_transparent_bg'] = 1
 
 g['test#strategy'] = 'neovim'
 g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
-g['UltiSnipsEditSplit'] = 'vertical'
 g['UltiSnipsExpandTrigger'] = '<c-j>'
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
@@ -63,9 +77,9 @@ g['loaded_netrwPlugin'] = 1
 
 g['vimwiki_hl_headers'] = 1
 g['vimwiki_conceal_onechar_markers'] = 0
-g['vimwiki_folding'] = 'list:quick'
 
 g['coc_global_extensions'] = { 'coc-json', 'coc-phpls', 'coc-tailwindcss', 'coc-css' }
+g['vsnip_snippet_dir'] = config_path .. '/vsnip'
 
 g['AutoPairsShortcutToggle'] = ''
 g['AutoPairsMultilineClose'] = 0
@@ -79,41 +93,30 @@ g['list_of_visual_keys'] = {"h", "j", "k", "l"}
 
 -- telescope
 require('telescope').load_extension('fzy_native')
-require'nvim-treesitter.configs'.setup{highlight = {enable = true}}
+local actions = require('telescope.actions')
 
+require('telescope').setup {
+    defaults = {
+        mappings = {
+            i = { ['<c-q>'] = actions.send_to_qflist }
+        },
+    },
+}
 
------------------------------- STATUSLINE -------------------------------------
-function my_statusline()
-    local branch = fn.FugitiveHead()
+-- treesitter
+require('nvim-treesitter.configs').setup {
+    ensure_installed = {
+      'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua',
+      'php', 'python', 'query', 'typescript', 'vue',
+    },
+    indent = { enable = true, disable = { 'blade' } },
+    highlight = { enable = true, disable = { 'blade' } },
+    context_commentstring = { enable = true }
+}
 
-    if branch and #branch > 0 then
-        branch = '  '..branch
-
-        if vim.o.paste then
-            branch = branch .. ' [PASTE]'
-        end
-    end 
-
-    return branch..'  %f%m%=%{&ft} %l:%c '
-end
-
-cmd[[ set statusline=%!luaeval('my_statusline()') ]]
-
-
------------------------------- TAB LINE ---------------------------------------
-function my_tabline()
-    local s = ''
-    for i = 1, fn.tabpagenr('$') do
-        if i == fn.tabpagenr() then s = s .. '%#TabLineSel#'
-        else s = s .. '%#TabLine#' end
-        s = s .. ' Tab ' .. i
-    end
-
-    s = s .. ' %#TabLineFill#%T'
-    return s
-end
-
-cmd[[ set tabline=%!luaeval('my_tabline()') ]]
+-- personal plugs
+dofile(config_path .. '/lua/my/statusline.lua')         -- status & tabline
+dofile(config_path .. '/lua/my/playground.lua')         -- temporary stuff
 
 
 ------------------------------ OPTIONS ----------------------------------------
@@ -126,8 +129,7 @@ local function opt(scope, key, value)
     if scope ~= 'o' then scopes['o'][key] = value end
 end
 
-cmd [[ colorscheme OceanicNext ]]
--- cmd [[ colorscheme jellybeans ]]
+cmd [[ colorscheme oceanicnext ]]
 
 opt('w', 'wrap', false)
 opt('w', 'number', true)
@@ -137,6 +139,7 @@ opt('o',  'scrolloff', 3)
 opt('o',  'termguicolors', true)
 opt('o',  'showmode', false)
 
+opt('b', 'autoindent', true)
 opt('b', 'smartindent', true)
 opt('b', 'shiftwidth', 4)
 opt('b', 'tabstop', 4)
@@ -145,8 +148,8 @@ opt('b', 'expandtab', true)
 opt('o', 'ignorecase', true)
 opt('o', 'smartcase', true)
 
-opt('o', 'winminwidth', 10)
-opt('o', 'winwidth', 120)
+opt('o', 'winwidth', 100)
+opt('o', 'winminwidth', 30)
 opt('o', 'inccommand', 'nosplit')
 opt('o', 'viewoptions', 'cursor,folds')
 
@@ -158,7 +161,7 @@ opt('o', 'shortmess', vim.o.shortmess .. 'cI')
 opt('o', 'completeopt', 'menuone,noinsert,noselect')
 opt('w', 'signcolumn', 'yes:1')
 opt('b', 'nrformats', 'alpha')
-opt('b', 'spellfile', '~/.local/share/nvim/spell/en.utf-8.add')
+-- opt('b', 'spellfile', '~/.local/share/nvim/spell/en.utf-8.add')
 
 
 ------------------------------ MAPPINGS ---------------------------------------
@@ -171,9 +174,10 @@ end
 g['mapleader'] = " "
 map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{previewer=false}<cr>', {silent=true})
 map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}, previewer=false}<cr>', {silent=true})
-map('n', '<leader>fp', ':lua require("telescope.builtin").planets{}<cr>', {silent=true})
+map('n', '<leader>fg', ':lua require("telescope.builtin").live_grep()<cr>', {silent=true})
 map('n', '<leader>fc', ':lua require("telescope.builtin").colorscheme{}<cr>', {silent=true})
 map('n', '<leader>fb', ':lua require("telescope.builtin").buffers{}<cr>', {silent=true})
+map('n', '<leader>fe', ':lua require("telescope.builtin").find_files{previewer=false,cwd=config_path}<cr>', {silent=true})
 map('n', '<leader>1', ':Cheat php/')
 
 map('n', '<leader>gg', ':vertical Git<cr>')
@@ -206,41 +210,55 @@ map('n', 'gV', '`[v`]')
 
 -- COC maps
 map('i', '<c-space>', 'coc#refresh()', {silent = true, expr = true})
-map('n', '[g', '<plug>(coc-diagnostic-prev)', {silent = true})
-map('n', ']g', '<plug>(coc-diagnostic-next)', {silent = true})
-map('n', 'gd', '<plug>(coc-definition)')
+map('n', '[g', '<plug>(coc-diagnostic-prev)', { silent = true, noremap = false })
+map('n', ']g', '<plug>(coc-diagnostic-next)', { silent = true, noremap = false })
+map('n', 'gd', '<plug>(coc-definition)', { noremap = false })
 map('n', 'K', ':lua require("my.utils").open_documentation()<CR>', {silent = true})
 
 -- Figure this shit out later
 -- Include (count)k/j in jump list
 api.nvim_exec([[
-    nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
-    nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
-    vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-]], false)
+nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
+nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+    ]], false)
 
 
 -- Commands
-api.nvim_exec([[ command! -nargs=* T split | startinsert | terminal <args> ]], false)
+api.nvim_exec([[ command! -nargs=* -complete=file T split | startinsert | terminal <args> ]], false)
 
+-- snippets
+cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
+cmd[[smap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
+cmd[[imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>']]
+cmd[[smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>']]
 
 ------------------------------ COMMANDS ---------------------------------------
 -- Better API for commands and auto commands is being worked on.
 -- ref: https://github.com/neovim/neovim/pull/11613
 -- ref: https://github.com/neovim/neovim/pull/12378
+cmd [[cabbrev DD DB describe]]
+cmd [[cabbrev PI PackerInstall]]
+cmd [[cabbrev PC PackerClean]]
+cmd [[iabbrev <expr> dts strftime("%c (MVT)")]]
+cmd [[iabbrev <expr> ds strftime("%Y-%m-%d")]]
+
 function augroup(name, definitions)
     cmd('augroup '..name..' | autocmd!')
-        vim.tbl_map(function(c) cmd('autocmd '..c) end, definitions)
+    vim.tbl_map(function(c) cmd('autocmd '..c) end, definitions)
     cmd'augroup END'
 end
 
 augroup('my_commands', {
     -- General
-    'TermOpen * setlocal nonumber norelativenumber',
+    'TermOpen * setlocal nowrap',
     'BufWritePost init.lua nested luafile $MYVIMRC',
     'BufWritePost init.lua PackerCompile',
     'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
     'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 300}',
+    -- PHP
+    'BufEnter *Test.php setlocal makeprg=pu',
+    'BufEnter *Test.php setlocal errorformat=%E%n)\\ %.%#,%Z%f:%l,%C%m,%C,%-G%.%#',
     -- Narrow indent
     'FileType html,js,vue,blade,vimwiki setlocal shiftwidth=2 tabstop=2 softtabstop=2',
     'FileType css,html,blade,vue let b:coc_additional_keywords = ["-"]',
@@ -248,79 +266,27 @@ augroup('my_commands', {
     [[ BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |   exe "normal! g`\"" | endif ]],
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
-    'BufEnter * set nocursorline',
+    'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
     -- Vim wiki
     'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
     'FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel',
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
+    'FileType vimwiki nmap <buffer> <leader>wc <NOP>',
     'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
 })
 
 augroup('colorscheme_overrides', {
-    -- 'ColorScheme * hi CursorLineNr guibg=#1b2b34 guifg=#d8dee9',
-    'ColorScheme * hi StatusLine guibg=#d8dee9 guifg=#343d46',
-    'ColorScheme * hi StatusLineNC guibg=#65737e guifg=#343d46',
+    -- 'ColorScheme * hi StatusLine guibg=#403c41 guifg=#FFFFFF',
+    -- 'ColorScheme * hi StatusLineNC guibg=#403c41 guifg=#C0C0C0',
     'ColorScheme * hi TabLineFill guibg=#65737e guifg=#343d46',
     'ColorScheme * hi TabLine gui=NONE',
 
     -- Transparent background
+    'ColorScheme * hi CursorLine guibg=NONE ctermbg=NONE',
     'ColorScheme * hi CursorLineNr guibg=NONE ctermbg=NONE',
     'ColorScheme * hi Normal guibg=NONE ctermbg=NONE',
     'ColorScheme * hi LineNr guibg=NONE ctermbg=NONE',
     'ColorScheme * hi SignColumn guibg=NONE ctermbg=NONE',
     'ColorScheme * hi EndOfBuffer guibg=NONE ctermbg=NONE',
 })
-
-
------------------------------- TEMP -------------------------------------------
--- Figure this shit out yo!
--- TODO extract this function to lua
-api.nvim_exec([[
-    vnoremap zy :call CopyFoldHeader()<cr>
-    fun! CopyFoldHeader() range
-    let @z = ''
-
-    for i in range(a:firstline, a:lastline)
-        if i == foldclosed(i) || foldclosed(i) == -1
-        let line = substitute(getline(i), '^\s*[*,#,-]\s*\(\[ \]\)*', '', '')
-        let @z .= trim(line) . "\n"
-        endif
-    endfor
-
-    let @+ = @z
-    endfun
-]], false)
-
--- Cheat.sh open scratch buffer
-function get_cheat_sh(query)
-    if not query or #query == 0 then return end
-
-    -- create buffer
-    local buf_name = 'cheat_sh_scratch'
-    local buf_nr = fn.bufadd(buf_name)
-    local win_id = fn.bufwinid(buf_name)
-
-    -- ensure window exist
-    if win_id == -1 then
-        cmd('sb '..buf_nr)
-        win_id = fn.bufwinid(buf_name)
-    end
-
-    -- jump over
-    fn.win_gotoid(win_id)
-
-    -- set options
-    cmd[[setlocal buftype=nofile bufhidden=hide noswapfile ft=php]]
-
-    -- clear screen
-    cmd[[normal ggdG]]
-
-    -- fetch data and read it to buffer
-    query = query:gsub(' ', '+')
-    print'querying cht.sh...'
-    cmd('0read !curl -s cht.sh/'..query..'\\?T')
-    cmd[[normal gg]]
-end
-
-api.nvim_exec([[ command! -nargs=1 Cheat call luaeval('get_cheat_sh(_A[1])', ['<args>']) ]], false)

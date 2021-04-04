@@ -1,6 +1,6 @@
-alias vi='~/source/squashfs-root/usr/bin/nvim'
-alias vim='~/source/squashfs-root/usr/bin/nvim'
-alias nvim='~/source/squashfs-root/usr/bin/nvim'
+alias vi='~/source/nvim/squashfs-root/usr/bin/nvim'
+alias vim='~/source/nvim/squashfs-root/usr/bin/nvim'
+alias nvim='~/source/nvim/squashfs-root/usr/bin/nvim'
 alias so='source ~/.config/fish/config.fish'
 alias se='vi ~/.config/fish/config.fish'
 
@@ -23,6 +23,7 @@ alias winup='sudo mount -t drvfs C: /mnt/c'
 
 # update path
 set PATH /home/shxfee/.composer/vendor/bin $PATH
+set PATH /home/shxfee/bin $PATH
 
 # Open links with wslview
 set BROWSER wslview
