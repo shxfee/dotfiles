@@ -1,0 +1,12 @@
+{
+    "host definition": {
+        "prefix": ["host"],
+        "body": [
+            "Host $1",
+            "\tHostname $2",
+            "\tUser $3",
+            "$0"
+        ],
+        "description": "host definition"
+    }
+}

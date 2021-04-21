@@ -16,9 +16,9 @@
     "HTML Tags": {
         "prefix": ["<"],
         "body" : [
-            "<${1:div}${2: class=\"$3\"}>",
-            "\t$0",
-            "</$1>"
+            "<$1 $2>",
+            "\t$3",
+            "</$1>$0"
         ],
         "description": "Insert multiline html Tag"
     },
@@ -26,22 +26,17 @@
     "HTML Inline Tags": {
         "prefix": [">"],
         "body": [
-            "<${1:div}${2: class=\"$3\"}>$0</$1>"
+            "<$1 $2>$3</$1>$0"
         ],
-        "description": "Insert inline html tag"
+        "description": "insert inline html tag"
     },
 
-    "PHP Unit Test": {
-        "prefix": ["pu"],
+    "HTML Css attribute": {
+        "prefix": ["c"],
         "body": [
-            "/**",
-            " * @test",
-            " */",
-            "public function ${1:functionName}() {",
-            "\t$0",
-            "}"
+            "class=\"$0\""
         ],
-        "description": "Generate a php unit test function"
+        "description": "css attribute"
     },
 
     "Blade Directive": {
@@ -54,14 +49,12 @@
         "description": "Generate a balde directive"
     },
 
-	"function …": {
-		"prefix": "fun",
-		"body": [
-			"${1:public }function ${2:FunctionName}($3)",
-			"{",
-			"\t${0:# code...}",
-			"}"
-		],
-		"description": "Function"
-	}
+    "console log": {
+        "prefix": ["cl"],
+        "body": [
+            "console.log($1${2: })$0"
+        ],
+        "description": "console log"
+    }
+
 }
