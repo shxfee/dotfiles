@@ -1,9 +1,11 @@
 -- neovim config
 -- github.com/shxfee
 
--- TODO create cheat.sh plugin
+-- TODO setup proper diagnostic navigation
+-- TODO setup auto formatters and prettiers for lsp
+-- TODO fix indent on last line PHP
 -- TODO include diagnostic jumps in jump list
--- note taking alternative https://github.com/oberblastmeister/neuron.nvim
+-- TODO extract dadbod auto configuration to a plugin
 
 local api, cmd, fn, g = vim.api, vim.cmd, vim.fn, vim.g
 
@@ -35,13 +37,14 @@ require('packer').startup(function()
     use 'tpope/vim-dadbod'
     use 'justinmk/vim-sneak'
 
+    use 'windwp/nvim-ts-autotag'
     use 'JoosepAlviste/nvim-ts-context-commentstring'
     use 'janko-m/vim-test'
-    use 'jiangmiao/auto-pairs'
+    use 'windwp/nvim-autopairs'
     use {'vimwiki/vimwiki', branch = 'dev'}
     use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
 
-    use 'jwalton512/vim-blade'
+    -- use 'shxfee/vim-blade'
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
 
@@ -50,13 +53,16 @@ require('packer').startup(function()
     use 'tpope/vim-repeat'
     use 'godlygeek/tabular'
     use 'tpope/vim-abolish'
-    use 'takac/vim-hardtime'
 
     use 'arcticicestudio/nord-vim'
     use 'kyazdani42/blue-moon'
     use 'shxfee/oceanic-next-vim'
     use 'Th3Whit3Wolf/one-nvim'
+
 end)
+
+-- reload my modules
+require('plenary.reload').reload_module('my', true)
 
 
 ------------------------------ PLUGIN CONFIG ----------------------------------
@@ -67,24 +73,16 @@ g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
-g['loaded_netrw'] = 1
-g['loaded_netrwPlugin'] = 1
+-- g['loaded_netrw'] = 1
+-- g['loaded_netrwPlugin'] = 1
 
 g['vimwiki_hl_headers'] = 1
 g['vimwiki_conceal_onechar_markers'] = 0
+g['vimwiki_global_ext'] = 0
+g['indent_blankline_show_trailing_blankline_indent'] = false
 
 g['vsnip_snippet_dir'] = config_path .. '/vsnip'
 g['vue_pre_processors'] = {}
-
-g['AutoPairsShortcutToggle'] = ''
-g['AutoPairsMultilineClose'] = 0
-
--- kicking some bad habits
-g['hardtime_maxcount'] = 2
-g['hardtime_default_on'] = true
-g['hardtime_allow_different_key'] = true
-g['list_of_normal_keys'] = {"h", "j", "k", "l"}
-g['list_of_visual_keys'] = {"h", "j", "k", "l"}
 
 -- telescope
 require('telescope').load_extension('fzy_native')
@@ -104,31 +102,44 @@ require('nvim-treesitter.configs').setup {
       'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua',
       'php', 'python', 'query', 'typescript', 'vue',
     },
-    indent = { enable = true, disable = { 'blade', 'vue' } },
-    highlight = { enable = true, disable = { 'blade' } },
-    context_commentstring = { enable = true }
+    indent = { enable = true, disable = { 'html', 'vue' } },
+    highlight = { enable = true, disable = { 'html' } },
+    context_commentstring = { enable = true },
+    autotag = {
+        enable = true,
+        filetypes = { 'php', 'html', 'vue' },
+    },
 }
 
 -- language server
-require'lspinstall'.setup()
+if g['loaded_lsp'] ~= true then
+    require'lspinstall'.setup()
 
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{}
+    local servers = require'lspinstall'.installed_servers()
+    for _, server in pairs(servers) do
+        require'lspconfig'[server].setup{}
+    end
 end
 
-require'compe'.setup {
-  preselect = 'disable';
+g['loaded_lsp'] = true
+g['indent_blankline_char'] = '│'
+g['indent_blankline_use_treesitter'] = true
 
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    vsnip = true;
-  };
+-- auto complete
+require'compe'.setup {
+    preselect = 'disable';
+    source = {
+        path = true;
+        buffer = true;
+        calc = true;
+        nvim_lsp = true;
+        nvim_lua = true;
+        vsnip = true;
+    };
 }
+
+-- autopairs
+require('nvim-autopairs').setup()
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -160,7 +171,7 @@ opt('w', 'wrap', false)
 opt('w', 'number', true)
 opt('w', 'relativenumber', true)
 opt('w', 'colorcolumn', '80')
-opt('o',  'scrolloff', 3)
+opt('o',  'scrolloff', 10)
 opt('o',  'termguicolors', true)
 opt('o',  'showmode', false)
 
@@ -196,16 +207,16 @@ local function map(mode, lhs, rhs, opts)
 end
 
 g['mapleader'] = " "
-map('n', '<leader>ff', ':lua require("telescope.builtin").find_files{previewer=false}<cr>')
-map('n', '<leader>fd', ':lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}, previewer=false}<cr>')
-map('n', '<leader>fg', ':lua require("telescope.builtin").live_grep()<cr>')
-map('n', '<leader>fc', ':lua require("telescope.builtin").colorscheme{}<cr>')
-map('n', '<leader>fb', ':lua require("telescope.builtin").buffers{}<cr>')
-map('n', '<leader>fe', ':lua require("telescope.builtin").find_files{previewer=false,cwd=config_path}<cr>')
+map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files{previewer=false}<cr>')
+map('n', '<leader>fd', '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}, previewer=false}<cr>')
+map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>')
+map('n', '<leader>fc', '<cmd>lua require("telescope.builtin").colorscheme{}<cr>')
+map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers{}<cr>')
+map('n', '<leader>fe', '<cmd>lua require("telescope.builtin").find_files{previewer=false,cwd=config_path}<cr>')
 map('n', '<leader>1', ':Cheat php/', {silent = false})
 
 map('n', '<leader>gg', ':vertical Git<cr>')
-map('n', '<leader>wc', ':wa<cr>:only<cr>:enew<cr>')
+map('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
 map('n', '<leader>od', ':lua require("my.laravel").open_adminer()<cr>')
 
 map('n', '<leader>se', ':vsplit $MYVIMRC<cr>')
@@ -234,10 +245,11 @@ map('i', '<a-p>', '<c-r>+')
 map('n', 'gV', '`[v`]')
 
 -- lsp
-map('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+map('n', '[d', "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
 map('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')
+map('i', '<cr>', 'luaeval("require(\\"nvim-autopairs\\").autopairs_cr()")', {expr = true , noremap = true})
 
 -- vsnip
 cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
@@ -257,8 +269,6 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 -- Commands
 api.nvim_exec([[ command! -nargs=* -complete=file T split | startinsert | terminal <args> ]], false)
 
--- snippets
-
 ------------------------------ COMMANDS ---------------------------------------
 -- Better API for commands and auto commands is being worked on.
 -- ref: https://github.com/neovim/neovim/pull/11613
@@ -267,6 +277,7 @@ cmd [[cabbrev DD DB describe]]
 cmd [[cabbrev PI PackerInstall]]
 cmd [[cabbrev PU PackerUpdate]]
 cmd [[cabbrev PC PackerClean]]
+cmd [[cabbrev h vertical help]]
 cmd [[iabbrev <expr> dts strftime("%c (MVT)")]]
 cmd [[iabbrev <expr> ds strftime("%Y-%m-%d")]]
 
@@ -283,22 +294,26 @@ augroup('my_commands', {
     'BufWritePost init.lua PackerCompile',
     'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
     'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 300}',
-    -- Narrow indent
-    'FileType css,html,blade,vue let b:coc_additional_keywords = ["-"]',
+    'BufWritePre * call mkdir(expand("<afile>:p:h"), "p")',
     -- Restore cursor
     [[ BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |   exe "normal! g`\"" | endif ]],
+    -- Blade
+    'BufNewFile,BufRead *blade.php set ft=html',
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
     'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
     -- Vim wiki
+    'BufNewFile,BufRead *.wiki,*.md set ft=vimwiki',
     'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
     'FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel',
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
-    'FileType vimwiki nmap <buffer> <space>wc <NOP>',
+    'FileType vimwiki nnoremap <buffer> <leader>wc <cmd>wa <bar> only <bar> enew<cr>',
     'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
 })
 
 
 -- Temporary
-vim.cmd[[ nnoremap <leader>c :w <bar> exec '!gcc '.shellescape('%').' -o '.shellescape('%:r') <bar> :vs <bar> exec ":term ./hello \<cr>" ]]
+vim.cmd[[ nnoremap <leader>jt :lua require('my.journal').open_todays_entry()<cr> ]]
+vim.cmd[[ nnoremap <leader>jj :lua require('my.journal').list_all_entries()<cr> ]]
+vim.cmd[[ nnoremap <leader>c :lua require('my.utils').compile_and_run_c()<cr> ]]

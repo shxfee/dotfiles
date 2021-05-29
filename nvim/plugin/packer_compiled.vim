@@ -71,10 +71,6 @@ end
 time("try_loadstring definition", false)
 time("Defining packer_plugins", true)
 _G.packer_plugins = {
-  ["auto-pairs"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/auto-pairs"
-  },
   ["blue-moon"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/blue-moon"
@@ -82,6 +78,10 @@ _G.packer_plugins = {
   ["nord-vim"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nord-vim"
+  },
+  ["nvim-autopairs"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
   ["nvim-colorizer.lua"] = {
     loaded = true,
@@ -102,6 +102,10 @@ _G.packer_plugins = {
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
+  },
+  ["nvim-ts-autotag"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-ts-autotag"
   },
   ["nvim-ts-context-commentstring"] = {
     loaded = true,
@@ -152,10 +156,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-abolish"
   },
-  ["vim-blade"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-blade"
-  },
   ["vim-commentary"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-commentary"
@@ -171,10 +171,6 @@ _G.packer_plugins = {
   ["vim-fugitive"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-fugitive"
-  },
-  ["vim-hardtime"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-hardtime"
   },
   ["vim-repeat"] = {
     loaded = true,

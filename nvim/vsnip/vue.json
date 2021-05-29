@@ -1,4 +1,22 @@
 {
+    "vue": {
+        "prefix": ["vue"],
+        "body": [
+            "<template>",
+            "\t$1",
+            "</template>",
+            "",
+            "",
+            "<script>",
+            "export default {",
+            "\t$2",
+            "}",
+            "</script>",
+            "$0"
+        ],
+        "description": "vue single file component"
+    },
+
     "template": {
         "prefix": ["template"],
         "body": [

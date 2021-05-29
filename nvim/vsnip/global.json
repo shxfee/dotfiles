@@ -13,28 +13,10 @@
         "description": "A snippet to create snippets"
     },
 
-    "HTML Tags": {
-        "prefix": ["<"],
-        "body" : [
-            "<$1 $2>",
-            "\t$3",
-            "</$1>$0"
-        ],
-        "description": "Insert multiline html Tag"
-    },
-
-    "HTML Inline Tags": {
-        "prefix": [">"],
-        "body": [
-            "<$1 $2>$3</$1>$0"
-        ],
-        "description": "insert inline html tag"
-    },
-
     "HTML Css attribute": {
         "prefix": ["c"],
         "body": [
-            "class=\"$0\""
+            "class=\"$1\"$0"
         ],
         "description": "css attribute"
     },
@@ -55,6 +37,44 @@
             "console.log($1${2: })$0"
         ],
         "description": "console log"
+    },
+
+    "lorem": {
+        "prefix": ["lorem"],
+        "body": [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla",
+            "lacinia nibh ante. Morbi at consequat risus. Vestibulum nec consectetur",
+            "urna, sit amet venenatis magna. Praesent pellentesque enim quis lacus",
+            "congue aliquet. Cras nunc est, vehicula id orci vitae, sollicitudin",
+            "auctor sem. Curabitur quis sem purus. Nulla eget mi dignissim, ",
+            "consectetur urna a, ullamcorper tellus. Curabitur lacinia sit amet",
+            "diam in facilisis. Suspendisse fermentum bibendum neque, vitae bibendum",
+            "lacus egestas in. Praesent sit amet tellus in leo dictum gravida. Morbi",
+            "consectetur eget urna id finibus."
+        ],
+        "description": "lorem ipsum paragraph"
+    },
+
+    "ipsum": {
+        "prefix": ["ipsum"],
+        "body": [
+            "Donec tristique, diam ut ullamcorper scelerisque, lacus lorem",
+            "posuere ipsum, ut feugiat leo orci quis eros. In sollicitudin",
+            "pretium consectetur. Sed id porttitor nunc. Vestibulum ante ipsum",
+            "primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+            "Maecenas nec est aliquet, commodo ante non, euismod ante. Nunc sit",
+            "amet nibh finibus, rhoncus diam sit amet, pretium lectus. Morbi nisi",
+            "tortor, auctor eget molestie eget, faucibus ultricies neque. Vivamus",
+            "mattis euismod euismod. Vestibulum ante ipsum primis in faucibus",
+            "orci luctus et ultrices posuere cubilia curae; Nulla euismod, mauris",
+            "at rutrum tristique, arcu elit aliquet velit, vel commodo ipsum est",
+            "in neque. Fusce interdum ex non nulla rhoncus, vel vehicula mi",
+            "ultrices. Nulla euismod dictum nisi tincidunt vehicula. Proin ut",
+            "aliquet diam, sollicitudin convallis sapien. Aenean consequat",
+            "rhoncus nulla eget volutpat. Cras in dolor sagittis, laoreet mi sed,",
+            "pellentesque massa."
+        ],
+        "description": "lorem ipsum paragraph"
     }
 
 }

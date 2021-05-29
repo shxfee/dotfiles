@@ -1,0 +1,15 @@
+{
+    "points_of_note": {
+        "prefix": ["points"],
+        "body": [
+            "== Points of note ==",
+            "* sleep $1",
+            "* patch $2",
+            "* tabs $3",
+            "* coffee $4",
+            "* exercise $5",
+            "$0"
+        ],
+        "description": "daily points of note"
+    }
+}
