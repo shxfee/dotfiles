@@ -7,7 +7,7 @@
 -- TODO include diagnostic jumps in jump list
 -- TODO extract dadbod auto configuration to a plugin
 
-local api, cmd, fn, g = vim.api, vim.cmd, vim.fn, vim.g
+local api, cmd, fn, g, opt = vim.api, vim.cmd, vim.fn, vim.g, vim.opt
 
 ------------------------------ PLUGINS ----------------------------------------
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
@@ -103,7 +103,7 @@ require('nvim-treesitter.configs').setup {
       'php', 'python', 'query', 'typescript', 'vue',
     },
     indent = { enable = true, disable = { 'html', 'vue' } },
-    highlight = { enable = true, disable = { 'html' } },
+    highlight = { enable = true, disable = { 'vue' } },
     context_commentstring = { enable = true },
     autotag = {
         enable = true,
@@ -156,47 +156,37 @@ dofile(config_path .. '/lua/my/playground.lua')         -- temporary stuff
 
 
 ------------------------------ OPTIONS ----------------------------------------
--- A better API for handling options is on the way
--- ref: https://github.com/neovim/neovim/pull/13479
-local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
 
-local function opt(scope, key, value)
-    scopes[scope][key] = value
-    if scope ~= 'o' then scopes['o'][key] = value end
-end
+opt.wrap = false
+opt.number = true
+opt.relativenumber = true
+opt.colorcolumn = '80'
+opt.scrolloff = 10
+opt.termguicolors = true
+opt.showmode = false
 
-cmd [[ colorscheme oceanicnext ]]
+opt.autoindent = true
+opt.smartindent = true
+opt.shiftwidth = 4
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.expandtab = true
+opt.ignorecase = true
+opt.smartcase = true
 
-opt('w', 'wrap', false)
-opt('w', 'number', true)
-opt('w', 'relativenumber', true)
-opt('w', 'colorcolumn', '80')
-opt('o',  'scrolloff', 10)
-opt('o',  'termguicolors', true)
-opt('o',  'showmode', false)
+opt.winwidth = 100
+opt.winminwidth = 30
+opt.inccommand = 'nosplit'
+opt.viewoptions = { 'cursor', 'folds' }
 
-opt('b', 'autoindent', true)
-opt('b', 'smartindent', true)
-opt('b', 'shiftwidth', 4)
-opt('b', 'tabstop', 4)
-opt('b', 'softtabstop', 4)
-opt('b', 'expandtab', true)
-opt('o', 'ignorecase', true)
-opt('o', 'smartcase', true)
-
-opt('o', 'winwidth', 100)
-opt('o', 'winminwidth', 30)
-opt('o', 'inccommand', 'nosplit')
-opt('o', 'viewoptions', 'cursor,folds')
-
-opt('o', 'hlsearch', false)
-opt('o', 'hidden', true)
-opt('o', 'cmdheight', 2)
-opt('o', 'updatetime', 200)
-opt('o', 'shortmess', vim.o.shortmess .. 'cI')
-opt('o', 'completeopt', 'menuone,noinsert,noselect')
-opt('w', 'signcolumn', 'yes:1')
-opt('b', 'nrformats', 'alpha')
+opt.hlsearch = false
+opt.hidden = true
+opt.cmdheight = 2
+opt.updatetime = 200
+opt.shortmess:append('cI')
+opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
+opt.signcolumn = 'yes:1'
+opt.nrformats = 'alpha'
 
 
 ------------------------------ MAPPINGS ---------------------------------------
@@ -317,3 +307,4 @@ augroup('my_commands', {
 vim.cmd[[ nnoremap <leader>jt :lua require('my.journal').open_todays_entry()<cr> ]]
 vim.cmd[[ nnoremap <leader>jj :lua require('my.journal').list_all_entries()<cr> ]]
 vim.cmd[[ nnoremap <leader>c :lua require('my.utils').compile_and_run_c()<cr> ]]
+cmd [[ colorscheme oceanicnext ]]
