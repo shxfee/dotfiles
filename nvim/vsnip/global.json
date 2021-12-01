@@ -21,6 +21,14 @@
         "description": "css attribute"
     },
 
+    "HTML style attribute": {
+        "prefix": ["s"],
+        "body": [
+            "style=\"$1\"$0"
+        ],
+        "description": "style attribute"
+    },
+
     "Blade Directive": {
         "prefix": ["@"],
         "body": [

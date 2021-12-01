@@ -1,9 +1,7 @@
 -- neovim config
 -- github.com/shxfee
 
--- TODO setup proper diagnostic navigation
 -- TODO setup auto formatters and prettiers for lsp
--- TODO fix indent on last line PHP
 -- TODO include diagnostic jumps in jump list
 -- TODO extract dadbod auto configuration to a plugin
 
@@ -20,45 +18,58 @@ end
 cmd [[ packadd packer.nvim ]]
 local use = require('packer').use
 require('packer').startup(function()
+    -- dependencies
     use {'wbthomason/packer.nvim', opt = true}
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
+
+    -- finder
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
+
+    -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate'}
     use 'nvim-treesitter/playground'
-    use 'neovim/nvim-lspconfig'
-    use 'kabouzeid/nvim-lspinstall'
-    use 'hrsh7th/nvim-compe'
-    use 'tpope/vim-fugitive'
-    use 'justinmk/vim-dirvish'
-    use 'wakatime/vim-wakatime'
-    use 'hrsh7th/vim-vsnip'
-    use 'tpope/vim-dadbod'
-    use 'justinmk/vim-sneak'
-
     use 'windwp/nvim-ts-autotag'
     use 'JoosepAlviste/nvim-ts-context-commentstring'
+
+    -- language server
+    use 'neovim/nvim-lspconfig'
+    use 'kabouzeid/nvim-lspinstall'
+
+    -- completion
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/nvim-cmp'
+
+    -- ide
+    use 'tpope/vim-fugitive'
+    use 'justinmk/vim-dirvish'
     use 'janko-m/vim-test'
-    use 'windwp/nvim-autopairs'
     use {'vimwiki/vimwiki', branch = 'dev'}
-    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
+    use 'hrsh7th/vim-vsnip'
+    use 'wakatime/vim-wakatime'
+    use 'tpope/vim-dadbod'
 
-    -- use 'shxfee/vim-blade'
-    use 'StanAngeloff/php.vim'
-    use 'posva/vim-vue'
-
+    -- text edit
+    use 'windwp/nvim-autopairs'
     use 'tpope/vim-surround'
     use 'tpope/vim-commentary'
-    use 'tpope/vim-repeat'
-    use 'godlygeek/tabular'
     use 'tpope/vim-abolish'
+    use 'godlygeek/tabular'
+    use 'justinmk/vim-sneak'
 
+    -- syntax and colors
+    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
     use 'arcticicestudio/nord-vim'
     use 'kyazdani42/blue-moon'
     use 'shxfee/oceanic-next-vim'
     use 'Th3Whit3Wolf/one-nvim'
 
+    use 'StanAngeloff/php.vim'
+    use 'posva/vim-vue'
 end)
 
 -- reload my modules
@@ -73,13 +84,10 @@ g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
--- g['loaded_netrw'] = 1
--- g['loaded_netrwPlugin'] = 1
 
 g['vimwiki_hl_headers'] = 1
 g['vimwiki_conceal_onechar_markers'] = 0
 g['vimwiki_global_ext'] = 0
-g['indent_blankline_show_trailing_blankline_indent'] = false
 
 g['vsnip_snippet_dir'] = config_path .. '/vsnip'
 g['vue_pre_processors'] = {}
@@ -111,32 +119,46 @@ require('nvim-treesitter.configs').setup {
     },
 }
 
--- language server
+-- lsp configuration
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 if g['loaded_lsp'] ~= true then
     require'lspinstall'.setup()
 
     local servers = require'lspinstall'.installed_servers()
     for _, server in pairs(servers) do
-        require'lspconfig'[server].setup{}
+        require'lspconfig'[server].setup{
+            capabilities = capabilities
+        }
     end
 end
 
 g['loaded_lsp'] = true
-g['indent_blankline_char'] = '│'
-g['indent_blankline_use_treesitter'] = true
 
--- auto complete
-require'compe'.setup {
-    preselect = 'disable';
-    source = {
-        path = true;
-        buffer = true;
-        calc = true;
-        nvim_lsp = true;
-        nvim_lua = true;
-        vsnip = true;
-    };
-}
+-- Setup nvim-cmp
+local cmp = require'cmp'
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+        end,
+    },
+    mapping = {
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+        }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources(
+        {{ name = 'nvim_lsp' }, { name = 'vsnip' }}, 
+        {{ name = 'buffer' }}
+    )
+})
 
 -- autopairs
 require('nvim-autopairs').setup()
@@ -147,8 +169,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         virtual_text = false,
     }
 )
-
-cmd[[inoremap <silent><expr> <c-y>      compe#confirm('<c-y>')]]
 
 -- personal plugs
 dofile(config_path .. '/lua/my/statusline.lua')         -- status & tabline
@@ -186,7 +206,7 @@ opt.updatetime = 200
 opt.shortmess:append('cI')
 opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 opt.signcolumn = 'yes:1'
-opt.nrformats = 'alpha'
+opt.nrformats = 'bin,hex,alpha'
 
 
 ------------------------------ MAPPINGS ---------------------------------------
@@ -202,6 +222,7 @@ map('n', '<leader>fd', '<cmd>lua require("telescope.builtin").find_files{find_co
 map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>')
 map('n', '<leader>fc', '<cmd>lua require("telescope.builtin").colorscheme{}<cr>')
 map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers{}<cr>')
+map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags{}<cr>')
 map('n', '<leader>fe', '<cmd>lua require("telescope.builtin").find_files{previewer=false,cwd=config_path}<cr>')
 map('n', '<leader>1', ':Cheat php/', {silent = false})
 
@@ -307,4 +328,5 @@ augroup('my_commands', {
 vim.cmd[[ nnoremap <leader>jt :lua require('my.journal').open_todays_entry()<cr> ]]
 vim.cmd[[ nnoremap <leader>jj :lua require('my.journal').list_all_entries()<cr> ]]
 vim.cmd[[ nnoremap <leader>c :lua require('my.utils').compile_and_run_c()<cr> ]]
+
 cmd [[ colorscheme oceanicnext ]]

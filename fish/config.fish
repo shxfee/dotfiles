@@ -8,6 +8,7 @@ alias cdw='cd /var/www/'
 alias pu='./vendor/bin/phpunit'
 
 alias art='php artisan '
+alias sail='./vendor/bin/sail'
 
 alias gpu='git push'
 alias gpl='git pull'
