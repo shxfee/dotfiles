@@ -14,20 +14,6 @@ function My_statusline()
 
     local sl = branch..'  %f%m%=%{&ft} '
 
-    if not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
-        local e_count = vim.lsp.diagnostic.get_count(0, 'Error')
-        local w_count = vim.lsp.diagnostic.get_count(0, 'Warning')
-
-
-        if e_count ~= 0 then
-            sl = sl..'%#MyStatusLineError#  ' .. e_count
-        end
-
-        if w_count ~= 0 then
-            sl = sl..'%#MyStatusLineWarning#  ' .. w_count
-        end
-    end
-
     sl = sl..' %#StatusLine# %l:%c '
     return sl
 end

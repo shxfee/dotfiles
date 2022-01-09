@@ -91,6 +91,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/cmp-vsnip"
   },
+  neorg = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/neorg"
+  },
   ["nord-vim"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nord-vim"
@@ -107,13 +111,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
   },
+  ["nvim-lsp-installer"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
-  },
-  ["nvim-lspinstall"] = {
-    loaded = true,
-    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/nvim-lspinstall"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -188,6 +192,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-fugitive"
   },
+  ["vim-repeat"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-repeat"
+  },
   ["vim-sneak"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-sneak"
@@ -199,6 +207,10 @@ _G.packer_plugins = {
   ["vim-test"] = {
     loaded = true,
     path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-test"
+  },
+  ["vim-unimpaired"] = {
+    loaded = true,
+    path = "/home/shxfee/.local/share/nvim/site/pack/packer/start/vim-unimpaired"
   },
   ["vim-vsnip"] = {
     loaded = true,

@@ -183,5 +183,21 @@
             "];$0"
         ],
         "description": "laravel model fillable"
+    },
+
+    "laravel factory state": {
+        "prefix": ["state"],
+        "body": [
+            "public function $1() {",
+            "\treturn \\$this->state(function (array \\$attributes) {",
+            "\t\treturn [",
+            "\t\t\t$2",
+            "\t\t];",
+            "\t});",
+            "}$0"
+        ],
+        "description": "laravel model fillable"
     }
+
+
 }

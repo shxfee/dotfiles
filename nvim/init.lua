@@ -2,14 +2,16 @@
 -- github.com/shxfee
 
 -- TODO setup auto formatters and prettiers for lsp
--- TODO include diagnostic jumps in jump list
 -- TODO extract dadbod auto configuration to a plugin
 
-local api, cmd, fn, g, opt = vim.api, vim.cmd, vim.fn, vim.g, vim.opt
+
+local api, cmd, fn, g, opt, keymap = vim.api, vim.cmd, vim.fn, vim.g, vim.opt, vim.keymap
+
+config_path = fn.stdpath('config')
+plugin_path = fn.stdpath('data') .. '/site/pack/packer/'
 
 ------------------------------ PLUGINS ----------------------------------------
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
-config_path = fn.stdpath('config')
 
 if fn.empty(fn.glob(install_path)) > 0 then
     cmd('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
@@ -22,6 +24,8 @@ require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
+    use 'tpope/vim-repeat'
+    use 'tpope/vim-unimpaired'
 
     -- finder
     use 'nvim-telescope/telescope.nvim'
@@ -35,7 +39,7 @@ require('packer').startup(function()
 
     -- language server
     use 'neovim/nvim-lspconfig'
-    use 'kabouzeid/nvim-lspinstall'
+    use 'williamboman/nvim-lsp-installer'
 
     -- completion
     use 'hrsh7th/cmp-nvim-lsp'
@@ -52,6 +56,7 @@ require('packer').startup(function()
     use 'hrsh7th/vim-vsnip'
     use 'wakatime/vim-wakatime'
     use 'tpope/vim-dadbod'
+    use 'nvim-neorg/neorg'
 
     -- text edit
     use 'windwp/nvim-autopairs'
@@ -62,12 +67,12 @@ require('packer').startup(function()
     use 'justinmk/vim-sneak'
 
     -- syntax and colors
-    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
-    use 'arcticicestudio/nord-vim'
-    use 'kyazdani42/blue-moon'
+    use 'shxfee/nord-vim'
     use 'shxfee/oceanic-next-vim'
+    use 'kyazdani42/blue-moon'
     use 'Th3Whit3Wolf/one-nvim'
 
+    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
 end)
@@ -105,10 +110,36 @@ require('telescope').setup {
 }
 
 -- treesitter
+local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+
+parser_configs.norg = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg",
+        files = { "src/parser.c", "src/scanner.cc" },
+        branch = "main"
+    },
+}
+
+parser_configs.norg_meta = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
+        files = { "src/parser.c" },
+        branch = "main"
+    },
+}
+
+parser_configs.norg_table = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
+        files = { "src/parser.c" },
+        branch = "main"
+    },
+}
+
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
-      'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua',
-      'php', 'python', 'query', 'typescript', 'vue',
+        'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua', 'php', 'python',
+        'query', 'typescript', 'vue', 'norg', 'norg_meta', 'norg_table'
     },
     indent = { enable = true, disable = { 'html', 'vue' } },
     highlight = { enable = true, disable = { 'vue' } },
@@ -121,19 +152,29 @@ require('nvim-treesitter.configs').setup {
 
 -- lsp configuration
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local lsp_installer_servers = require'nvim-lsp-installer.servers'
 
-if g['loaded_lsp'] ~= true then
-    require'lspinstall'.setup()
+local servers = {
+    'bashls', 'cssls', 'diagnosticls', 'html', 'jsonls', 'sumneko_lua', 
+    'intelephense', 'tailwindcss', 'vuels',
+}
 
-    local servers = require'lspinstall'.installed_servers()
-    for _, server in pairs(servers) do
-        require'lspconfig'[server].setup{
-            capabilities = capabilities
-        }
+-- setup server or install if missing
+for _, server in pairs(servers) do
+    local server_available, requested_server = lsp_installer_servers.get_server(server)
+
+    if server_available then
+        requested_server:on_ready(function ()
+            local opts = { capabilities = capabilities }
+            requested_server:setup(opts)
+        end)
+        if not requested_server:is_installed() then
+            -- Queue the server to be installed
+            requested_server:install()
+        end
     end
 end
 
-g['loaded_lsp'] = true
 
 -- Setup nvim-cmp
 local cmp = require'cmp'
@@ -156,7 +197,7 @@ cmp.setup({
     },
     sources = cmp.config.sources(
         {{ name = 'nvim_lsp' }, { name = 'vsnip' }}, 
-        {{ name = 'buffer' }}
+        {{ name = 'buffer' }, { name = 'neorg' }}
     )
 })
 
@@ -169,6 +210,33 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         virtual_text = false,
     }
 )
+
+-- norg
+require('neorg').setup {
+    -- Tell Neorg what modules to load
+    load = {
+        ["core.defaults"] = {}, -- Load all the default modules
+        -- ["core.norg.concealer"] = {}, -- Allows for use of icons
+        ["core.norg.completion"] = {
+            config = {
+                engine = "nvim-cmp", -- We current support nvim-compe and nvim-cmp only
+            }
+        },
+        ["core.keybinds"] = { -- Configure core.keybinds
+            config = {
+                default_keybinds = true, -- Generate the default keybinds
+                neorg_leader = "<Leader>o" -- This is the default if unspecified
+            }
+        },
+        ["core.norg.dirman"] = { -- Manage your directories with Neorg
+            config = {
+                workspaces = {
+                    my_workspace = "~/neorg"
+                }
+            }
+        }
+    },
+}
 
 -- personal plugs
 dofile(config_path .. '/lua/my/statusline.lua')         -- status & tabline
@@ -210,57 +278,96 @@ opt.nrformats = 'bin,hex,alpha'
 
 
 ------------------------------ MAPPINGS ---------------------------------------
-local function map(mode, lhs, rhs, opts)
-    local options = {noremap = true; silent = true}
-    if opts then options = vim.tbl_extend('force', options, opts) end
-    api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
 g['mapleader'] = " "
-map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files{previewer=false}<cr>')
-map('n', '<leader>fd', '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "--type", "d"}, previewer=false}<cr>')
-map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>')
-map('n', '<leader>fc', '<cmd>lua require("telescope.builtin").colorscheme{}<cr>')
-map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers{}<cr>')
-map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags{}<cr>')
-map('n', '<leader>fe', '<cmd>lua require("telescope.builtin").find_files{previewer=false,cwd=config_path}<cr>')
-map('n', '<leader>1', ':Cheat php/', {silent = false})
+local opts = { noremap=true, silent=true }
 
-map('n', '<leader>gg', ':vertical Git<cr>')
-map('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
-map('n', '<leader>od', ':lua require("my.laravel").open_adminer()<cr>')
+-- telescope
+keymap.set('n', '<leader>ff', function ()
+    return require('telescope.builtin').find_files{previewer=false}
+end)
 
-map('n', '<leader>se', ':vsplit $MYVIMRC<cr>')
-map('n', '<leader>so', ':luafile $MYVIMRC<cr>')
+keymap.set('n', '<leader>fd', function ()
+    return require('telescope.builtin').find_files{
+        find_command = {"fd", "--type", "d"},
+        previewer=false
+    }
+end)
 
-map('c', '<c-p>', '<up>', {silent = false})
-map('c', '<c-n>', '<down>', {silent = false})
+keymap.set('n', '<leader>fg', function ()
+    return require('telescope.builtin').live_grep{}
+end)
 
-map('n', '<leader>tt', ':lua require("my.utils").run_nearest_or_last_test()<cr>')
-map('n', '<leader>tf', ':TestFile<cr>')
-map('n', '<leader>tl', ':TestLast<cr>')
-map('n', '<leader>ts', ':TestSuite<cr>')
+keymap.set('n', '<leader>fc', function ()
+    return require('telescope.builtin').colorscheme{}
+end)
 
-map('n', '<leader>te', ':tabe<cr>')
+keymap.set('n', '<leader>fb', function ()
+    return require('telescope.builtin').buffers{}
+end)
 
-map('n', '<c-l>', ':<C-u>nohlsearch<cr>')
-map('i', '<c-l>', '<esc>:<C-u>nohlsearch<cr>a')
-map('c', 'w!!', 'w :term sudo tee > /dev/null %', {silent = false})
-map('t', '<c-o>', '<c-\\><c-n>')
+keymap.set('n', '<leader>fb', function ()
+    return require('telescope.builtin').help_tags{}
+end)
 
-map('v', '<a-y>', '"+y')
-map('n', '<a-p>', '"+p')
-map('v', '<a-p>', '"+p')
-map('i', '<a-p>', '<c-r>+')
+keymap.set('n', '<leader>fe', function ()
+    return require('telescope.builtin').find_files{
+        cwd=config_path,
+        previewer=false,
+    }
+end)
 
-map('n', 'gV', '`[v`]')
+keymap.set('n', '<leader>fp', function ()
+    return require('telescope.builtin').find_files{
+        cwd=plugin_path,
+        previewer=false,
+    }
+end)
+
+keymap.set('n', '<leader>1', ':Cheat php/')
+
+keymap.set('n', '<leader>gg', ':vertical Git<cr>')
+keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
+keymap.set('n', '<leader>od', ':lua require("my.laravel").open_adminer()<cr>')
+
+keymap.set('n', '<leader>se', ':vsplit $MYVIMRC<cr>')
+keymap.set('n', '<leader>so', ':luafile $MYVIMRC<cr>')
+
+keymap.set('c', '<c-p>', '<up>')
+keymap.set('c', '<c-n>', '<down>')
+
+keymap.set('n', '<leader>tt', ':lua require("my.utils").run_nearest_or_last_test()<cr>')
+keymap.set('n', '<leader>tf', ':TestFile<cr>')
+keymap.set('n', '<leader>tl', ':TestLast<cr>')
+keymap.set('n', '<leader>ts', ':TestSuite<cr>')
+
+keymap.set('n', '<leader>te', ':tabe<cr>')
+
+keymap.set('n', '<c-l>', ':<C-u>nohlsearch<cr>')
+keymap.set('i', '<c-l>', '<esc>:<C-u>nohlsearch<cr>a')
+keymap.set('c', 'w!!', 'w :term sudo tee > /dev/null %', {silent = false})
+keymap.set('t', '<c-o>', '<c-\\><c-n>')
+
+keymap.set('v', '<a-y>', '"+y')
+keymap.set('n', '<a-p>', '"+p')
+keymap.set('v', '<a-p>', '"+p')
+keymap.set('i', '<a-p>', '<c-r>+')
+
+keymap.set('n', 'gV', '`[v`]')
 
 -- lsp
-map('n', '[d', "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
-map('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')
-map('i', '<cr>', 'luaeval("require(\\"nvim-autopairs\\").autopairs_cr()")', {expr = true , noremap = true})
+keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+keymap.set('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+keymap.set('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+keymap.set('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+keymap.set('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
+keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+keymap.set('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>')
 
 -- vsnip
 cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
@@ -315,18 +422,14 @@ augroup('my_commands', {
     'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
     -- Vim wiki
     'BufNewFile,BufRead *.wiki,*.md set ft=vimwiki',
+
     'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
-    'FileType vimwiki nmap <buffer> + <Plug>VimwikiRemoveHeaderLevel',
+    'FileType vimwiki nmap <buffer> <c-h> <Plug>VimwikiAddHeaderLevel',
+    'FileType vimwiki nmap <buffer> <c-l> <Plug>VimwikiRemoveHeaderLevel',
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
     'FileType vimwiki nnoremap <buffer> <leader>wc <cmd>wa <bar> only <bar> enew<cr>',
     'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
 })
 
-
--- Temporary
-vim.cmd[[ nnoremap <leader>jt :lua require('my.journal').open_todays_entry()<cr> ]]
-vim.cmd[[ nnoremap <leader>jj :lua require('my.journal').list_all_entries()<cr> ]]
-vim.cmd[[ nnoremap <leader>c :lua require('my.utils').compile_and_run_c()<cr> ]]
-
-cmd [[ colorscheme oceanicnext ]]
+cmd [[ colorscheme nord ]]
