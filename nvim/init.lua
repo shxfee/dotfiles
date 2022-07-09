@@ -26,6 +26,7 @@ require('packer').startup(function()
     -- finder
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
+    use 'nvim-neorg/neorg-telescope'
 
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate'}
@@ -122,36 +123,10 @@ require('telescope').setup {
 }
 
 -- treesitter
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
-parser_configs.norg = {
-    install_info = {
-        url = "https://github.com/nvim-neorg/tree-sitter-norg",
-        files = { "src/parser.c", "src/scanner.cc" },
-        branch = "main"
-    },
-}
-
-parser_configs.norg_meta = {
-    install_info = {
-        url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
-        files = { "src/parser.c" },
-        branch = "main"
-    },
-}
-
-parser_configs.norg_table = {
-    install_info = {
-        url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
-        files = { "src/parser.c" },
-        branch = "main"
-    },
-}
-
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua', 'php', 'python',
-        'query', 'typescript', 'vue', 'norg', 'norg_meta', 'norg_table'
+        'query', 'typescript', 'vue', 'norg', 'yaml', 
     },
     indent = { enable = true, disable = { 'html', 'vue' } },
     highlight = { enable = true, disable = { 'vue' } },
@@ -197,16 +172,12 @@ cmp.setup({
             vim.fn["vsnip#anonymous"](args.body)
         end,
     },
-    mapping = {
-        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-        ['<C-e>'] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+    }),
     sources = cmp.config.sources(
         {{ name = 'nvim_lsp' }, { name = 'vsnip' }}, 
         {{ name = 'buffer' }, { name = 'neorg' }}
@@ -227,24 +198,52 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 require('neorg').setup {
     -- Tell Neorg what modules to load
     load = {
-        ["core.defaults"] = {}, -- Load all the default modules
-        -- ["core.norg.concealer"] = {}, -- Allows for use of icons
+        ["core.defaults"] = {},
         ["core.norg.completion"] = {
             config = {
-                engine = "nvim-cmp", -- We current support nvim-compe and nvim-cmp only
-            }
+                engine = "nvim-cmp",
+            },
         },
-        ["core.keybinds"] = { -- Configure core.keybinds
+        ["core.norg.journal"] = {
             config = {
-                default_keybinds = true, -- Generate the default keybinds
-                neorg_leader = "<Leader>o" -- This is the default if unspecified
-            }
+                workspace = "documents",
+                strategy = "flat",
+            },
         },
-        ["core.norg.dirman"] = { -- Manage your directories with Neorg
+        ["core.norg.dirman"] = {
             config = {
                 workspaces = {
-                    my_workspace = "~/neorg"
-                }
+                    documents = "~/documents",
+                    notes = "~/documents/notes",
+                    gtd = "~/documents/gtd",
+                },
+                default_workspace = "notes",
+                autochdir = false,
+            },
+        },
+        ["core.norg.concealer"] = {
+            config = {
+                preset = "diamond", -- basic, varied or diamond
+            },
+        },
+        ["core.gtd.base"] = {
+            config = {
+                workspace = "gtd",
+                custom_tag_completion = true,
+            },
+        },
+        ["core.integrations.telescope"] = {
+            config = {
+                -- empty
+            },
+        },
+        ["core.keybinds"] = {
+            config = {
+                default_keybinds = false,
+                hook = function(keybinds)
+                    keybinds.remap_event("norg", "n", "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle")
+                    keybinds.remap_event("norg", "n", "<CR>", "core.norg.esupports.hop.hop-link")
+                end,
             }
         }
     },
@@ -341,7 +340,18 @@ keymap.set('n', '<leader>gg', '<cmd>LazyGit<cr>')
 keymap.set('n', '<leader>gb', ':0GlLog!<cr>')
 
 
+-- Journal
+keymap.set('n', '<leader>nn', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg workspace notes"<cr>')
+keymap.set('n', '<leader>nt', '<cmd>e ~/documents/gtd/inbox.norg<cr>')
+keymap.set('n', '<leader>jj', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal today"<cr>')
+keymap.set('n', '<leader>jt', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal tomorrow"<cr>')
+keymap.set('n', '<leader>jy', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal yesterday"<cr>')
+keymap.set('n', '<leader>ji', '<cmd>e ~/documents/journal/index.norg<cr>')
+
+
+-- Other
 keymap.set('n', '<leader>1', ':Cheat php/')
+
 
 keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
 keymap.set('n', '<leader>od', ':lua require("my.laravel").open_adminer()<cr>')
@@ -446,7 +456,9 @@ augroup('my_commands', {
     'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
     'FileType vimwiki nnoremap <buffer> <leader>wc <cmd>wa <bar> only <bar> enew<cr>',
     'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
+    'FileType norg setlocal spell textwidth=79 formatoptions+=t',
     'FileType vimwiki let b:coc_suggest_disable=1',
 })
 
 cmd [[ colorscheme nord ]]
+
