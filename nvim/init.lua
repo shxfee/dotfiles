@@ -6,6 +6,42 @@ local api, cmd, fn, g, opt, keymap = vim.api, vim.cmd, vim.fn, vim.g, vim.opt, v
 config_path = fn.stdpath('config')
 plugin_path = fn.stdpath('data') .. '/site/pack/packer/'
 
+
+------------------------------ OPTIONS ----------------------------------------
+
+opt.wrap = false
+opt.number = true
+opt.relativenumber = true
+opt.colorcolumn = ""
+opt.scrolloff = 10
+opt.termguicolors = true
+opt.showmode = false
+
+opt.autoindent = true
+opt.smartindent = true
+opt.shiftwidth = 4
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.expandtab = true
+opt.ignorecase = true
+opt.smartcase = true
+
+opt.winwidth = 100
+opt.winminwidth = 30
+opt.inccommand = 'nosplit'
+opt.viewoptions = { 'cursor', 'folds' }
+opt.foldlevel = 99
+
+opt.hlsearch = false
+opt.hidden = true
+opt.cmdheight = 2
+opt.updatetime = 200
+opt.shortmess:append('cI')
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
+opt.signcolumn = 'yes:1'
+opt.nrformats = 'bin,hex,alpha'
+
+
 ------------------------------ PLUGINS ----------------------------------------
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
 
@@ -72,7 +108,7 @@ require('packer').startup(function()
     use 'kyazdani42/nvim-web-devicons'
 
     use 'xiyaowong/nvim-transparent'
-    use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
+    use 'norcalli/nvim-colorizer.lua'
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
 end)
@@ -99,6 +135,7 @@ g['vue_pre_processors'] = {}
 
 -- web icons
 require'nvim-web-devicons'.setup{}
+require'colorizer'.setup{}
 
 -- Make neovim trasparent
 require'transparent'.setup{
@@ -252,41 +289,6 @@ require('neorg').setup {
 -- personal plugs
 dofile(config_path .. '/lua/my/statusline.lua')         -- status & tabline
 dofile(config_path .. '/lua/my/playground.lua')         -- temporary stuff
-
-
------------------------------- OPTIONS ----------------------------------------
-
-opt.wrap = false
-opt.number = true
-opt.relativenumber = true
-opt.colorcolumn = ""
-opt.scrolloff = 10
-opt.termguicolors = true
-opt.showmode = false
-
-opt.autoindent = true
-opt.smartindent = true
-opt.shiftwidth = 4
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.expandtab = true
-opt.ignorecase = true
-opt.smartcase = true
-
-opt.winwidth = 100
-opt.winminwidth = 30
-opt.inccommand = 'nosplit'
-opt.viewoptions = { 'cursor', 'folds' }
-opt.foldlevel = 99
-
-opt.hlsearch = false
-opt.hidden = true
-opt.cmdheight = 2
-opt.updatetime = 200
-opt.shortmess:append('cI')
-opt.completeopt = { 'menu', 'menuone', 'noselect' }
-opt.signcolumn = 'yes:1'
-opt.nrformats = 'bin,hex,alpha'
 
 
 ------------------------------ MAPPINGS ---------------------------------------
