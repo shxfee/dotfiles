@@ -259,7 +259,7 @@ dofile(config_path .. '/lua/my/playground.lua')         -- temporary stuff
 opt.wrap = false
 opt.number = true
 opt.relativenumber = true
-opt.colorcolumn = '80'
+opt.colorcolumn = ""
 opt.scrolloff = 10
 opt.termguicolors = true
 opt.showmode = false
@@ -277,13 +277,14 @@ opt.winwidth = 100
 opt.winminwidth = 30
 opt.inccommand = 'nosplit'
 opt.viewoptions = { 'cursor', 'folds' }
+opt.foldlevel = 99
 
 opt.hlsearch = false
 opt.hidden = true
 opt.cmdheight = 2
 opt.updatetime = 200
 opt.shortmess:append('cI')
-opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.signcolumn = 'yes:1'
 opt.nrformats = 'bin,hex,alpha'
 
