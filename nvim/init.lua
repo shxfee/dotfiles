@@ -68,7 +68,9 @@ require('packer').startup(function()
     use 'shxfee/oceanic-next-vim'
     use 'kyazdani42/blue-moon'
     use 'Th3Whit3Wolf/one-nvim'
+    use 'kyazdani42/nvim-web-devicons'
 
+    use 'xiyaowong/nvim-transparent'
     use 'norcalli/nvim-colorizer.lua' -- color highlights: need to configure
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
@@ -79,7 +81,7 @@ require('plenary.reload').reload_module('my', true)
 
 
 ------------------------------ PLUGIN CONFIG ----------------------------------
-g['oceanic_transparent_bg'] = 1
+g['transparent_enabled '] = 1
 
 g['test#strategy'] = 'neovim'
 g['test#neovim#term_position'] = 'split'
@@ -93,6 +95,19 @@ g['vimwiki_global_ext'] = 0
 
 g['vsnip_snippet_dir'] = config_path .. '/vsnip'
 g['vue_pre_processors'] = {}
+
+-- web icons
+require'nvim-web-devicons'.setup{}
+
+-- Make neovim trasparent
+require'transparent'.setup{
+    enable = true;
+    extra_groups = 'all';
+    exclude = {
+       "Visual",
+    }
+}
+
 
 -- telescope
 require('telescope').load_extension('fzy_native')
