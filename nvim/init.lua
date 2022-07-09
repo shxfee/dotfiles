@@ -85,7 +85,6 @@ require('packer').startup(function()
     use 'tpope/vim-fugitive'
     use 'justinmk/vim-dirvish'
     use 'janko-m/vim-test'
-    use {'vimwiki/vimwiki', branch = 'dev'}
     use 'hrsh7th/vim-vsnip'
     use 'wakatime/vim-wakatime'
     use 'tpope/vim-dadbod'
@@ -125,10 +124,6 @@ g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
 
 g['dirvish_mode'] = [[:sort ,^.*[\/],]]
-
-g['vimwiki_hl_headers'] = 1
-g['vimwiki_conceal_onechar_markers'] = 0
-g['vimwiki_global_ext'] = 0
 
 g['vsnip_snippet_dir'] = config_path .. '/vsnip'
 g['vue_pre_processors'] = {}
@@ -451,18 +446,8 @@ augroup('my_commands', {
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
     'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
-    -- Vim wiki
-    'BufNewFile,BufRead *.wiki,*.md set ft=vimwiki',
-
-    'FileType vimwiki nmap <buffer> - <Plug>(dirvish_up)',
-    'FileType vimwiki nmap <buffer> <c-h> <Plug>VimwikiAddHeaderLevel',
-    'FileType vimwiki nmap <buffer> <c-l> <Plug>VimwikiRemoveHeaderLevel',
-    'FileType vimwiki nmap <buffer> # <Plug>VimwikiNormalizeLink',
-    'FileType vimwiki nnoremap <buffer> <leader>wc <cmd>wa <bar> only <bar> enew<cr>',
-    'FileType vimwiki setlocal spell textwidth=79 formatoptions+=t',
+    -- Neorg
     'FileType norg setlocal spell textwidth=79 formatoptions+=t',
-    'FileType vimwiki let b:coc_suggest_disable=1',
 })
 
 cmd [[ colorscheme nord ]]
-
