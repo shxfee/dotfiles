@@ -314,10 +314,10 @@ keymap.set('n', '<leader>fc', function ()
 end)
 
 keymap.set('n', '<leader>fb', function ()
-    return require('telescope.builtin').buffers{}
+    return require('telescope.builtin').current_buffer_fuzzy_find{}
 end)
 
-keymap.set('n', '<leader>fb', function ()
+keymap.set('n', '<leader>fh', function ()
     return require('telescope.builtin').help_tags{}
 end)
 
@@ -330,6 +330,7 @@ end)
 
 keymap.set('n', '<leader>fp', function ()
     return require('telescope.builtin').find_files{
+        find_command = {"fd", "--type", "d"},
         cwd=plugin_path,
         previewer=false,
     }
