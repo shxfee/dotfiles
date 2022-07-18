@@ -449,8 +449,6 @@ augroup('my_commands', {
     'BufWritePre * call mkdir(expand("<afile>:p:h"), "p")',
     -- Restore cursor
     [[ BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' |   exe "normal! g`\"" | endif ]],
-    -- Blade
-    'BufNewFile,BufRead *blade.php set ft=html',
     -- Dirvish
     'FileType dirvish nnoremap <buffer> % :edit %',
     'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
