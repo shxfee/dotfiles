@@ -51,7 +51,7 @@ end
 
 cmd [[ packadd packer.nvim ]]
 local use = require('packer').use
-require('packer').startup(function()
+require('packer').startup({function()
     -- dependencies
     use {'wbthomason/packer.nvim', opt = true}
     use 'nvim-lua/popup.nvim'
@@ -110,7 +110,15 @@ require('packer').startup(function()
     use 'norcalli/nvim-colorizer.lua'
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
-end)
+end,
+    config = {
+        display = {
+            open_fn = function()
+                return require('packer.util').float({ border = 'rounded' })
+            end
+        }
+    }
+})
 
 -- reload my modules
 require('plenary.reload').reload_module('my', true)
