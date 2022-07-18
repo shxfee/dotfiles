@@ -334,8 +334,8 @@ keymap.set('n', '<leader>fp', function ()
 end)
 
 -- Git
--- keymap.set('n', '<leader>gg', ':vertical Git<cr>')
-keymap.set('n', '<leader>gg', '<cmd>LazyGit<cr>')
+keymap.set('n', '<leader>gg', ':vertical Git<cr>')
+keymap.set('n', '<leader>gl', '<cmd>LazyGit<cr>')
 keymap.set('n', '<leader>gb', ':0GlLog!<cr>')
 
 
@@ -353,23 +353,23 @@ keymap.set('n', '<leader>1', ':Cheat php/')
 
 
 keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
-keymap.set('n', '<leader>od', ':lua require("my.laravel").open_adminer()<cr>')
+keymap.set('n', '<leader>od', '<cmd>lua require("my.laravel").open_adminer()<cr>')
 
-keymap.set('n', '<leader>se', ':vsplit $MYVIMRC<cr>')
-keymap.set('n', '<leader>so', ':luafile $MYVIMRC<cr>')
+keymap.set('n', '<leader>se', '<cmd>vsplit $MYVIMRC<cr>')
+keymap.set('n', '<leader>so', '<cmd>luafile $MYVIMRC<cr>')
 
 keymap.set('c', '<c-p>', '<up>')
 keymap.set('c', '<c-n>', '<down>')
 
-keymap.set('n', '<leader>tt', ':lua require("my.utils").run_nearest_or_last_test()<cr>')
-keymap.set('n', '<leader>tf', ':TestFile<cr>')
-keymap.set('n', '<leader>tl', ':TestLast<cr>')
-keymap.set('n', '<leader>ts', ':TestSuite<cr>')
+keymap.set('n', '<leader>tt', '<cmd>lua require("my.utils").run_nearest_or_last_test()<cr>')
+keymap.set('n', '<leader>tf', '<cmd>TestFile<cr>')
+keymap.set('n', '<leader>tl', '<cmd>TestLast<cr>')
+keymap.set('n', '<leader>ts', '<cmd>TestSuite<cr>')
 
-keymap.set('n', '<leader>te', ':tabe<cr>')
+keymap.set('n', '<leader>te', '<cmd>tabe<cr>')
 
-keymap.set('n', '<c-l>', ':<C-u>nohlsearch<cr>')
-keymap.set('i', '<c-l>', '<esc>:<C-u>nohlsearch<cr>a')
+keymap.set('n', '<c-l>', '<cmd><C-u>nohlsearch<cr>')
+keymap.set('i', '<c-l>', '<esc><cmd><C-u>nohlsearch<cr>a')
 keymap.set('c', 'w!!', 'w :term sudo tee > /dev/null %', {silent = false})
 keymap.set('t', '<c-o>', '<c-\\><c-n>')
 
