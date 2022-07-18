@@ -40,7 +40,7 @@ opt.shortmess:append('cI')
 opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.signcolumn = 'yes:1'
 opt.nrformats = 'bin,hex,alpha'
-
+opt.clipboard = 'unnamedplus'
 
 ------------------------------ PLUGINS ----------------------------------------
 local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
