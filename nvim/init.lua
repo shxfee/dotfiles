@@ -145,7 +145,9 @@ require'transparent'.setup{
     enable = true;
     extra_groups = 'all';
     exclude = {
-       "Visual",
+        "Visual",
+        "MsgArea",
+        "MoreMsg",
     }
 }
 
@@ -188,7 +190,7 @@ local servers = {
 
 -- setup server or install if missing
 for _, server in pairs(servers) do
-    local server_available, requested_server = lsp_installer_servers.get_server(server)
+    local server_available, requested_s rver = lsp_installer_servers.get_server(server)
 
     if server_available then
         requested_server:on_ready(function ()
@@ -218,10 +220,20 @@ cmp.setup({
         ['<C-e>'] = cmp.mapping.abort(),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     }),
-    sources = cmp.config.sources(
-        {{ name = 'nvim_lsp' }, { name = 'vsnip' }}, 
-        {{ name = 'buffer' }, { name = 'neorg' }}
-    )
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'vsnip' },
+        { name = 'neorg' },
+    }, {
+        {
+            name = 'buffer',
+            option = {
+                get_bufnrs = function()
+                    return vim.api.nvim_list_bufs()
+                end
+            }
+        },
+    })
 })
 
 -- autopairs
