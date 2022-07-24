@@ -1,0 +1,13 @@
+# /home/shxfee/.config/tmuxinator/bithufangi.yml
+
+name: bithufangi
+root: ~/development/centurion
+
+windows:
+  - docker: dc up -d
+  - vim:
+      root: ~/development/centurion/logistics-internal-control
+      panes:
+        - vim
+  - npm: docker exec app npm run watch --prefix ./logistics-internal-control
+  - ssh: null
