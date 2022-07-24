@@ -90,6 +90,8 @@ require('packer').startup({function()
     use 'tpope/vim-dadbod'
     use 'nvim-neorg/neorg'
     use 'kdheepak/lazygit.nvim'
+    use 'zbirenbaum/copilot.lua'
+    use 'zbirenbaum/copilot-cmp'
 
     -- text edit
     use 'windwp/nvim-autopairs'
@@ -139,6 +141,7 @@ g['vue_pre_processors'] = {}
 -- web icons
 require'nvim-web-devicons'.setup{}
 require'colorizer'.setup{}
+require'copilot'.setup{}
 
 -- Make neovim trasparent
 require'transparent'.setup{
@@ -221,6 +224,7 @@ cmp.setup({
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     }),
     sources = cmp.config.sources({
+        { name = "copilot" },
         { name = 'nvim_lsp' },
         { name = 'vsnip' },
         { name = 'neorg' },
@@ -233,6 +237,7 @@ cmp.setup({
                 end
             }
         },
+        { name = 'path' },
     })
 })
 
@@ -297,7 +302,8 @@ require('neorg').setup {
                     keybinds.remap_event("norg", "n", "<CR>", "core.norg.esupports.hop.hop-link")
                 end,
             }
-        }
+        },
+        ["core.export"] = {},
     },
 }
 
