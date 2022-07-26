@@ -3,8 +3,8 @@
 
 local api, cmd, fn, g, opt, keymap = vim.api, vim.cmd, vim.fn, vim.g, vim.opt, vim.keymap
 
-config_path = fn.stdpath('config')
-plugin_path = fn.stdpath('data') .. '/site/pack/packer/'
+local config_path = fn.stdpath('config')
+local plugin_path = fn.stdpath('data') .. '/site/pack/packer/'
 
 
 ------------------------------ OPTIONS ----------------------------------------
@@ -31,6 +31,7 @@ opt.winminwidth = 30
 opt.inccommand = 'nosplit'
 opt.viewoptions = { 'cursor', 'folds' }
 opt.foldlevel = 99
+opt.laststatus = 3
 
 opt.hlsearch = false
 opt.hidden = true
@@ -112,6 +113,10 @@ require('packer').startup({function()
     use 'norcalli/nvim-colorizer.lua'
     use 'StanAngeloff/php.vim'
     use 'posva/vim-vue'
+
+    use 'anuvyklack/pretty-fold.nvim'
+    use 'folke/lua-dev.nvim'
+    use 'nvim-lualine/lualine.nvim'
 end,
     config = {
         display = {
