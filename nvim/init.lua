@@ -72,8 +72,10 @@ require('packer').startup({function()
     use 'JoosepAlviste/nvim-ts-context-commentstring'
 
     -- language server
+    use 'onsails/lspkind.nvim'
     use 'neovim/nvim-lspconfig'
-    use 'williamboman/nvim-lsp-installer'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
 
     -- completion
     use 'hrsh7th/cmp-nvim-lsp'
@@ -147,18 +149,20 @@ g['vue_pre_processors'] = {}
 require'nvim-web-devicons'.setup{}
 require'colorizer'.setup{}
 require'copilot'.setup{}
+require'pretty-fold'.setup{}
 
 -- Make neovim trasparent
 require'transparent'.setup{
     enable = true;
-    extra_groups = 'all';
-    exclude = {
-        "Visual",
-        "MsgArea",
-        "MoreMsg",
-    }
+    extra_groups = {
+        'WinSeparator',
+        'TabLine',
+        'TabLineFill',
+        'VertSplit',
+        'Pmenu',
+        'PmenuSel',
+    };
 }
-
 
 -- telescope
 require('telescope').load_extension('fzy_native')
@@ -176,7 +180,7 @@ require('telescope').setup {
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'bash', 'css', 'html', 'javascript', 'json', 'jsonc', 'lua', 'php', 'python',
-        'query', 'typescript', 'vue', 'norg', 'yaml', 
+        'query', 'typescript', 'vue', 'norg', 'yaml',
     },
     indent = { enable = true, disable = { 'html', 'vue' } },
     highlight = { enable = true, disable = { 'vue' } },
@@ -188,35 +192,47 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- lsp configuration
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local lsp_installer_servers = require'nvim-lsp-installer.servers'
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 local servers = {
-    'bashls', 'cssls', 'diagnosticls', 'html', 'jsonls', 'sumneko_lua', 
+    'bashls', 'cssls', 'diagnosticls', 'html', 'jsonls',
     'intelephense', 'tailwindcss', 'vuels',
 }
 
--- setup server or install if missing
-for _, server in pairs(servers) do
-    local server_available, requested_s rver = lsp_installer_servers.get_server(server)
+-- setup all servers
+local lspconfig = require('lspconfig')
 
-    if server_available then
-        requested_server:on_ready(function ()
-            local opts = { capabilities = capabilities }
-            requested_server:setup(opts)
-        end)
-        if not requested_server:is_installed() then
-            -- Queue the server to be installed
-            requested_server:install()
-        end
-    end
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
+  }
 end
 
+local luadev = require("lua-dev").setup{}
+lspconfig.sumneko_lua.setup(luadev)
+
+require("mason").setup {
+    ui = { border = 'rounded', }
+}
+require("mason-lspconfig").setup {
+    ensure_installed = servers,
+}
 
 -- Setup nvim-cmp
 local cmp = require'cmp'
 
 cmp.setup({
+    window = {
+        completion = {
+            border = 'rounded',
+            winhighlight = 'Normal:Pmenu,FloatBorder:Normal,CursorLine:PmenuSel,Search:None',
+        },
+        documentation = { border = 'rounded', }
+    },
+    formatting = {
+        format = require'lspkind'.cmp_format(),
+    },
     snippet = {
         expand = function(args)
             vim.fn["vsnip#anonymous"](args.body)
@@ -229,7 +245,6 @@ cmp.setup({
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     }),
     sources = cmp.config.sources({
-        { name = "copilot" },
         { name = 'nvim_lsp' },
         { name = 'vsnip' },
         { name = 'neorg' },
@@ -243,6 +258,7 @@ cmp.setup({
             }
         },
         { name = 'path' },
+        { name = "copilot" },
     })
 })
 
@@ -338,7 +354,6 @@ dofile(config_path .. '/lua/my/playground.lua')         -- temporary stuff
 
 ------------------------------ MAPPINGS ---------------------------------------
 g['mapleader'] = " "
-local opts = { noremap=true, silent=true }
 
 -- telescope
 keymap.set('n', '<leader>ff', function ()
@@ -431,19 +446,19 @@ keymap.set('i', '<a-p>', '<c-r>+')
 keymap.set('n', 'gV', '`[v`]')
 
 -- lsp
-keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-keymap.set('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-keymap.set('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-keymap.set('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
-keymap.set('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>')
-keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-keymap.set('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>')
+keymap.set('n', 'gD', vim.lsp.buf.declaration)
+keymap.set('n', 'gd', vim.lsp.buf.definition)
+keymap.set('n', 'K', vim.lsp.buf.hover)
+keymap.set('n', 'gi', vim.lsp.buf.implementation)
+keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+keymap.set('n', '<space>D', vim.lsp.buf.type_definition)
+keymap.set('n', '<space>rn', vim.lsp.buf.rename)
+keymap.set('n', '<space>ca', vim.lsp.buf.code_action)
+keymap.set('n', 'gr', vim.lsp.buf.references)
+keymap.set('n', '<space>e', vim.diagnostic.open_float)
+keymap.set('n', '[d', vim.diagnostic.goto_prev)
+keymap.set('n', ']d', vim.diagnostic.goto_next)
+keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 -- vsnip
 cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
@@ -475,7 +490,7 @@ cmd [[cabbrev h vertical help]]
 cmd [[iabbrev <expr> dts strftime("%c (MVT)")]]
 cmd [[iabbrev <expr> ds strftime("%Y-%m-%d")]]
 
-function augroup(name, definitions)
+local function augroup(name, definitions)
     cmd('augroup '..name..' | autocmd!')
     vim.tbl_map(function(c) cmd('autocmd '..c) end, definitions)
     cmd'augroup END'
