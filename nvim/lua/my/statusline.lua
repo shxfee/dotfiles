@@ -1,8 +1,17 @@
+vim.opt.showtabline = 0
+local theme = require'lualine.themes.nord'
+
+theme.normal.a.bg = '#87afd7'
+theme.insert.a.bg = '#afaf87'
+theme.normal.b.bg = '#444444'
+theme.normal.c.bg = '#585858'
+
 require('lualine').setup {
     options = {
         icons_enabled = true,
-        theme = 'auto',
-        component_separators = { left = '', right = ''},
+        theme = theme,
+        -- component_separators = { left = '', right = ''},
+        component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {
             statusline = {},
@@ -17,7 +26,12 @@ require('lualine').setup {
         }
     },
     sections = {
-        lualine_a = {'mode'},
+        lualine_a = {
+            {
+                'mode',
+                fmt = string.lower,
+            },
+        },
         lualine_b = {'branch', 'diff', 'diagnostics'},
         lualine_c = {
             {
@@ -29,7 +43,16 @@ require('lualine').setup {
             },
         },
         lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_y = {'progress'},
+        lualine_y = {
+            {
+                'tabs',
+                tabs_color = {
+                    active = 'lualine_a_normal',
+                    inactive = 'lualine_b_normal',
+                },
+            },
+        },
+        -- lualine_y = {'progress'},
         lualine_z = {'location'}
     },
     inactive_sections = {
@@ -45,26 +68,3 @@ require('lualine').setup {
     inactive_winbar = {},
     extensions = {}
 }
-
------------------------------- TAB LINE ---------------------------------------
-local fn, cmd = vim.fn, vim.cmd
-function My_tabline()
-    local s = ''
-
-    for i = 1, fn.tabpagenr('$') do
-        local buflist = fn.tabpagebuflist(i)
-        local label = fn.bufname(buflist[1])
-        label = ' ' .. fn.fnamemodify(label, ':t')
-
-        if label == ' ' then label = ' NA ' end
-
-        if i == fn.tabpagenr() then s = s .. '%#TabLineSel#'
-        else s = s .. '%#TabLine#' end
-        s = s .. label .. ' '
-    end
-
-    s = s .. '%#TabLineFill#%T'
-    return s
-end
-
-cmd[[ set tabline=%!luaeval('My_tabline()') ]]
