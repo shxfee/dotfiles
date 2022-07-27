@@ -134,8 +134,6 @@ require('plenary.reload').reload_module('my', true)
 
 
 ------------------------------ PLUGIN CONFIG ----------------------------------
-g['transparent_enabled '] = 1
-
 g['test#strategy'] = 'neovim'
 g['test#neovim#term_position'] = 'split'
 g['test#php#phpunit#executable'] = './vendor/bin/phpunit'
@@ -161,6 +159,7 @@ require'transparent'.setup{
         'VertSplit',
         'Pmenu',
         'PmenuSel',
+        'Folded',
     };
 }
 
@@ -231,7 +230,18 @@ cmp.setup({
         documentation = { border = 'rounded', }
     },
     formatting = {
-        format = require'lspkind'.cmp_format(),
+        format = require'lspkind'.cmp_format{
+            with_text = true,
+            menu = {
+                nvim_lsp = '[lsp]',
+                vsnip = '[snip]',
+                neorg = '[norg]',
+                buffer = '[buf]',
+                path = '[path]',
+                copilot = '[pilot]',
+            },
+
+        },
     },
     snippet = {
         expand = function(args)
@@ -248,7 +258,6 @@ cmp.setup({
         { name = 'nvim_lsp' },
         { name = 'vsnip' },
         { name = 'neorg' },
-    }, {
         {
             name = 'buffer',
             option = {
