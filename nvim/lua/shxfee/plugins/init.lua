@@ -15,11 +15,6 @@ require('packer').startup({function()
     use 'tpope/vim-repeat'
     use 'tpope/vim-unimpaired'
 
-    -- finder
-    use 'nvim-telescope/telescope.nvim'
-    use 'nvim-telescope/telescope-fzy-native.nvim'
-    use 'nvim-neorg/neorg-telescope'
-
     -- treesitter
     use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate'}
     use 'nvim-treesitter/playground'
@@ -31,6 +26,11 @@ require('packer').startup({function()
     use 'neovim/nvim-lspconfig'
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
+
+    -- finder
+    use 'nvim-telescope/telescope.nvim'
+    use 'nvim-telescope/telescope-fzy-native.nvim'
+    use 'nvim-neorg/neorg-telescope'
 
     -- completion
     use 'hrsh7th/cmp-nvim-lsp'
@@ -49,6 +49,7 @@ require('packer').startup({function()
     use 'nvim-neorg/neorg'
     use 'kdheepak/lazygit.nvim'
     use 'github/copilot.vim'
+    use 'ThePrimeagen/refactoring.nvim'
 
     -- text edit
     use {
@@ -73,18 +74,23 @@ require('packer').startup({function()
 
     use 'xiyaowong/nvim-transparent'
     use {
-        'norcalli/nvim-colorizer.lua',
-        config = function() require'colorizer'.setup{} end
+        'NvChad/nvim-colorizer.lua',
+        config = function()
+            require'colorizer'.setup {
+                filetypes = {
+                    '*';
+                    '!neorg';
+                }
+            }
+        end
     }
-    use 'StanAngeloff/php.vim'
-    use 'posva/vim-vue'
 
     use {
         'anuvyklack/pretty-fold.nvim',
         config = function() require'pretty-fold'.setup{} end
     }
 
-    use 'folke/lua-dev.nvim'
+    use 'folke/neodev.nvim'
     use 'nvim-lualine/lualine.nvim'
     use 'arkav/lualine-lsp-progress'
     use 'kkharji/lspsaga.nvim'
@@ -107,4 +113,3 @@ require'shxfee.plugins.telescope'
 require'shxfee.plugins.test'
 require'shxfee.plugins.transparent'
 require'shxfee.plugins.treesitter'
-

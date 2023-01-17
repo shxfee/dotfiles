@@ -12,8 +12,17 @@ require('neorg').setup {
         },
         ["core.norg.journal"] = {
             config = {
+                use_template = true,
                 workspace = "documents",
                 strategy = "flat",
+                tocc_format = function (toc)
+                    local titles = {}
+                    -- vim.pretty_print(toc)
+                    for k, v in pairs(toc) do
+                        table.insert(titles, 'foobar')
+                    end
+                    return titles
+                end
             },
         },
         ["core.norg.dirman"] = {
@@ -21,6 +30,7 @@ require('neorg').setup {
                 workspaces = {
                     notes = "~/documents/notes",
                     gtd = "~/documents/gtd",
+                    documents = "~/documents",
                 },
                 default_workspace = "notes",
                 autochdir = false,
@@ -82,3 +92,4 @@ keymap.set('n', '<leader>jj', '<cmd>exe "silent! NeorgStart" | exe "silent! Neor
 keymap.set('n', '<leader>jt', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal tomorrow"<cr>')
 keymap.set('n', '<leader>jy', '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal yesterday"<cr>')
 keymap.set('n', '<leader>ji', '<cmd>e ~/documents/journal/index.norg<cr>')
+keymap.set('n', '<leader>jr', '<cmd>Neorg journal toc update<cr>')

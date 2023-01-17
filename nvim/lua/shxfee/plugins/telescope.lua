@@ -2,7 +2,6 @@ if not pcall(require, "telescope") then
     return
 end
 
-
 require('telescope').load_extension('fzy_native')
 local actions = require('telescope.actions')
 

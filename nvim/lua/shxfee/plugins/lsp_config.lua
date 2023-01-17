@@ -50,7 +50,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- lsp configuration
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local servers = {
     'bashls', 'cssls', 'diagnosticls', 'html', 'jsonls',
@@ -66,8 +66,8 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-local luadev = require("lua-dev").setup{}
-lspconfig.sumneko_lua.setup(luadev)
+local neodev = require("neodev").setup{}
+lspconfig.sumneko_lua.setup(neodev)
 
 require("mason").setup {
     ui = { border = 'rounded', }
@@ -76,4 +76,3 @@ require("mason").setup {
 require("mason-lspconfig").setup {
     ensure_installed = servers,
 }
-

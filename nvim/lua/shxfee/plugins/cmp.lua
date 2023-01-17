@@ -37,10 +37,10 @@ cmp.setup({
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     }),
     sources = {
-        { name = 'path', group_index = 1 },
-        { name = 'neorg', group_index = 1 },
-        { name = 'vsnip', group_index = 2 },
-        { name = 'nvim_lsp', group_index = 2 },
+        { name = 'path', group_index = 1, priority = 1 },
+        { name = 'neorg', group_index = 1, priority = 1 },
+        { name = 'vsnip', group_index = 2, priority = 1 },
+        { name = 'nvim_lsp', group_index = 2, priority = 0.5 },
         {
             name = 'buffer',
             option = {
@@ -49,6 +49,27 @@ cmp.setup({
                 end
             },
             group_index = 2,
+            priority = 0.5,
         },
+    },
+
+    sorting = {
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.locality,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
+    },
+
+    -- Just trying out
+    experimental = {
+        native_menu = false,
+        ghost_text = false,
     },
 })

@@ -2,6 +2,7 @@
 -- github.com/shxfee
 
 local _G = vim.g
+_G['mapleader'] = " "
 
 ------------------------------ OPTIONS ----------------------------------------
 -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/plugin/options.lua
@@ -17,6 +18,7 @@ opt.showmode = false
 
 opt.autoindent = true
 opt.smartindent = true
+opt.cindent = true
 opt.shiftwidth = 4
 opt.tabstop = 4
 opt.softtabstop = 4
@@ -54,7 +56,13 @@ opt.formatoptions = opt.formatoptions
 
 
 -- reload my modules
-require'plenary.reload'.reload_module('shxfee', true)
+for name,_ in pairs(package.loaded) do
+    if name:match('^shxfee') then
+        package.loaded[name] = nil
+    end
+end
+
+-- require'plenary.reload'.reload_module('shxfee', true)
 
 require'shxfee.disable_builtin'
 require'shxfee.plugins'
@@ -74,8 +82,6 @@ _G['copilot_filetypes'] = {
 
 ------------------------------ MAPPINGS ---------------------------------------
 local keymap = vim.keymap
-
-_G['mapleader'] = " "
 
 -- Git
 keymap.set('n', '<leader>a', ':T ./artisan ')
@@ -99,7 +105,7 @@ keymap.set('n', '<leader>ts', '<cmd>TestSuite<cr>')
 
 keymap.set('n', '<leader>te', '<cmd>tabe<cr>')
 
-keymap.set('n', '<c-l>', '<cmd><C-u>nohlsearch<cr>')
+-- keymap.set('n', '<c-l>', '<cmd><C-u>nohlsearch<cr>')
 keymap.set('i', '<c-l>', '<esc><cmd><C-u>nohlsearch<cr>a')
 keymap.set('c', 'w!!', 'w :term sudo tee > /dev/null %', {silent = false})
 keymap.set('t', '<c-o>', '<c-\\><c-n>')
@@ -153,7 +159,7 @@ augroup('my_commands', {
     'TermOpen * setlocal nowrap',
     'BufWritePost init.lua nested luafile $MYVIMRC',
     'BufWritePost init.lua PackerCompile',
-    'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
+    -- 'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
     'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 300}',
     'BufWritePre * call mkdir(expand("<afile>:p:h"), "p")',
     -- Restore cursor
@@ -162,7 +168,8 @@ augroup('my_commands', {
     'FileType dirvish nnoremap <buffer> % :edit %',
     'FileType dirvish nnoremap <nowait> <buffer> d :!mkdir %',
     -- Neorg
-    'FileType norg setlocal spell textwidth=79 formatoptions+=ta',
+    'FileType norg setlocal spell textwidth=79 formatoptions+=t',
+    'BufEnter *.blade.php setlocal ft=html',
 })
 
 cmd [[ colorscheme nord ]]
