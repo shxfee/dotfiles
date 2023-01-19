@@ -1,8 +1,27 @@
 -- neovim config
 -- github.com/shxfee
 
-local _G = vim.g
-_G['mapleader'] = " "
+vim.g.mapleader = " "
+
+------------------------------ PLUGINS ----------------------------------------
+
+-- Plugin manager
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Lazy automatically loads all files form plugins dir
+require("lazy").setup("plugins", { ui = { border = "rounded" }})
+
 
 ------------------------------ OPTIONS ----------------------------------------
 -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/plugin/options.lua
@@ -54,30 +73,7 @@ opt.formatoptions = opt.formatoptions
   - "2" -- When formatting text, use the indent of the second line of a paragraph 
   + "j" -- Where it makes sense, remove a comment leader when joining lines
 
-
--- reload my modules
-for name,_ in pairs(package.loaded) do
-    if name:match('^shxfee') then
-        package.loaded[name] = nil
-    end
-end
-
--- require'plenary.reload'.reload_module('shxfee', true)
-
 require'shxfee.disable_builtin'
-require'shxfee.plugins'
-
-
------------------------------- PLUGIN CONFIG ----------------------------------
-
-_G['dirvish_mode'] = [[:sort ,^.*[\/],]]
-
-_G['vsnip_snippet_dir'] = vim.fn.stdpath('config') .. '/vsnip'
-_G['vue_pre_processors'] = {}
-_G['copilot_filetypes'] = {
-    norg = false,
-    TelescopePrompt = false,
-}
 
 
 ------------------------------ MAPPINGS ---------------------------------------
@@ -85,9 +81,6 @@ local keymap = vim.keymap
 
 -- Git
 keymap.set('n', '<leader>a', ':T ./artisan ')
-keymap.set('n', '<leader>gg', '<cmd>vertical Git<cr>')
-keymap.set('n', '<leader>gl', '<cmd>LazyGit<cr>')
-keymap.set('n', '<leader>gb', '<cmd>0GlLog!<cr>')
 
 keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
 keymap.set('n', '<leader>od', '<cmd>lua require("my.laravel").open_adminer()<cr>')
@@ -98,10 +91,6 @@ keymap.set('n', '<leader>so', '<cmd>luafile $MYVIMRC<cr>')
 keymap.set('c', '<c-p>', '<up>')
 keymap.set('c', '<c-n>', '<down>')
 
-keymap.set('n', '<leader>tt', '<cmd>lua require("my.utils").run_nearest_or_last_test()<cr>')
-keymap.set('n', '<leader>tf', '<cmd>TestFile<cr>')
-keymap.set('n', '<leader>tl', '<cmd>TestLast<cr>')
-keymap.set('n', '<leader>ts', '<cmd>TestSuite<cr>')
 
 keymap.set('n', '<leader>te', '<cmd>tabe<cr>')
 
@@ -157,8 +146,7 @@ end
 augroup('my_commands', {
     -- General
     'TermOpen * setlocal nowrap',
-    'BufWritePost init.lua nested luafile $MYVIMRC',
-    'BufWritePost init.lua PackerCompile',
+    -- 'BufWritePost init.lua nested luafile $MYVIMRC',
     -- 'VimEnter * silent! lua require("my.laravel").set_db_connection_string()',
     'TextYankPost * lua vim.highlight.on_yank {on_visual = false, timeout = 300}',
     'BufWritePre * call mkdir(expand("<afile>:p:h"), "p")',
@@ -171,5 +159,3 @@ augroup('my_commands', {
     'FileType norg setlocal spell textwidth=79 formatoptions+=t',
     'BufEnter *.blade.php setlocal ft=html',
 })
-
-cmd [[ colorscheme nord ]]
