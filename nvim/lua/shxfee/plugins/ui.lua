@@ -19,7 +19,11 @@ return {
             max_width = function()
                 return math.floor(vim.o.columns * 0.75)
             end,
+            stages = "slide",
         },
+        init = function()
+            vim.notify = require("notify")
+        end,
     },
 
     -- statusline
@@ -144,7 +148,17 @@ return {
             char = "│",
             filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
             show_trailing_blankline_indent = false,
-            show_current_context = false,
+            show_current_context = true,
         },
+    },
+
+    -- icons
+    {
+        "kyazdani42/nvim-web-devicons",
+    },
+
+    -- folding
+    {
+        "anuvyklack/pretty-fold.nvim",
     },
 }

@@ -8,9 +8,20 @@ return {
         end
     },
 
-    "shxfee/oceanic-next-vim",
-    "kyazdani42/blue-moon",
-    "Th3Whit3Wolf/one-nvim",
+    {
+        "shxfee/oceanic-next-vim",
+        lazy = true,
+    },
+
+    {
+        "kyazdani42/blue-moon",
+        lazy = true,
+    },
+
+    {
+        "Th3Whit3Wolf/one-nvim",
+        lazy = true,
+    },
 
     {
         "xiyaowong/nvim-transparent",

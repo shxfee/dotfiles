@@ -1,12 +1,15 @@
 -- TODO: windwp/nvim-ts-autotag
 -- TODO: L3MON4D3/LuaSnip
-
 return {
     -- snippets
     {
         'hrsh7th/vim-vsnip',
         init = function()
             vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
+            vim.cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
+            vim.cmd[[smap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
+            vim.cmd[[imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<C-k>']]
+            vim.cmd[[smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<C-k>']]
         end,
     },
 
@@ -147,6 +150,7 @@ return {
     -- better text-objects
     {
         "echasnovski/mini.ai",
+        enabled = false,
         keys = {
             { "a", mode = { "x", "o" } },
             { "i", mode = { "x", "o" } },
@@ -241,5 +245,55 @@ return {
                 desc = "Git log for current buffer",
             },
         },
+    },
+
+    -- database manager
+    {
+        "tpope/vim-dadbod",
+        cmd = "DB",
+    },
+
+    -- refactoring code
+    {
+        "ThePrimeagen/refactoring.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter",
+        },
+        keys = {
+            {
+                "<leader>re",
+                [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
+                mode = "v",
+                desc = "Extract function"
+            },
+            {
+                "<leader>rf",
+                [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
+                mode = "v",
+                desc = "Extract function to file",
+            },
+            {
+                "<leader>rv",
+                [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
+                mode = "v",
+                desc = "Extract variable",
+            },
+            {
+                "<leader>ri",
+                [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
+                mode = "v",
+                desc = "Inline variable",
+            },
+        }
+    },
+
+    -- auto html tag completion
+    {
+        "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
+        config = function()
+            require("nvim-ts-autotag").setup()
+        end,
     },
 }

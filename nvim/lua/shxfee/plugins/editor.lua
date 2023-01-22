@@ -21,14 +21,17 @@ return {
         dependencies = {
             "nvim-telescope/telescope-fzy-native.nvim",
         },
+
         opts = {
             defaults = {
                 mappings = {
                     i = {
-                        ['<c-q>'] = function() 
+                        -- disable tab mapping because it conflicts with copilot
+                        ['<Tab>'] = false,
+                        ['<c-q>'] = function()
                             require("telescope.actions").send_to_qflist()
-                        end
-                    }
+                        end,
+                    },
                 },
             },
         },
@@ -94,4 +97,21 @@ return {
             },
         },
     },
+
+    -- which-key
+    {
+        "folke/which-key.nvim",
+        lazy = false,
+        config = function()
+            require("which-key").setup {
+                plugins = {
+                    spelling = {
+                        enabled = true,
+                        suggestions = 20,
+                    },
+                },
+            }
+        end,
+    },
+
 }
