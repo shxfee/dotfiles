@@ -28,7 +28,9 @@ opt.laststatus = 3
 opt.hlsearch = false
 opt.hidden = true
 opt.cmdheight = 2
-opt.updatetime = 200
+opt.updatetime = 300
+opt.timeout = true
+opt.timeoutlen = 500
 opt.shortmess:append('cI')
 opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.signcolumn = 'yes:1'

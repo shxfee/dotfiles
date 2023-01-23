@@ -1,9 +1,17 @@
 -- github.com/shxfee/
--- Plugins are managed by Lazy.nvim and all specs are in lua/shxfee/plugins
--- Other configurations are in lua/shxfee/config and supports hot reloading
--- check autocmds.lua for more details
--- I have borrowed heavily from tjdevries and LazyVim
-
+--
+-- plugins are managed by lazy.nvim and all specs are in lua/shxfee/plugins
+--
+-- all configurations are in lua/shxfee/config and supports hot reloading.
+-- the config directory contains separate files for options, keymaps, autocmds,
+-- commands and abbreviations. customizations.lua is for all customizations
+-- that do not fit into the other categories.
+--
+-- filetype configurations are in after/ftplugin. they set buffer local options
+-- for different filetypes like shiftwidth, tabstop, etc.
+--
+-- i have borrowed heavily from tjdevries and lazyvim
+--
 -- references
 -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim
 -- https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim

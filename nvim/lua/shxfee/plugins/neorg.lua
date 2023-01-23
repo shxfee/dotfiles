@@ -8,32 +8,32 @@ return {
             {
                 '<leader>nn',
                 '<cmd>e ~/documents/notes/index.norg<cr>',
-                desc = "Open notes index",
+                desc = "notes index",
             },
             {
                 '<leader>jj',
                 '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal today"<cr>',
-                desc = "Open journal entry for today",
+                desc = "todays entry",
             },
             {
                 '<leader>jt',
                 '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal tomorrow"<cr>',
-                desc = "Open journal entry for tomorrow",
+                desc = "tomorrows entry",
             },
             {
                 '<leader>jy',
                 '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal yesterday"<cr>',
-                desc = "Open yesterdays journal entry",
+                desc = "yesterdays entry",
             },
             {
                 '<leader>ji',
                 '<cmd>e ~/documents/journal/index.norg<cr>',
-                desc = "Open journal index",
+                desc = "journal index",
             },
             {
                 '<leader>jr',
                 '<cmd>Neorg journal toc update<cr>',
-                desc = "Refresh journal toc",
+                desc = "refresh journal toc",
             },
         },
         opts = {

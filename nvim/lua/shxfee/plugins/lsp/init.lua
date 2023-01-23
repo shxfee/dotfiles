@@ -148,7 +148,7 @@ return {
 
         "williamboman/mason.nvim",
         cmd = "Mason",
-        keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+        keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "mason LSP manager" } },
         opts = {
             ensure_installed = {
                 "stylua",

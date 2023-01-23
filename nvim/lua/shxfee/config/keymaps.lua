@@ -1,22 +1,21 @@
 local keymap = vim.keymap
 
--- Git
-keymap.set('n', '<leader>a', ':T ./vendor/bin/sail artisan')
+-- artisan
+keymap.set('n', '<leader>aa', ':T ./vendor/bin/sail artisan', {desc='artisan cmd'})
 
-keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>')
-keymap.set('n', '<leader>od', '<cmd>lua require("my.laravel").open_adminer()<cr>')
+-- window
+keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>', {desc="clear all windows"})
 
-keymap.set('n', '<leader>se', '<cmd>vsplit $MYVIMRC<cr>')
-keymap.set('n', '<leader>so', '<cmd>luafile $MYVIMRC<cr>')
+-- config
+keymap.set('n', '<leader>ce', '<cmd>vsplit $MYVIMRC<cr>', {desc="edit init.lua"})
+keymap.set('n', '<leader>cl', '<cmd>Lazy<cr>', {desc="lazy plugin manager"})
 
 keymap.set('c', '<c-p>', '<up>')
 keymap.set('c', '<c-n>', '<down>')
 
+-- tabs
+keymap.set('n', '<leader><tab><tab>', '<cmd>tabe<cr>', {desc="new tab"})
 
-keymap.set('n', '<leader>te', '<cmd>tabe<cr>')
-
--- keymap.set('n', '<c-l>', '<cmd><C-u>nohlsearch<cr>')
--- keymap.set('i', '<c-l>', '<esc><cmd><C-u>nohlsearch<cr>a')
 keymap.set('c', 'w!!', 'w :term sudo tee > /dev/null %', {silent = false})
 keymap.set('t', '<c-o>', '<c-\\><c-n>')
 

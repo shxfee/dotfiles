@@ -8,12 +8,6 @@ return {
         end,
     },
 
-    -- some useful keymaps from tpope
-    {
-        "tpope/vim-unimpaired",
-        lazy = false,
-    },
-
     -- fuzzy finder
     {
         "nvim-telescope/telescope.nvim",
@@ -102,15 +96,35 @@ return {
     {
         "folke/which-key.nvim",
         lazy = false,
-        config = function()
-            require("which-key").setup {
-                plugins = {
-                    spelling = {
-                        enabled = true,
-                        suggestions = 20,
-                    },
+        opts = {
+            plugins = {
+                spelling = {
+                    enabled = true,
+                    suggestions = 20,
                 },
-            }
+            },
+            window = {
+                border = "single",
+                position = "bottom",
+            },
+        },
+        config = function(_, opts)
+            local wk = require("which-key")
+            wk.setup(opts)
+
+            wk.register({
+                mode = { "n", "v" },
+                ["<leader>a"] = { name = "+artisan" },
+                ["<leader>f"] = { name = "+file/find" },
+                ["<leader>g"] = { name = "+git" },
+                ["<leader>w"] = { name = "+window" },
+                ["<leader>u"] = { name = "+ui" },
+                ["<leader>c"] = { name = "+config" },
+                ["<leader>t"] = { name = "+test" },
+                ["<leader><tab>"] = { name = "+tabs" },
+                ["<leader>j"] = { name = "+journal" },
+                ["<leader>n"] = { name = "+notes" }
+            })
         end,
     },
 
