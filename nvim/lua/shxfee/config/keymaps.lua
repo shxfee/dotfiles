@@ -6,6 +6,9 @@ keymap.set('n', '<leader>aa', ':T ./vendor/bin/sail artisan', {desc='artisan cmd
 -- window
 keymap.set('n', '<leader>wc', '<cmd>wa<bar>only<bar>enew<cr>', {desc="clear all windows"})
 
+-- git
+keymap.set("n", "<leader>gp", ":Git push<CR>", {desc="git push"})
+
 -- config
 keymap.set('n', '<leader>ce', '<cmd>vsplit $MYVIMRC<cr>', {desc="edit init.lua"})
 keymap.set('n', '<leader>cl', '<cmd>Lazy<cr>', {desc="lazy plugin manager"})
