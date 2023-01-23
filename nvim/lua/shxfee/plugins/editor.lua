@@ -13,6 +13,7 @@ return {
     "nvim-telescope/telescope.nvim",
     version = false,
     dependencies = {
+      "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-fzy-native.nvim",
     },
 
@@ -55,7 +56,7 @@ return {
         desc = "Live grep",
       },
       {
-        "<leader>fc",
+        "<leader>fk",
         function()
           return require('telescope.builtin').colorscheme{}
         end,
@@ -69,14 +70,14 @@ return {
         desc = "Find help tags",
       },
       {
-        "<leader>fe",
+        "<leader>fc",
         function()
           return require('telescope.builtin').find_files{
             cwd=vim.fn.stdpath('config'),
             previewer=false,
           }
         end,
-        desc = "Find in config/env dir",
+        desc = "Find in config dir",
       },
       {
         "<leader>fp",

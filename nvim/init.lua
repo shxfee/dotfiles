@@ -33,8 +33,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Lazy automatically loads all files form plugins dir
-require("lazy").setup( "shxfee.plugins", { ui = { border = "rounded" } })
+-- Lazy automatjcally loads all files form plugins dir
+require("lazy").setup("shxfee.plugins", { ui = { border = "rounded" } })
 
 -- editor options
 require("shxfee.config.options")

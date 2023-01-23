@@ -4,15 +4,17 @@ return {
     "wakatime/vim-wakatime",
   },
 
-  -- copilot
+  -- copilot lua
   {
-    "github/copilot.vim",
-    event = "InsertEnter",
-    init = function ()
-      vim.g.copilot_filetypes = {
-        norg = false,
-        TelescopePrompt = false,
-      }
-    end
+    "zbirenbaum/copilot.lua",
+    event = "VeryLazy",
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<tab>",
+        },
+      },
+    },
   },
 }

@@ -4,11 +4,16 @@ return {
     "rcarriga/nvim-notify",
     keys = {
       {
-        "<leader>un",
+        "<leader>uu",
         function()
           require("notify").dismiss({ silent = true, pending = true })
         end,
-        desc = "Delete all Notifications",
+        desc = "clear notifications",
+      },
+      {
+        "<leader>un",
+        "<cmd>Notifications<cr>",
+        desc = "show notifications",
       },
     },
     opts = {
@@ -29,112 +34,75 @@ return {
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
     dependencies = {
       "arkav/lualine-lsp-progress",
     },
-    init = function ()
-      vim.opt.showtabline = 0
-    end,
-    opts = function ()
-      local theme = require'lualine.themes.nord'
-
-      theme.normal.a.bg = '#87afd7'
-      theme.insert.a.bg = '#afaf87'
-      theme.normal.b.bg = '#444444'
-      theme.normal.c.bg = '#585858'
+    event = "VeryLazy",
+    opts = function()
+      local function fg(name)
+        return function()
+          ---@type {foreground?:number}?
+          local hl = vim.api.nvim_get_hl_by_name(name, true)
+          return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
+        end
+      end
 
       return {
         options = {
-          icons_enabled = true,
-          theme = theme,
-          -- component_separators = { left = '', right = ''},
-          component_separators = { left = '', right = ''},
-          section_separators = { left = '', right = ''},
-          disabled_filetypes = {
-            statusline = {},
-            winbar = {},
-          },
-          always_divide_middle = true,
+          theme = "OceanicNext",
           globalstatus = true,
-          refresh = {
-            statusline = 1000,
-            tabline = 1000,
-            winbar = 1000,
-          }
+          disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
         },
         sections = {
-          lualine_a = {
-            {
-              'mode',
-              fmt = string.lower,
-            },
-          },
-          lualine_b = {'branch', 'diff', 'diagnostics'},
+          lualine_a = { "mode" },
+          lualine_b = { "branch" },
           lualine_c = {
             {
-              'filename',
-              path = 1, -- relative
-              symbols = {
-                unnamed = '',
-              },
+              "diagnostics",
+              -- symbols = {
+              --   error = icons.diagnostics.Error,
+              --   warn = icons.diagnostics.Warn,
+              --   info = icons.diagnostics.Info,
+              --   hint = icons.diagnostics.Hint,
+              -- },
+            },
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+            -- stylua: ignore
+            {
+              function() return require("nvim-navic").get_location() end,
+              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
             },
           },
           lualine_x = {
             {
-              'lsp_progress',
-              -- display_components = { 'lsp_client_name', { 'title', 'percentage', 'message' }},
-              -- With spinner
-              display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' }},
-              -- colors = {
-              --     percentage  = colors.cyan,
-              --     title  = colors.cyan,
-              --     message  = colors.cyan,
-              --     spinner = colors.cyan,
-              --     lsp_client_name = colors.magenta,
-              --     use = true,
-              -- },
-              separators = {
-                component = ' ',
-                progress = ' | ',
-                message = { pre = '(', post = ')'},
-                percentage = { pre = '', post = '%% ' },
-                title = { pre = '', post = ': ' },
-                lsp_client_name = { pre = '[', post = ']' },
-                spinner = { pre = '', post = '' },
-                message = { commenced = 'In Progress', completed = 'Completed' },
+              "lsp_progress",
+              display_components = {
+                "lsp_client_name", "spinner"
               },
-              display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' } },
-              timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
-              spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
+              separators = {
+                lsp_client_name = { pre = '', post = '' },
+              },
             },
-            'encoding',
-            'fileformat',
-            'filetype'
+            -- stylua: ignore
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
           },
           lualine_y = {
             {
-              'tabs',
-              tabs_color = {
-                active = 'lualine_b_normal',
-                inactive = 'lualine_c_normal',
-              },
+              "diff",
+              padding = { left = 1, right = 1 },
+              -- symbols = {
+              --   added = icons.git.added,
+              --   modified = icons.git.modified,
+              --   removed = icons.git.removed,
+              -- },
             },
           },
-          lualine_z = { 'location' },
+
+          lualine_z = {
+            { "progress", separator = " ", padding = { left = 1, right = 1 } },
+          },
         },
-        inactive_sections = {
-          lualine_a = {},
-          lualine_b = {},
-          lualine_c = {'filename'},
-          lualine_x = {'location'},
-          lualine_y = {},
-          lualine_z = {}
-        },
-        tabline = {},
-        winbar = {},
-        inactive_winbar = {},
-        extensions = {}
       }
     end,
   },
