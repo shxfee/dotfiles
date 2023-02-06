@@ -14,3 +14,4 @@ cmd [[cabbrev sail ./vendor/bin/sail]]
 cmd [[iabbrev <expr> dts strftime("%c (MVT)")]]
 cmd [[iabbrev <expr> ds strftime("%Y-%m-%d")]]
 
+cmd [[cabbrev w!! w :term sudo tee > /dev/null %]]

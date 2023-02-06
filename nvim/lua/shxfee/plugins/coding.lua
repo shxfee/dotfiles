@@ -1,84 +1,121 @@
 return {
   -- snippets
   {
-    'hrsh7th/vim-vsnip',
-    init = function()
-      vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
-      vim.cmd[[imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
-      vim.cmd[[smap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>']]
-      vim.cmd[[imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<C-k>']]
-      vim.cmd[[smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<C-k>']]
+    "L3MON4D3/LuaSnip",
+    enabled = true,
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
+    },
+    version = "1.2",
+    build = function()
+      local Util = require("lazy.core.util")
+
+      -- check if make is avaialble
+      if vim.fn.executable("make") == 0 then
+        Util.warn(
+          "make is not available, jsregex will not be available",
+          { title = "LuaSnip" }
+        )
+        return
+      end
+
+      -- check if luajit is available
+      if vim.fn.executable("luajit") == 0 then
+        Util.warn(
+          "luajit is not available, jsregex will not be available",
+          { title = "LuaSnip" }
+        )
+        return
+      end
+
+      vim.fn.system("make install_jsregex")
     end,
+    opts = {
+      history = true,
+      delete_check_event = "TextChanged",
+    },
   },
 
-  -- auto completion
+  -- git
   {
-    "hrsh7th/nvim-cmp",
-    version = false, -- last release is way too old
-    event = "InsertEnter",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-vsnip",
-      "onsails/lspkind.nvim",
-    },
-    opts = function()
-      local cmp = require("cmp")
-      return {
-        window = {
-          completion = {
-            border = 'rounded',
-            winhighlight = 'Normal:Pmenu,FloatBorder:Normal,CursorLine:PmenuSel,Search:None',
-          },
-          documentation = { border = 'rounded', }
-        },
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        snippet = {
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<c-y>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "vsnip" },
-          { name = "buffer" },
-          { name = "path" },
-        }),
-        formatting = {
-          format = require'lspkind'.cmp_format{
-            with_text = true,
-            menu = {
-              nvim_lsp = '[lsp]',
-              vsnip = '[snip]',
-              neorg = '[norg]',
-              buffer = '[buf]',
-              path = '[path]',
-            },
-
-          },
-        },
-        experimental = {
-          ghost_text = false,
-        },
+    "tpope/vim-fugitive",
+    cmd = "Git",
+    keys = {
+      {
+        "<leader>gg",
+        "<cmd>vertical Git<cr>",
+        desc = "git status",
+      },
+      {
+        "<leader>gb",
+        "<cmd>0GlLog!<cr>",
+        desc = "git log for buffer",
+      },
+      {
+        "<leader>gp",
+        "<cmd>Git push<cr>",
+        desc = "git push",
       }
+    },
+  },
+
+  -- git signs
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "BufReadPre",
+    opts = {
+      signs = {
+        add = { text = "▎" },
+        change = { text = "▎" },
+        delete = { text = "▎" },
+        topdelete = { text = "▎" },
+        changedelete = { text = "▎" },
+        untracked = { text = "▎" },
+      },
+    },
+  },
+
+  -- comments
+  {
+    "numToStr/Comment.nvim",
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
+    keys = {
+      {
+        "gc",
+        mode = { "n", "v" },
+        desc = "Comment",
+      },
+    },
+    opts = {
+      pre_hook = function()
+        require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
+      end,
+    },
+    config = function(_, opts)
+      require("Comment").setup(opts)
     end,
   },
 
   -- auto pairs
   {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
     config = function(_, opts)
-      require("mini.pairs").setup(opts)
+      require("nvim-autopairs").setup(opts)
+    end,
+  },
+
+  -- auto html tag completion
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-ts-autotag").setup()
     end,
   },
 
@@ -88,66 +125,10 @@ return {
     cmd = "Tabularize",
   },
 
-  -- surround
-  {
-    "echasnovski/mini.surround",
-    keys = function(plugin, keys)
-      -- Populate the keys based on the user's options
-      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
-      local mappings = {
-        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-        { opts.mappings.delete, desc = "Delete surrounding" },
-        { opts.mappings.find, desc = "Find right surrounding" },
-        { opts.mappings.find_left, desc = "Find left surrounding" },
-        { opts.mappings.highlight, desc = "Highlight surrounding" },
-        { opts.mappings.replace, desc = "Replace surrounding" },
-        { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-      }
-      return vim.list_extend(mappings, keys)
-    end,
-    opts = {
-      mappings = {
-        add = "gsa", -- Add surrounding in Normal and Visual modes
-        delete = "ds", -- Delete surrounding
-        find = "gsf", -- Find surrounding (to the right)
-        find_left = "gsF", -- Find surrounding (to the left)
-        highlight = "gsh", -- Highlight surrounding
-        replace = "cs", -- Replace surrounding
-        update_n_lines = "gsn", -- Update `n_lines`
-      },
-    },
-    config = function(_, opts)
-      -- use gz mappings instead of s to prevent conflict with leap
-      require("mini.surround").setup(opts)
-    end,
-  },
-
-  -- word substitutions for code cases (snake, camel, dot etc)
-  {
-    "tpope/vim-abolish",
-    cmd = "Subvert",
-  },
-
-  -- comments
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
-  {
-    "echasnovski/mini.comment",
-    event = "VeryLazy",
-    opts = {
-      hooks = {
-        pre = function()
-          require("ts_context_commentstring.internal").update_commentstring({})
-        end,
-      },
-    },
-    config = function(_, opts)
-      require("mini.comment").setup(opts)
-    end,
-  },
-
   -- preview colors
   {
     "NvChad/nvim-colorizer.lua",
+    ft = { "css", "html", "sass", "scss", "vue" },
     opts = {
       filetypes = {
         '*';
@@ -190,24 +171,6 @@ return {
     },
   },
 
-  -- git
-  {
-    "tpope/vim-fugitive",
-    cmd = "Git",
-    keys = {
-      {
-        "<leader>gg",
-        "<cmd>vertical Git<cr>",
-        desc = "Git status",
-      },
-      {
-        "<leader>gb",
-        "<cmd>0GlLog!<cr>",
-        desc = "Git log for current buffer",
-      },
-    },
-  },
-
   -- refactoring code
   {
     "ThePrimeagen/refactoring.nvim",
@@ -243,12 +206,27 @@ return {
     }
   },
 
-  -- auto html tag completion
+  -- keeping track of time
   {
-    "windwp/nvim-ts-autotag",
+    "wakatime/vim-wakatime",
+  },
+
+  -- copilot lua
+  {
+    "zbirenbaum/copilot.lua",
     event = "InsertEnter",
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end,
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<M-j>",
+          accept_line = "<M-l>",
+          accept_word = "<M-k>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<M-c>",
+        },
+      },
+    },
   },
 }

@@ -11,7 +11,7 @@ return {
   -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
-    version = false,
+    version = "0.1",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-fzy-native.nvim",
@@ -22,8 +22,8 @@ return {
         mappings = {
           i = {
             -- disable tab mapping because it conflicts with copilot
-            ['<Tab>'] = false,
-            ['<c-q>'] = function()
+            ["<Tab>"] = false,
+            ["<c-q>"] = function()
               require("telescope.actions").send_to_qflist()
             end,
           },
@@ -34,76 +34,112 @@ return {
       {
         "<leader>ff",
         function()
-          return require('telescope.builtin').find_files{ previewer=false }
+          return require("telescope.builtin").find_files({ previewer = false })
         end,
-        desc = "Find files"
+        desc = "Find files",
       },
       {
         "<leader>fd",
         function()
-          return require('telescope.builtin').find_files{
-            find_command = {"fd", "--type", "d"},
-            previewer=false
-          }
+          return require("telescope.builtin").find_files({
+            find_command = { "fd", "--type", "d" },
+            previewer = false,
+          })
         end,
         desc = "Find directories",
       },
       {
         "<leader>fg",
         function()
-          return require('telescope.builtin').live_grep{}
+          return require("telescope.builtin").live_grep({})
         end,
         desc = "Live grep",
       },
       {
         "<leader>fk",
         function()
-          return require('telescope.builtin').colorscheme{}
+          return require("telescope.builtin").colorscheme({})
         end,
         desc = "Find colorscheme",
       },
       {
         "<leader>fh",
         function()
-          return require('telescope.builtin').help_tags{}
+          return require("telescope.builtin").help_tags({})
         end,
         desc = "Find help tags",
       },
       {
         "<leader>fc",
         function()
-          return require('telescope.builtin').find_files{
-            cwd=vim.fn.stdpath('config'),
-            previewer=false,
-          }
+          return require("telescope.builtin").find_files({
+            cwd = vim.fn.stdpath("config"),
+            previewer = false,
+          })
         end,
         desc = "Find in config dir",
       },
       {
         "<leader>fp",
-        function ()
-          return require('telescope.builtin').find_files{
-            find_command = {"fd", "--type", "d"},
-            cwd=vim.fn.stdpath('data') .. '/lazy/',
-            previewer=false,
-          }
+        function()
+          return require("telescope.builtin").find_files({
+            find_command = { "fd", "--type", "d" },
+            cwd = vim.fn.stdpath("data") .. "/lazy/",
+            previewer = false,
+          })
         end,
         desc = "Find in plugin dir",
       },
     },
   },
 
-  -- easily jump to any location and enhanced f/t motions for Leap
+  -- leap motion
   {
     "ggandor/leap.nvim",
-    event = "VeryLazy",
-    dependencies = { { "ggandor/flit.nvim", opts = { labeled_modes = "nv" } } },
+    keys = {
+      {
+        "s",
+        "<Plug>(leap-forward-to)",
+        mode = { "n", "v" },
+        desc = "Leap forward to",
+      },
+      {
+        "S",
+        "<Plug>(leap-backward-to)",
+        mode = { "n", "v" },
+        desc = "Leap backward to",
+      },
+
+      -- using z for operators because s is taken by surround
+      {
+        "z",
+        "<Plug>(leap-forward-to)",
+        mode = { "o" },
+        desc = "Leap forward to",
+      },
+      {
+        "Z",
+        "<Plug>(leap-backward-to)",
+        mode = { "o" },
+        desc = "Leap backward to",
+      }
+    },
     config = function(_, opts)
       local leap = require("leap")
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      leap.add_default_mappings(true)
+    end,
+  },
+
+  -- surround
+  {
+    "kylechui/nvim-surround",
+    keys = {
+      {"ys"},
+      {"ds"},
+      {"cs"},
+      {"S", mode = "v"},
+    },
+    config = function()
+      require("nvim-surround").setup()
     end,
   },
 
@@ -117,6 +153,19 @@ return {
           enabled = true,
           suggestions = 20,
         },
+        presets = {
+          operators = false,
+          motions = false,
+          text_objects = false,
+          windows = true,
+          nav = true,
+          z = true,
+          g = true,
+        },
+      },
+      popup_mappings = {
+        scroll_down = '<c-f>',
+        scroll_up = '<c-b>',
       },
       window = {
         border = "single",
@@ -129,18 +178,21 @@ return {
 
       wk.register({
         mode = { "n", "v" },
-        ["<leader>a"] = { name = "+artisan" },
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
-        ["<leader>w"] = { name = "+window" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>c"] = { name = "+config" },
         ["<leader>t"] = { name = "+test" },
         ["<leader><tab>"] = { name = "+tabs" },
         ["<leader>j"] = { name = "+journal" },
-        ["<leader>n"] = { name = "+notes" }
+        ["<leader>n"] = { name = "+notes" },
       })
     end,
   },
 
+  -- word substitutions for code cases (snake, camel, dot etc)
+  {
+    "tpope/vim-abolish",
+    cmd = "Subvert",
+  },
 }

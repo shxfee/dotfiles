@@ -1,5 +1,5 @@
 return {
-  -- better vim.notify
+  -- notifications
   {
     "rcarriga/nvim-notify",
     keys = {
@@ -54,7 +54,15 @@ return {
           disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
         },
         sections = {
-          lualine_a = { "mode" },
+          lualine_a = {
+            {
+              "mode",
+              color = { gui = 'none' },
+              fmt = function(mode)
+                return mode:lower()
+              end,
+            }
+          },
           lualine_b = { "branch" },
           lualine_c = {
             {
@@ -66,14 +74,14 @@ return {
               --   hint = icons.diagnostics.Hint,
               -- },
             },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+            { "filename", path = 1, symbols = { modified = "", readonly = "", unnamed = "" } },
             -- stylua: ignore
             {
               function() return require("nvim-navic").get_location() end,
               cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
             },
           },
+
           lualine_x = {
             {
               "lsp_progress",
@@ -83,31 +91,34 @@ return {
               separators = {
                 lsp_client_name = { pre = '', post = '' },
               },
+              timer = { spinner = 800 },
+              spinner_symbols = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
             },
             -- stylua: ignore
             { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
           },
+
           lualine_y = {
-            {
-              "diff",
-              padding = { left = 1, right = 1 },
-              -- symbols = {
-              --   added = icons.git.added,
-              --   modified = icons.git.modified,
-              --   removed = icons.git.removed,
-              -- },
-            },
+            { "filetype", icon_only = false, padding = { left = 1, right = 1 } },
+            -- minimal tabs in status line
+            -- {
+            --   'tabs',
+            --   tabs_color = {
+            --     active = 'lualine_b_normal',
+            --     inactive = 'lualine_c_normal',
+            --   },
+            -- },
           },
 
           lualine_z = {
-            { "progress", separator = " ", padding = { left = 1, right = 1 } },
+            { "progress", padding = { left = 1, right = 1 } },
           },
         },
       }
     end,
   },
 
-  -- indent guides for Neovim
+  -- indent guides
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
@@ -127,6 +138,32 @@ return {
 
   -- folding
   {
-    "anuvyklack/pretty-fold.nvim",
+    "kevinhwang91/nvim-ufo",
+    keys = {
+      {"z"},
+      {
+        "zR",
+        "<cmd>lua require('ufo').openAllFolds()<cr>",
+        desc = "open all folds",
+        mode = "n",
+      },
+      {
+        "zM",
+        "<cmd>lua require('ufo').closeAllFolds()<cr>",
+        desc = "close all folds",
+        mode = "n",
+      },
+    },
+    dependencies = {
+      "kevinhwang91/promise-async",
+    },
+    config = function()
+      vim.o.foldcolumn = "0"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+
+      require("ufo").setup()
+    end
   },
 }

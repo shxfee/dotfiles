@@ -1,62 +1,72 @@
 return {
   {
     "nvim-neorg/neorg",
+    version = false,
+    build = ":Neorg sync-parsers",
+    ft = "norg",
+    cmd = "Neorg",
     dependencies = {
+      "nvim-lua/plenary.nvim",
       "nvim-neorg/neorg-telescope",
+      "nvim-cmp",
     },
     keys = {
       {
-        '<leader>nn',
-        '<cmd>e ~/documents/notes/index.norg<cr>',
+        "<leader>nN",
+        "<cmd>e ~/documents/notes/index.norg<cr>",
         desc = "notes index",
       },
       {
-        '<leader>jj',
+        "<leader>nn",
+        "<cmd>e notes.norg<cr>",
+        desc = "current project notes",
+      },
+      {
+        "<leader>jj",
         '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal today"<cr>',
         desc = "todays entry",
       },
       {
-        '<leader>jt',
+        "<leader>jt",
         '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal tomorrow"<cr>',
         desc = "tomorrows entry",
       },
       {
-        '<leader>jy',
+        "<leader>jy",
         '<cmd>exe "silent! NeorgStart" | exe "silent! Neorg journal yesterday"<cr>',
         desc = "yesterdays entry",
       },
       {
-        '<leader>ji',
-        '<cmd>e ~/documents/journal/index.norg<cr>',
+        "<leader>ji",
+        "<cmd>e ~/documents/journal/index.norg<cr>",
         desc = "journal index",
       },
       {
-        '<leader>jr',
-        '<cmd>Neorg journal toc update<cr>',
+        "<leader>jr",
+        "<cmd>Neorg journal toc update<cr>",
         desc = "refresh journal toc",
       },
     },
     opts = {
-      -- Tell Neorg what modules to load
       load = {
         ["core.defaults"] = {},
         ["core.norg.completion"] = {
           config = {
-            engine = "nvim-cmp",
-          },
+            engine = "nvim-cmp"
+          }
         },
         ["core.norg.journal"] = {
           config = {
             use_template = true,
             workspace = "documents",
             strategy = "flat",
-            tocc_format = function (toc)
+            tocc_format = function(toc)
               local titles = {}
               for k, v in pairs(toc) do
-                table.insert(titles, 'foobar')
+                table.insert(titles, "foobar")
               end
               return titles
-            end
+            end,
           },
         },
         ["core.norg.dirman"] = {
@@ -71,6 +81,7 @@ return {
         },
         ["core.norg.concealer"] = {
           config = {
+            folds = false,
             preset = "diamond", -- basic, varied or diamond
           },
         },
@@ -86,10 +97,10 @@ return {
               keybinds.remap_event("norg", "n", "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle")
               keybinds.remap_event("norg", "n", "<CR>", "core.norg.esupports.hop.hop-link")
             end,
-          }
+          },
         },
         ["core.export"] = {},
       },
     },
-  }
+  },
 }

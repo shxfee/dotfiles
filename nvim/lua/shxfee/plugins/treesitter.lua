@@ -10,8 +10,16 @@ return {
     },
     ---@type TSConfig
     opts = {
-      highlight = { enable = true },
-      indent = { enable = true },
+      highlight = {
+        enable = true,
+      },
+      indent = {
+        enable = true,
+      },
+      -- support for these suck in treesitter atm 2023-02-05
+      additional_vim_regex_highlighting = {
+        "php", "vue",
+      },
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",

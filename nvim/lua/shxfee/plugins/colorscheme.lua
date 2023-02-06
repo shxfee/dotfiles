@@ -1,6 +1,26 @@
 return {
   {
+    "xiyaowong/nvim-transparent",
+    name = "nvim-transparent",
+    opts = {
+      enable = true;
+      extra_groups = {
+        'WinSeparator',
+        'VertSplit',
+        'TabLine',
+        'TabLineFill',
+        'Pmenu',
+        'PmenuSel',
+        'Folded',
+      };
+    }
+  },
+
+  {
     "shxfee/nord-vim",
+    dependencies = {
+      { "nvim-transparent", lazy = false }, 
+    },
     lazy = false,
     priority = 1000,
     config = function ()
@@ -21,21 +41,5 @@ return {
   {
     "Th3Whit3Wolf/one-nvim",
     lazy = true,
-  },
-
-  {
-    "xiyaowong/nvim-transparent",
-    opts = {
-      enable = true;
-      extra_groups = {
-        'WinSeparator',
-        'VertSplit',
-        'TabLine',
-        'TabLineFill',
-        'Pmenu',
-        'PmenuSel',
-        'Folded',
-      };
-    }
   },
 }
