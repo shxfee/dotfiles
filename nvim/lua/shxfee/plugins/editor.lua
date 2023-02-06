@@ -1,11 +1,27 @@
 return {
   -- file explorer
   {
-    "justinmk/vim-dirvish",
-    init = function()
-      -- sort directories first
-      vim.g.dirvish_mode = [[:sort ,^.*[\/],]]
-    end,
+    "stevearc/oil.nvim",
+    keys = {
+      {
+        "-",
+        function()
+          return require("oil").open()
+        end,
+        desc = "Open file explorer",
+      },
+    },
+    opts = {
+      columns = {
+        "icon",
+        -- "permissions",
+        -- "size",
+        -- "mtime",
+      },
+      float = {
+        max_height = 20,
+      },
+    },
   },
 
   -- fuzzy finder

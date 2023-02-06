@@ -38,7 +38,12 @@ require("lazy").setup("shxfee.plugins", {
   install = { colorscheme = { "nord" }, missing = false },
   ui = {
     border = "rounded",
-    size = { width = 0.85, height = 0.8 }
+    size = { width = 0.85, height = 0.8 },
+    performance = {
+      rtp = {
+        disabled_plugins = { "netrwPlugin" },
+      },
+    },
   }
 })
 
