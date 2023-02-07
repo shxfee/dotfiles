@@ -3,7 +3,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false,
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -11,6 +11,17 @@ return {
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-vsnip",
       "onsails/lspkind.nvim",
+    },
+
+    keys = {
+      { "<C-p>", mode = "i" },
+      { "<C-n>", mode = "i" },
+      { "<C-b>", mode = "i" },
+      { "<C-f>", mode = "i" },
+      { "<C-e>", mode = "i" },
+      { "<C-y>", mode = "i" },
+      { "<Tab>", mode = "c" },
+      { "<S-Tab>", mode = "c" },
     },
 
     opts = function()
@@ -25,9 +36,8 @@ return {
         },
 
         completion = {
-          -- noselect, noinsert are for more consistent behavior
-          completeopt = "menu,menuone,noselect,noinsert",
-          keyword_length = 4,
+          completeopt = "menu,menuone,noinsert",
+          keyword_length = 2,
         },
 
         snippet = {
@@ -143,6 +153,7 @@ return {
 
       cmp.setup.cmdline(':', {
         completion = {
+          completeopt = "menu,menuone,noinsert,noselect",
           autocomplete = false,
           keyword_length = 1,
         },

@@ -2,6 +2,7 @@ return {
   -- file explorer
   {
     "stevearc/oil.nvim",
+    lazy = false,
     keys = {
       {
         "-",

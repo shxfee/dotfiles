@@ -33,17 +33,24 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Lazy automatjcally loads all files form plugins dir
+-- Lazy automatically loads all specs form the plugins dir
 require("lazy").setup("shxfee.plugins", {
-  install = { colorscheme = { "nordic" }, missing = false },
-  ui = {
-    border = "rounded",
-    performance = {
-      rtp = {
-        disabled_plugins = { "netrwPlugin" },
+  install = { missing = false },
+  ui = { border = "rounded" },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "zipPlugin",
+        -- "matchit",
+        -- "matchparen",
+        "tutor",
       },
     },
-  }
+  },
 })
 
 -- editor options
@@ -63,3 +70,6 @@ require("shxfee.config.abbreviations")
 
 -- other customizations
 require("shxfee.config.customizations")
+
+-- statuscolumn
+require("shxfee.config.statuscolumn")

@@ -2,12 +2,14 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    enabled = true,
+    lazy = true,
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
     },
     version = "1.2",
     build = function()
@@ -68,12 +70,18 @@ return {
     event = "BufReadPre",
     opts = {
       signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "▎" },
-        topdelete = { text = "▎" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
+        add = { text = "│" },
+        change = { text = "│" },
+        delete = { text = "│" },
+        topdelete = { text = "│" },
+        changedelete = { text = "│" },
+        untracked = { text = "│" },
+        -- add = { text = "▎" },
+        -- change = { text = "▎" },
+        -- delete = { text = "▎" },
+        -- topdelete = { text = "▎" },
+        -- changedelete = { text = "▎" },
+        -- untracked = { text = "▎" },
       },
     },
   },
