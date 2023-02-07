@@ -38,6 +38,16 @@ wk.register({
   },
 }, { prefix = "<leader>", mode = "n" })
 
+-- ui
+keymap.set(
+  "n", 
+  "<leader>ur",
+  function ()
+    vim.cmd.colorscheme("nordic")
+  end,
+  { desc = "reload ui" }
+)
+
 
 keymap.set("c", "<c-p>", "<up>")
 keymap.set("c", "<c-n>", "<down>")
