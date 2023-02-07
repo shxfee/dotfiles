@@ -36,7 +36,9 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     local filepath = vim.fn.expand("%")
 
     dofile(filepath)
-    vim.notify("Configuration reloaded \n" .. filepath, nil)
+    vim.notify("Configuration reloaded \n" .. filepath, nil, {
+      title = "autocmds.lua",
+    })
   end,
   group = mygroup,
   desc = "Reload config on save",
@@ -46,7 +48,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = {
     "*.php", "*.vue", "*.js", "*.ts", "*.tsx", "*.json", "*.css",
-    "*.scss", "*.html" 
+    "*.scss", "*.html"
   },
   callback = function()
     -- noop if no lsp

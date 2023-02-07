@@ -35,7 +35,7 @@ return {
             -- disable tab mapping because it conflicts with copilot
             ["<Tab>"] = false,
             ["<c-q>"] = function()
-              require("telescope.actions").send_to_qflist()
+              require("telescope.actions").send_to_qflist(0)
             end,
           },
         },
@@ -142,8 +142,8 @@ return {
         desc = "Leap backward to",
       }
     },
-    config = function(_, opts)
-      local leap = require("leap")
+    config = function()
+      require("leap")
     end,
   },
 

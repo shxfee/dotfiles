@@ -8,10 +8,10 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 -- lsp diagnostics signs
 local signs = {
-  Error = "",
-  Warn = "",
-  Hint = "",
-  Info = ""
+  Error = "",
+  Warn = "",
+  Hint = "",
+  Info = ""
 }
 
 for type, icon in pairs(signs) do

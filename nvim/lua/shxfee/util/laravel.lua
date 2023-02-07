@@ -4,7 +4,7 @@ local fn = vim.fn
 local M = {}
 
 -- Read laravel env into a table
-function read_env()
+function M.read_env()
   local readable, file = pcall(fn.readfile, '.env')
   if not readable then return {} end
 
@@ -23,8 +23,8 @@ end
 function M.get_env()
   local env = {}
 
-  for _, line in ipairs(read_env()) do
-    local splits = vim.split(line, '=', true)
+  for _, line in ipairs(M.read_env()) do
+    local splits = vim.split(line, '=')
 
     if (splits[1] ~= nil) then
       env[splits[1]] = splits[2]
@@ -64,7 +64,7 @@ function M.open_adminer()
   local c = '!cmd.exe /C start '
   local e = M.get_env()
 
-  a =  'http://localhost/adminer?username='.. e.DB_USERNAME .. '^&db=' .. e.DB_DATABASE
+  local a =  'http://localhost/adminer?username='.. e.DB_USERNAME .. '^&db=' .. e.DB_DATABASE
   c = c .. fn.shellescape(a)
 
   pcall(fn.execute, c)
@@ -78,7 +78,7 @@ function M.open_app()
   local c = '!cmd.exe /C start '
   local e = M.get_env()
 
-  a =  'http://localhost/'
+  local a =  'http://localhost/'
 
   if e.APP_URL ~= nil then
     a = e.APP_URL

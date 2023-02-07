@@ -15,22 +15,6 @@ function M.run_nearest_or_last_test()
   end
 end
 
-
--- Generate a filename from project root for Lightline
--- If current file is a git repo then start path from git root
--- Otherwise show full filename
-function M.get_git_file_name()
-  root = fn.fnamemodify(vim.b.git_dir, ':h') -- git folder path
-  path = fn.expand('%:p')
-
-  if vim.startswith(path, root) then
-    return path:sub(root:len() + 1, nil)
-  end
-
-  return fn.expand('%')
-end
-
-
 -- Show documentation
 -- If filetype is vim or help search vim help
 -- Otherwise execute CocAction

@@ -35,10 +35,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy automatjcally loads all files form plugins dir
 require("lazy").setup("shxfee.plugins", {
-  install = { colorscheme = { "nord" }, missing = false },
+  install = { colorscheme = { "nordic" }, missing = false },
   ui = {
     border = "rounded",
-    size = { width = 0.85, height = 0.8 },
     performance = {
       rtp = {
         disabled_plugins = { "netrwPlugin" },

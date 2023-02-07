@@ -32,7 +32,7 @@ return {
         formatting_options = nil,
         timeout_ms = nil,
       },
-      ---@type lspconfig.options
+      -- @type lspconfig.options
       servers = {
         bashls = {},
         cssls = {},
@@ -57,7 +57,7 @@ return {
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+      -- @type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       setup = {
         -- example to setup with typescript.nvim
         -- tsserver = function(_, opts)
@@ -68,7 +68,8 @@ return {
         -- ["*"] = function(server, opts) end,
       },
     },
-    config = function (plugin, opts)
+
+    config = function (_, opts)
       -- hover float window configuration
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         vim.lsp.handlers.hover, {
@@ -90,8 +91,8 @@ return {
         }
       )
 
-      vim.diagnostic.config {     
-        float = { border = "rounded" }, 
+      vim.diagnostic.config {
+        float = { border = "rounded" },
       }
 
       -- keymaps
@@ -108,7 +109,7 @@ return {
 
       local servers = opts.servers
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      
+
       -- add folding range support (nvim-ufo)
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
@@ -156,7 +157,7 @@ return {
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
-    opts = { use_diagnostic_signs = false },
+    opts = { use_diagnostic_signs = true },
     keys = {
       { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
@@ -180,7 +181,7 @@ return {
       ui = { border = 'rounded', }
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
-    config = function(plugin, opts)
+    config = function(_, opts)
       require("mason").setup(opts)
       local mr = require("mason-registry")
       for _, tool in ipairs(opts.ensure_installed) do

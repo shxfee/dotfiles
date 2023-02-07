@@ -51,7 +51,7 @@ return {
         options = {
           theme = "OceanicNext",
           globalstatus = true,
-          disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
+          disabled_filetypes = { statusline = { "lazy", "mason" } },
         },
         sections = {
           lualine_a = {
