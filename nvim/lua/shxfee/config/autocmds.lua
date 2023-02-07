@@ -55,3 +55,38 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = mygroup,
   desc = "Autoformat code on save",
 })
+
+-- transparent backgrounds
+vim.api.nvim_create_autocmd({"VimEnter", "Colorscheme"}, {
+  callback = function ()
+    local groups = {
+      "Normal",
+      "NormalNC",
+      "NormalFloat",
+      "Float",
+      "FloatBorder",
+      "SignColumn",
+      "GitSignsAdd",
+      "GitSignsChange",
+      "GitSignsDelete",
+      "Pmenu",
+      "PmenuSel",
+      "WinSeparator",
+      "TelescopeNormal",
+      "TelescopeBorder",
+      "TelescopeSelection",
+      "TelescopePreviewNormal",
+      "WhichKeyFloat",
+    }
+
+    for _, group in ipairs(groups) do
+      -- :hi Comment ctermfg=Cyan ctermbg=None guifg=#80a0ff gui=bold
+      vim.cmd("hi " .. group .. " ctermbg=None guibg=NONE")
+    end
+
+    -- dim fg for WinSeparator
+    vim.cmd("hi WinSeparator guifg=#4e4d5e")
+  end,
+  group = mygroup,
+  desc = "Transparent backgrounds",
+})
