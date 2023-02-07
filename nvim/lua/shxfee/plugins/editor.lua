@@ -12,14 +12,9 @@ return {
       },
     },
     opts = {
-      columns = {
-        "icon",
-        -- "permissions",
-        -- "size",
-        -- "mtime",
-      },
-      float = {
-        max_height = 20,
+      keymaps = {
+        ["."] = "actions.open_cmdline",
+        ["<C-r>"] = "actions.refresh",
       },
     },
   },
@@ -105,6 +100,13 @@ return {
           })
         end,
         desc = "Find in plugin dir",
+      },
+      {
+        "<leader>fH",
+        function()
+          return require("telescope.builtin").highlights({})
+        end,
+        desc = "Find hightlight group",
       },
     },
   },

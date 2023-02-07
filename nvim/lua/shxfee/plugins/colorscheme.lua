@@ -1,45 +1,25 @@
 return {
   {
-    "xiyaowong/nvim-transparent",
-    name = "nvim-transparent",
-    opts = {
-      enable = true;
-      extra_groups = {
-        'WinSeparator',
-        'VertSplit',
-        'TabLine',
-        'TabLineFill',
-        'Pmenu',
-        'PmenuSel',
-        'Folded',
-      };
-    }
+    "shxfee/nord-vim",
+    lazy = true,
+    priority = 1000,
+    -- config = function ()
+    --   vim.cmd([[colorscheme nord]])
+    -- end
   },
 
   {
-    "shxfee/nord-vim",
-    dependencies = {
-      { "nvim-transparent", lazy = false }, 
-    },
+    "andersevenrud/nordic.nvim",
     lazy = false,
     priority = 1000,
     config = function ()
-      vim.cmd([[ colorscheme nord]])
+      vim.g.nord_underline_option = 'none'
+      vim.g.nord_italic = false
+      vim.g.nord_italic_comments = false
+      vim.g.nord_minimal_mode = false
+      vim.g.nord_alternate_backgrounds = false
+
+      vim.cmd([[colorscheme nordic]])
     end
-  },
-
-  {
-    "shxfee/oceanic-next-vim",
-    lazy = true,
-  },
-
-  {
-    "kyazdani42/blue-moon",
-    lazy = true,
-  },
-
-  {
-    "Th3Whit3Wolf/one-nvim",
-    lazy = true,
   },
 }
