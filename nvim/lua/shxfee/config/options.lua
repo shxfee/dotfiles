@@ -16,7 +16,6 @@ opt.pumheight = 10 -- Maximum number of entries in a popup
 opt.conceallevel = 2
 opt.concealcursor = "nc"
 
-
 -- windows
 opt.splitbelow = true
 opt.scrolloff = 10
@@ -41,6 +40,7 @@ opt.completeopt = { "menu", "menuone", "noselect" }
 opt.signcolumn = "yes:1"
 opt.nrformats = "bin,hex,alpha"
 opt.clipboard = ""
+opt.undofile = true
 
 opt.viewoptions = { "cursor", "folds" }
 opt.formatoptions = opt.formatoptions

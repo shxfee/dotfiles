@@ -47,7 +47,7 @@ return {
     cmd = "Git",
     keys = {
       {
-        "<leader>gg",
+        "<leader>gf",
         "<cmd>vertical Git<cr>",
         desc = "git status",
       },

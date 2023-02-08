@@ -1,16 +1,8 @@
 * Todo
-
-
-* Backlog
   - submit patch request for transparency in nordic
-  - git signs + fugitive
   - add lsp name to status line
-  - status-col
   - make lsp spinner faster
   - figure out oil key maps for creating directories
-  - change diagnostic signs to icons
 
-
-* Done
-  - add mini.animate and see how things are
-  > didn't workout. some weird Normal-NC bug
+* Projects
+  - write implementation notes for open AI plugin for neovim

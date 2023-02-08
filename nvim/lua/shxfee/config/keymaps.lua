@@ -55,6 +55,21 @@ keymap.set("c", "<c-n>", "<down>")
 -- tabs
 keymap.set("n", "<leader><tab><tab>", "<cmd>tabe<cr>", { desc = "new tab" })
 
+
+-- require("lazy.util").float_term(cmd, opts)
+-- git
+keymap.set(
+  "n",
+  "<leader>gg",
+  function()
+    require("lazy.util").float_term(
+      { "lazygit" },
+      { size = { width = 0.9, height = 0.85 } }
+    )
+  end,
+  { desc = "Lazygit" }
+)
+
 keymap.set("t", "<c-o>", "<c-\\><c-n>")
 
 keymap.set("v", "<a-y>", '"+y')
