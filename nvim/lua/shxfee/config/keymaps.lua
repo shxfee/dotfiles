@@ -1,6 +1,19 @@
 local keymap = vim.keymap
 local wk = require("which-key")
 
+-- main
+wk.register(
+  {
+    q = { "<cmd>q<cr>", "Quit" },
+    x = { "<cmd>x<cr>", "Save & Quit" },
+  },
+  {
+    prefix = "<leader>",
+    mode = "n",
+    nowait = true,
+  }
+)
+
 -- artisan
 wk.register(
   {
