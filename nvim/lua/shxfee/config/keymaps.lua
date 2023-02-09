@@ -19,7 +19,13 @@ wk.register(
   {
     a = {
       name = "+artisan",
-      a = { ":T ./vendor/bin/sail artisan", "artisan cmd" },
+      c = {
+        function ()
+          local cmd = ":T ./vendor/bin/sail artisan "
+          vim.api.nvim_feedkeys(cmd, "n", true)
+        end,
+        "Artisan Cmd"
+      },
     },
     am = {
       name = "+migrate",
