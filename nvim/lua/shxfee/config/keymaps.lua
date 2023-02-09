@@ -29,12 +29,16 @@ wk.register(
     },
     am = {
       name = "+migrate",
-      f = { "<cmd>T ./vendor/bin/sail artisan migrate:fresh --seed<cr>", "fresh" },
+      f = {
+        "<cmd>T ./vendor/bin/sail artisan migrate:fresh --seed<cr>",
+        "Artisan Migrate Fresh",
+      },
     },
   },
   {
     prefix = "<leader>",
     mode = "n",
+    nowait = true,
   }
 )
 
@@ -42,9 +46,7 @@ wk.register(
 wk.register({
   w = {
     name = "+window",
-    c = { "<cmd>wa<bar>only<bar>enew<cr>", "clear all" },
-    m = { "<cmd>WindowsMaximize<cr>", "maximize" },
-    a = { "<cmd>WindowsToggleAutowidth<cr>", "auto width toggle" },
+    c = { "<cmd>wa<bar>only<bar>%bdelete<bar>enew<cr>", "Windows Clear All" },
   },
 }, { prefix = "<leader>", mode = "n" })
 
@@ -52,8 +54,47 @@ wk.register({
 wk.register({
   c = {
     name = "+config",
-    c = { "<cmd>vsplit $MYVIMRC<cr>", "edit init.lua" },
-    l = { "<cmd>Lazy<cr>", "lazy plugin manager" },
+    d = {
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir)
+      end,
+      "Config Directory",
+    },
+    e = { "<emd>vsplit $MYVIMRC<er>", "Config Edit" },
+    f = {
+      function ()
+        require("telescope.builtin").find_files({
+          prompt_title = "Config Files",
+          cwd = vim.fn.stdpath("config"),
+        })
+      end,
+      "Config Files",
+    },
+    k = {
+      -- edit keymaps.lua
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir .. "/lua/shxfee/config/keymaps.lua")
+      end,
+      "Config Keymaps",
+    },
+    l = { "<cmd>Lazy<cr>", "Config Lazy" },
+    n = {
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir .. "/notes.norg")
+      end,
+      "Config Notes",
+    },
+    o = {
+      -- edit options.lua
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir .. "/lua/shxfee/config/options.lua")
+      end,
+      "Config Options",
+    },
   },
 }, { prefix = "<leader>", mode = "n" })
 
