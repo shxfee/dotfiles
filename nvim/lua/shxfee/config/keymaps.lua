@@ -100,12 +100,12 @@ wk.register({
 
 -- ui
 keymap.set(
-  "n", 
+  "n",
   "<leader>ur",
   function ()
     vim.cmd.colorscheme("nordic")
   end,
-  { desc = "reload ui" }
+  { desc = "UI Refresh" }
 )
 
 
@@ -113,7 +113,7 @@ keymap.set("c", "<c-p>", "<up>")
 keymap.set("c", "<c-n>", "<down>")
 
 -- tabs
-keymap.set("n", "<leader><tab><tab>", "<cmd>tabe<cr>", { desc = "new tab" })
+keymap.set("n", "<leader><tab><tab>", "<cmd>tabe<cr>", { desc = "Tab New" })
 
 
 -- require("lazy.util").float_term(cmd, opts)
@@ -140,4 +140,8 @@ keymap.set("i", "<a-p>", "<c-r>+")
 keymap.set("n", "gV", "`[v`]")
 
 -- open links in browser
-keymap.set("n", "gl", [[:execute '!wslview ' . shellescape(expand('<cfile>'), 1)<CR>]], { silent = true })
+keymap.set(
+  "n", "gl",
+  [[:execute '!wslview ' . shellescape(expand('<cfile>'), 1)<CR>]],
+  { silent = true }
+)
