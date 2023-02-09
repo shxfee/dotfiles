@@ -1,0 +1,25 @@
+* Todo
+  - make lsp spinner faster
+  - artisan command without hitting enter
+
+* Projects
+  - write implementation notes for open AI plugin for neovim
+  - submit patch request for transparency in nordic
+  - add lsp name to status line
+
+* Friction Points
+  - lazy git should use current instance of neovim
+  - lua snip is not working
+  - cmp no select, <C-Y> select default
+  - slow paste from system clipboard
+  - expand / contract code blocks +1
+  - config notes vs notes config (cn/nc)
+  - config find vs find (in) config
+  - neorg task status cycle order
+  - oil.nvim
+  - telescope horizontal split mapping
+
+* Fixes
+  - ufo misbehaving / closing all folds on LSP attach
+  > known issue when fold level is set low
+  > fix: set fold level to 99
