@@ -17,13 +17,15 @@ return {
         ["."] = "actions.open_cmdline",
         ["<C-r>"] = "actions.refresh",
       },
+      skip_confirm_for_simple_edits = true,
     },
   },
 
   -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
-    version = "0.1",
+    lazy = false,
+    version = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-fzy-native.nvim",
@@ -35,13 +37,22 @@ return {
           i = {
             -- disable tab mapping because it conflicts with copilot
             ["<Tab>"] = false,
-            ["<c-q>"] = function()
-              require("telescope.actions").send_to_qflist(0)
+            -- open in horizontal split
+            ["c-h"] = "which_key",
+          },
+          n = {
+            ["c-h"] = function ()
+              print('hello world!')
             end,
           },
         },
       },
     },
+
+    config = function (_, opts)
+      require("telescope").setup(opts)
+    end,
+
     keys = {
       {
         "<leader>ff",
@@ -55,7 +66,6 @@ return {
         function()
           return require("telescope.builtin").find_files({
             find_command = { "fd", "--type", "d" },
-            previewer = false,
           })
         end,
         desc = "Find directories",
@@ -72,14 +82,14 @@ return {
         function()
           return require("telescope.builtin").colorscheme({})
         end,
-        desc = "Find colorscheme",
+        desc = "Find Kolorscheme",
       },
       {
         "<leader>fh",
         function()
           return require("telescope.builtin").help_tags({})
         end,
-        desc = "Find help tags",
+        desc = "Find Help Tags",
       },
       {
         "<leader>fc",
@@ -89,7 +99,7 @@ return {
             previewer = false,
           })
         end,
-        desc = "Find in config dir",
+        desc = "Find in Config Dir",
       },
       {
         "<leader>fp",

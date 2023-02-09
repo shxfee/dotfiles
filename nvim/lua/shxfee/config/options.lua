@@ -20,7 +20,7 @@ opt.concealcursor = "nc"
 opt.splitbelow = true
 opt.scrolloff = 10
 opt.winwidth = 110
-opt.winminwidth = 40
+opt.winminwidth = 30
 
 -- text
 opt.wrap = false
