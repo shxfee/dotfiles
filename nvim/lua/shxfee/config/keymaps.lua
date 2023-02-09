@@ -133,8 +133,8 @@ keymap.set(
 keymap.set("t", "<c-o>", "<c-\\><c-n>")
 
 keymap.set("v", "<a-y>", '"+y')
-keymap.set("n", "<a-p>", '"+p')
-keymap.set("v", "<a-p>", '"+p')
+keymap.set("n", "<a-p>", '"+]p')
+keymap.set("v", "<a-p>", '"+]p')
 keymap.set("i", "<a-p>", "<c-r>+")
 
 keymap.set("n", "gV", "`[v`]")

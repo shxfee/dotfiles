@@ -123,11 +123,10 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
     opts = {
-      -- char = "▏",
       char = "│",
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      show_end_of_line = true,
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "norg" },
       show_trailing_blankline_indent = false,
-      show_current_context = true,
     },
   },
 
