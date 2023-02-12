@@ -40,7 +40,7 @@ return {
         html = {},
         intelephense = {},
         jsonls = {},
-        sumneko_lua = {
+        lua_ls = {
           settings = {
             Lua = {
               workspace = {
