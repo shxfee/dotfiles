@@ -36,7 +36,7 @@ return {
         },
 
         completion = {
-          completeopt = "menu,menuone,noinsert",
+          completeopt = "menu,menuone,noinsert,noselect",
           keyword_length = 2,
         },
 
@@ -52,7 +52,6 @@ return {
               cmp.select_prev_item()
             else
               cmp.complete()
-              cmp.select_prev_item()
             end
           end, {"i", "s"}),
 
@@ -61,7 +60,6 @@ return {
               cmp.select_next_item()
             else
               cmp.complete()
-              cmp.select_next_item()
             end
           end, {"i", "s"}),
 
@@ -92,7 +90,7 @@ return {
 
           ["<C-y>"] = cmp.mapping(function (fallback)
             if cmp.visible() then
-              cmp.confirm()
+              cmp.confirm({ select = true })
             else
               fallback()
             end
