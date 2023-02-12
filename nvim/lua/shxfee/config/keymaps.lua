@@ -61,7 +61,6 @@ wk.register({
       end,
       "Config Directory",
     },
-    e = { "<emd>vsplit $MYVIMRC<er>", "Config Edit" },
     f = {
       function ()
         require("telescope.builtin").find_files({
@@ -145,3 +144,6 @@ keymap.set(
   [[:execute '!wslview ' . shellescape(expand('<cfile>'), 1)<CR>]],
   { silent = true }
 )
+
+-- paste last yanked text
+keymap.set("n", "gp", '"0p', { desc = "Paste Last Yanked Text" })
