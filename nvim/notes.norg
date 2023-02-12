@@ -2,12 +2,10 @@
 ** Friction Points
 *** High Priority
     - lua snip is not working
-    - cmp no select, <C-Y> select default
     - expand / contract code blocks +1
 
 *** Low Priority
-    - slow paste from system clipboard
-    - lazy git should use current instance of neovim
+    - lazy git should use current instance of neovim?
     - config notes vs notes config (cn/nc)
     - config find vs find (in) config
     - neorg task status cycle order
@@ -16,7 +14,6 @@
 
 ** Projects
    - write implementation notes for open AI plugin for neovim
-   - submit patch request for transparency in nordic
    - add lsp name to status line
 
 ** Ugly Shits
