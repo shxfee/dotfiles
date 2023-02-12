@@ -147,3 +147,6 @@ keymap.set(
 
 -- paste last yanked text
 keymap.set("n", "gp", '"0p', { desc = "Paste Last Yanked Text" })
+
+-- remap ; to : for easier command entry
+keymap.set("n", ";", ":", { noremap = false })
