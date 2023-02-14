@@ -1,7 +1,7 @@
 return {
   {
     "shxfee/nord-vim",
-    lazy = true,
+    enabled = false,
     priority = 1000,
     -- config = function ()
     --   vim.cmd([[colorscheme nord]])
@@ -10,7 +10,7 @@ return {
 
   {
     "andersevenrud/nordic.nvim",
-    lazy = false,
+    enabled = true,
     priority = 1000,
     config = function ()
       vim.g.nord_underline_option = 'none'
@@ -26,6 +26,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    enabled = false,
     lazy = true,
     priority = 1000,
     config = function()

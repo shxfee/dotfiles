@@ -120,12 +120,7 @@ keymap.set("n", "<leader><tab><tab>", "<cmd>tabe<cr>", { desc = "Tab New" })
 keymap.set(
   "n",
   "<leader>gg",
-  function()
-    require("lazy.util").float_term(
-      { "lazygit" },
-      { size = { width = 0.9, height = 0.85 } }
-    )
-  end,
+  "<cmd>tabe<bar>terminal lazygit<cr>",
   { desc = "Lazygit" }
 )
 
@@ -150,3 +145,4 @@ keymap.set("n", "gp", '"0p', { desc = "Paste Last Yanked Text" })
 
 -- remap ; to : for easier command entry
 keymap.set("n", ";", ":", { noremap = false })
+keymap.set("n", ":", ";", { noremap = false })

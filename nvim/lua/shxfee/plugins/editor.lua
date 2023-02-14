@@ -59,7 +59,7 @@ return {
         function()
           return require("telescope.builtin").find_files({ previewer = false })
         end,
-        desc = "Find files",
+        desc = "Find a File",
       },
       {
         "<leader>fd",
@@ -68,7 +68,7 @@ return {
             find_command = { "fd", "--type", "d" },
           })
         end,
-        desc = "Find directories",
+        desc = "Find a Directory",
       },
       {
         "<leader>fg",
@@ -82,14 +82,14 @@ return {
         function()
           return require("telescope.builtin").colorscheme({})
         end,
-        desc = "Find Kolorscheme",
+        desc = "Find a Kolorscheme",
       },
       {
         "<leader>fh",
         function()
           return require("telescope.builtin").help_tags({})
         end,
-        desc = "Find Help Tags",
+        desc = "Find a Help Tag",
       },
       {
         "<leader>fc",
@@ -99,7 +99,7 @@ return {
             previewer = false,
           })
         end,
-        desc = "Find in Config Dir",
+        desc = "Find a Config File",
       },
       {
         "<leader>fp",
@@ -110,14 +110,14 @@ return {
             previewer = false,
           })
         end,
-        desc = "Find in plugin dir",
+        desc = "Find a Plugin File",
       },
       {
         "<leader>fH",
         function()
           return require("telescope.builtin").highlights({})
         end,
-        desc = "Find hightlight group",
+        desc = "Find a Hightlight Group",
       },
     },
   },
@@ -225,3 +225,4 @@ return {
     cmd = "Subvert",
   },
 }
+

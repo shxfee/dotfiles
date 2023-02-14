@@ -12,6 +12,7 @@ return {
     opts = {
       highlight = {
         enable = true,
+        -- support for these suck in treesitter atm 2023-02-05
         additional_vim_regex_highlighting = {
           "php",
         },
@@ -20,7 +21,6 @@ return {
         enable = true,
         disable = { "vue" },
       },
-      -- support for these suck in treesitter atm 2023-02-05
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",
