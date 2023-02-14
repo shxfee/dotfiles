@@ -46,7 +46,7 @@ require("lazy").setup("shxfee.plugins", {
         "tohtml",
         "zipPlugin",
         -- "matchit",
-        -- "matchparen",
+        "matchparen",
         "tutor",
       },
     },
