@@ -6,3 +6,8 @@ gui:
       - default
     unstagedChangesColor:
       - yellow
+os:
+  editCommand: "nvr --remote-tab"
+  openCommand: 'nvr'
+promptToReturnFromSubprocess: false
+
