@@ -165,4 +165,37 @@ return {
       require("ufo").setup()
     end
   },
+
+  -- animations
+  {
+    "echasnovski/mini.animate",
+    opts = function()
+      local animate = require("mini.animate")
+
+      local options = {
+        scroll = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 10, unit = "total" }),
+        },
+
+        resize = {
+          enable = true,
+          timing = animate.gen_timing.linear({ duration = 10, unit = "total" }),
+        },
+
+        -- Cursor path: janky cursor on NC
+        cursor = { enable = false },
+
+        -- Window: janky backgrounds
+        open = { enable = false },
+        close = { enable = false },
+      }
+
+      return options
+    end,
+
+    config = function(_, opts)
+      require("mini.animate").setup(opts)
+    end,
+  }
 }
