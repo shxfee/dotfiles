@@ -64,73 +64,82 @@ return {
 
     opts = {
       defaults = {
-        mappings = {
-          i = {
-            -- disable tab mapping because it conflicts with copilot
-            ["<Tab>"] = false,
-            -- open in horizontal split
-            ["c-h"] = "which_key",
-          },
-          n = {
-            ["c-h"] = function ()
-              print('hello world!')
-            end,
+        layout_config = {
+          preview_width = 0.6,
+        },
+        path_display = {
+          truncate = 3,
+        },
+      },
+      pickers = {
+        find_files = {
+          mappings = {
+            n = {
+              ["kj"] = "close",
+            },
+            i = {
+              ["C-n"] = false,
+            },
           },
         },
       },
     },
 
-    config = function (_, opts)
-      require("telescope").setup(opts)
-    end,
-
     keys = {
-      {
-        "<leader>ff",
-        function()
-          return require("telescope.builtin").find_files({ previewer = false })
-        end,
-        desc = "Find a File",
-      },
-      {
-        "<leader>fd",
-        function()
-          return require("telescope.builtin").find_files({
-            find_command = { "fd", "--type", "d" },
-          })
-        end,
-        desc = "Find a Directory",
-      },
-      {
-        "<leader>fg",
-        function()
-          return require("telescope.builtin").live_grep({})
-        end,
-        desc = "Live grep",
-      },
-      {
-        "<leader>fk",
-        function()
-          return require("telescope.builtin").colorscheme({})
-        end,
-        desc = "Find a Kolorscheme",
-      },
-      {
-        "<leader>fh",
-        function()
-          return require("telescope.builtin").help_tags({})
-        end,
-        desc = "Find a Help Tag",
-      },
       {
         "<leader>fc",
         function()
           return require("telescope.builtin").find_files({
             cwd = vim.fn.stdpath("config"),
-            previewer = false,
           })
         end,
         desc = "Find a Config File",
+      },
+      {
+        "<leader>fd",
+        function()
+          return require("telescope.builtin").find_files({
+            -- find directories using fd ignoring .git
+            find_command = { "fd", "--type", "d", "--hidden", "--exclude", ".git" },
+            previewer = false,
+          })
+        end,
+        desc = "Find a Directory",
+      },
+      {
+        "<leader>ff",
+        function()
+          return require("telescope.builtin").find_files()
+        end,
+        desc = "Find a File",
+      },
+      {
+        "<leader>fg",
+        function()
+          return require("telescope.builtin").live_grep()
+        end,
+        desc = "Live grep",
+      },
+      {
+        "<leader>fh",
+        function()
+          return require("telescope.builtin").help_tags()
+        end,
+        desc = "Find a Help Tag",
+      },
+      {
+        "<leader>fH",
+        function()
+          return require("telescope.builtin").highlights()
+        end,
+        desc = "Find a Hightlight Group",
+      },
+      {
+        "<leader>fk",
+        function()
+          return require("telescope.builtin").colorscheme()
+        end,
+        desc = "Find a Kolorscheme",
       },
       {
         "<leader>fp",
@@ -144,11 +153,11 @@ return {
         desc = "Find a Plugin File",
       },
       {
-        "<leader>fH",
+        "<leader>fr",
         function()
-          return require("telescope.builtin").highlights({})
+          return require("telescope.builtin").resume()
         end,
-        desc = "Find a Hightlight Group",
+        desc = "Find Resume Last Search",
       },
     },
   },
@@ -256,4 +265,3 @@ return {
     cmd = "Subvert",
   },
 }
-
