@@ -34,7 +34,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Lazy automatically loads all specs form the plugins dir
-require("lazy").setup("shxfee.plugins", {
+require("lazy").setup({
+  spec = "shxfee.plugins",
   install = { missing = false },
   ui = { border = "rounded" },
   performance = {
