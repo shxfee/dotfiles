@@ -21,6 +21,37 @@ return {
     },
   },
 
+  -- fuzzy finder 2.0
+  {
+    'ibhagwan/fzf-lua',
+    enabled = true,
+    dependencies = { 'nvim-web-devicons' },
+    opts = {
+      files = {
+        git_icons = false,
+      },
+    },
+    keys = {
+      {
+        "<leader>pp",
+        function()
+          return require("fzf-lua").files()
+        end,
+        desc = "Find a File",
+      },
+      {
+        "<leader>pd",
+        function()
+          return require("fzf-lua").files({
+            -- find directories using fd ignoring .git
+            cmd = "fd --type d --hidden --exclude .git",
+          })
+        end,
+        desc = "Find a Directory",
+      },
+    },
+  },
+
   -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
