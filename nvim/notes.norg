@@ -4,6 +4,8 @@
    - expand / contract code blocks +1
    - help tags not available for fzf-lua, diff view etc
    > having to run :Lazy build plugin
+   - .env files do not need lsp
+   - organize all plugins better
 
    - git
    > lazy git should check git root starting with current file
@@ -30,3 +32,7 @@
 ** Ugly Shits
    - show lsp name in the status line
    - make lsp spinner faster
+   - indent blank line vs ufo
+
+** To check out
+   - telescope file browser
