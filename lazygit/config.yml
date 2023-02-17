@@ -10,4 +10,3 @@ os:
   editCommand: "nvr --remote-tab"
   openCommand: 'nvr'
 promptToReturnFromSubprocess: false
-

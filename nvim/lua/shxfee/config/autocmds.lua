@@ -21,9 +21,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- terminal settings because there is no ft for terminal
-vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
+vim.api.nvim_create_autocmd("TermOpen", {
   callback = function()
     vim.opt_local.wrap = false
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.opt_local.statuscolumn = ""
     vim.cmd.startinsert()
   end,
   group = mygroup,
