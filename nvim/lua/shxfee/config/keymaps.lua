@@ -132,6 +132,15 @@ keymap.set("n", "<leader><tab><tab>", "<cmd>tabe<cr>", { desc = "Tab New" })
 
 -- require("lazy.util").float_term(cmd, opts)
 -- git
+wk.register({
+  g = {
+    name = "+git",
+    l = { "<cmd>tabe<bar>terminal lazygit<cr>", "Lazygit" },
+    d = { "<cmd>DiffviewOpen<cr>", "Diff View" },
+    g = { "<cmd>vert Git<cr>", "Git" },
+  },
+}, { prefix = "<leader>", mode = "n" })
+
 keymap.set(
   "n",
   "<leader>gg",
