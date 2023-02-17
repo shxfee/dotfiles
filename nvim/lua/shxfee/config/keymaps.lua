@@ -54,6 +54,21 @@ wk.register({
 wk.register({
   c = {
     name = "+config",
+    a = {
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir .. "/lua/shxfee/config/autocmds.lua")
+      end,
+      "Config Autocommands",
+    },
+    -- the one I am 
+    c = {
+      function ()
+        local config_dir = vim.fn.stdpath("config")
+        vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/editor.lua")
+      end,
+      "Config Config I am Editing",
+    },
     d = {
       function ()
         local config_dir = vim.fn.stdpath("config")
