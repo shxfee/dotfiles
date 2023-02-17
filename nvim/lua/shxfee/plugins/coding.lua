@@ -1,53 +1,11 @@
 return {
-  -- snippets
-  {
-    "L3MON4D3/LuaSnip",
-    lazy = true,
-    dependencies = {
-      {
-        "rafamadriz/friendly-snippets",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
-    },
-    version = "1.2",
-    build = function()
-      local Util = require("lazy.core.util")
-
-      -- check if make is avaialble
-      if vim.fn.executable("make") == 0 then
-        Util.warn(
-          "make is not available, jsregex will not be available",
-          { title = "LuaSnip" }
-        )
-        return
-      end
-
-      -- check if luajit is available
-      if vim.fn.executable("luajit") == 0 then
-        Util.warn(
-          "luajit is not available, jsregex will not be available",
-          { title = "LuaSnip" }
-        )
-        return
-      end
-
-      vim.fn.system("make install_jsregex")
-    end,
-    opts = {
-      history = true,
-      delete_check_event = "TextChanged",
-    },
-  },
-
-  -- git
+  -- git fugitive
   {
     "tpope/vim-fugitive",
     cmd = "Git",
     keys = {
       {
-        "<leader>gf",
+        "<leader>gg",
         "<cmd>vertical Git<cr>",
         desc = "git status",
       },
@@ -68,22 +26,23 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    opts = {
-      signs = {
-        add = { text = "│" },
-        change = { text = "│" },
-        delete = { text = "│" },
-        topdelete = { text = "│" },
-        changedelete = { text = "│" },
-        untracked = { text = "│" },
-        -- add = { text = "▎" },
-        -- change = { text = "▎" },
-        -- delete = { text = "▎" },
-        -- topdelete = { text = "▎" },
-        -- changedelete = { text = "▎" },
-        -- untracked = { text = "▎" },
-      },
-    },
+    opts = function ()
+      local opts = {}
+
+      -- slim │ fat ▎
+      local char = "│"
+
+      opts["signs"] = {
+        add = { text = char },
+        change = { text = char },
+        delete = { text = char },
+        topdelete = { text = char },
+        changedelete = { text = char },
+        untracked = { text = char },
+      }
+
+      return opts
+    end,
   },
 
   -- diffview
@@ -189,41 +148,6 @@ return {
     },
   },
 
-  -- refactoring code
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter",
-    },
-    keys = {
-      {
-        "<leader>re",
-        [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
-        mode = "v",
-        desc = "Extract function"
-      },
-      {
-        "<leader>rf",
-        [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
-        mode = "v",
-        desc = "Extract function to file",
-      },
-      {
-        "<leader>rv",
-        [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
-        mode = "v",
-        desc = "Extract variable",
-      },
-      {
-        "<leader>ri",
-        [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
-        mode = "v",
-        desc = "Inline variable",
-      },
-    }
-  },
-
   -- keeping track of time
   {
     "wakatime/vim-wakatime",
@@ -246,16 +170,5 @@ return {
         },
       },
     },
-  },
-
-  -- chatgpt
-  {
-    "jackMort/ChatGPT.nvim",
-    config = true,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    }
   },
 }
