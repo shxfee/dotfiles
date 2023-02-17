@@ -1,16 +1,27 @@
 * TODO
 ** Friction Points
-*** High Priority
-    - lua snip is not working
-    - expand / contract code blocks +1
+   - lua snip is not working
+   - expand / contract code blocks +1
+   - help tags not available for fzf-lua, diff view etc
+   > having to run :Lazy build plugin
 
-*** Low Priority
-    - lazy git should use current instance of neovim?
-    - config notes vs notes config (cn/nc)
-    - config find vs find (in) config
-    - neorg task status cycle order
-    - oil.nvim is it really vinegar worth?
-    - telescope horizontal split mapping
+   - git
+   > lazy git should check git root starting with current file
+   > key maps for moving between hunks? 
+   > diff view layout needs to be tweaked
+
+   - auto complete
+   > cmp is slow with tailwind. Try coq instead?
+
+   - notes
+   > neorg task status cycle order
+
+   - file browsing
+   > oil.nvim is it really vinegar worth?
+
+   - fuzzy finding
+   > help files for different libraries in vim
+   > telescope mapping still not working
 
 ** Projects
    - write implementation notes for open AI plugin for neovim
