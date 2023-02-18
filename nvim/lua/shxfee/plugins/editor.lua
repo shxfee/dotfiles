@@ -241,22 +241,6 @@ return {
         position = "bottom",
       },
     },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-
-      wk.register({
-        mode = { "n", "v" },
-        ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>u"] = { name = "+ui" },
-        ["<leader>c"] = { name = "+config" },
-        ["<leader>t"] = { name = "+test" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>j"] = { name = "+journal" },
-        ["<leader>n"] = { name = "+notes" },
-      })
-    end,
   },
 
   -- word substitutions for code cases (snake, camel, dot etc)
