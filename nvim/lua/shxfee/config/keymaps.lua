@@ -83,6 +83,14 @@ wk.register(
         end,
         "Config Options",
       },
+      t = {
+        -- edit plugins temp.lua
+        function ()
+          local config_dir = vim.fn.stdpath("config")
+          vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/temp.lua")
+        end,
+        "Config Temp Plugins",
+      },
     },
 
     -- find/files
