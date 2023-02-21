@@ -1,4 +1,17 @@
 return {
+  -- split/join code blocks
+  {
+    "Wansmer/treesj",
+    opts = {
+      use_default_keymaps = false,
+      max_join_length = 200,
+    },
+    keys = {
+      { "gs", "<Cmd>TSJSplit<CR>", "Split Code" },
+      { "gj", "<Cmd>TSJJoin<CR>", "Join Code" },
+    },
+  },
+
   -- chatgpt
   {
     "jackMort/ChatGPT.nvim",
