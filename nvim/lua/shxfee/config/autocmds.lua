@@ -62,6 +62,16 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   desc = "Autoformat code on save",
 })
 
+-- disable diagnostics for .env files
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = ".env",
+  callback = function()
+    vim.diagnostic.disable()
+  end,
+  group = mygroup,
+  desc = "Disable diagnostics for .env files",
+})
+
 -- transparent backgrounds
 vim.api.nvim_create_autocmd({"VimEnter", "Colorscheme"}, {
   callback = function ()
