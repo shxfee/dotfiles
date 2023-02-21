@@ -188,3 +188,4 @@ keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search
 
 -- save file in all modes
 keymap.set({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+keymap.set({ "n" }, "<C-q>", "<cmd>q<cr>", { desc = "Save file" })
