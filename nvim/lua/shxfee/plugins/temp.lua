@@ -15,12 +15,13 @@ return {
   -- chatgpt
   {
     "jackMort/ChatGPT.nvim",
-    config = true,
+    opts = true,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
-    }
+    },
+    cmd = "ChatGPT",
   },
 
   -- simple todo
@@ -36,6 +37,7 @@ return {
         file_name = ".do_tasks",
       }
     },
+    cmd = { "Do", "DoEdit", "DoShow" },
   },
 
   -- duck
@@ -85,5 +87,47 @@ return {
         desc = "Inline variable",
       },
     }
+  },
+
+  -- bracket navigation
+  {
+    'echasnovski/mini.bracketed',
+    enabled = true,
+    event = "VeryLazy",
+    version = false,
+    config = function ()
+      require("mini.bracketed").setup()
+    end
+  },
+
+  -- fuzzy finder 2.0
+  {
+    "ibhagwan/fzf-lua",
+    enabled = true,
+    dependencies = { 'nvim-web-devicons' },
+    opts = {
+      files = {
+        git_icons = false,
+      },
+    },
+    keys = {
+      {
+        "<leader>pp",
+        function()
+          return require("fzf-lua").files()
+        end,
+        desc = "Find a File",
+      },
+      {
+        "<leader>pd",
+        function()
+          return require("fzf-lua").files({
+            -- find directories using fd ignoring .git
+            cmd = "fd --type d --hidden --exclude .git",
+          })
+        end,
+        desc = "Find a Directory",
+      },
+    },
   },
 }
