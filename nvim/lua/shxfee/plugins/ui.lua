@@ -34,9 +34,6 @@ return {
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = {
-      "arkav/lualine-lsp-progress",
-    },
     event = "VeryLazy",
     opts = function()
       local function fg(name)
@@ -49,7 +46,7 @@ return {
 
       return {
         options = {
-          theme = "OceanicNext",
+          theme = "auto",
           globalstatus = true,
           disabled_filetypes = { statusline = { "lazy", "mason" } },
         },
@@ -65,37 +62,11 @@ return {
           },
           lualine_b = { "branch" },
           lualine_c = {
-            {
-              "diagnostics",
-              -- symbols = {
-              --   error = icons.diagnostics.Error,
-              --   warn = icons.diagnostics.Warn,
-              --   info = icons.diagnostics.Info,
-              --   hint = icons.diagnostics.Hint,
-              -- },
-            },
             { "filename", path = 1, symbols = { modified = "", readonly = "", unnamed = "" } },
-            -- stylua: ignore
-            {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            },
           },
 
           lualine_x = {
-            {
-              "lsp_progress",
-              display_components = {
-                "lsp_client_name", "spinner"
-              },
-              separators = {
-                lsp_client_name = { pre = '', post = '' },
-              },
-              timer = { spinner = 800 },
-              spinner_symbols = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
-            },
-            -- stylua: ignore
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
+            { "diagnostics" },
           },
 
           lualine_y = {
@@ -133,6 +104,7 @@ return {
   -- icons
   {
     "kyazdani42/nvim-web-devicons",
+    event = "VeryLazy",
   },
 
   -- folding
@@ -197,5 +169,20 @@ return {
     config = function(_, opts)
       require("mini.animate").setup(opts)
     end,
-  }
+  },
+
+  -- UI for nvim-lsp progress
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {
+      window = {
+        relative = "editor",
+        blend = 0,
+      },
+      text = {
+        spinner = "dots",
+      },
+    },
+  },
 }

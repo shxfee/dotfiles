@@ -1,14 +1,8 @@
 * TODO
 ** Friction Points
-   - lua snip is not working
-   - expand / contract code blocks +1
-   - help tags not available for fzf-lua, diff view etc
-   > having to run :Lazy build plugin
-   - .env files do not need lsp
-   - organize all plugins better
+   - commas in pairs? check reddit
 
    - git
-   > lazy git should check git root starting with current file
    > key maps for moving between hunks? 
    > diff view layout needs to be tweaked
 
@@ -26,13 +20,10 @@
    > telescope mapping still not working
 
 ** Projects
-   - write implementation notes for open AI plugin for neovim
    - add lsp name to status line
+   - todo plugin do.nvim modifications
 
 ** Ugly Shits
    - show lsp name in the status line
    - make lsp spinner faster
    - indent blank line vs ufo
-
-** To check out
-   - telescope file browser
