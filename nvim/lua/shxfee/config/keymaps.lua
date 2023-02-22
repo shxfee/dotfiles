@@ -83,13 +83,48 @@ wk.register(
         end,
         "Config Options",
       },
-      t = {
-        -- edit plugins temp.lua
-        function ()
-          local config_dir = vim.fn.stdpath("config")
-          vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/temp.lua")
-        end,
-        "Config Temp Plugins",
+      p = {
+        name = "+plugins",
+        c = {
+          -- edit plugins/coding.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/coding.lua")
+          end,
+          "Coding Spec"
+        },
+        d = {
+          -- edit plugins dir
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins")
+          end,
+          "Plugins Directory"
+        },
+        e = {
+          -- edit plugins/editor.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/editor.lua")
+          end,
+          "Editor Spec"
+        },
+        u = {
+          -- edit plugins/ui.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/ui.lua")
+          end,
+          "UI Spec"
+        },
+        t = {
+          -- edit plugins/temp.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/temp.lua")
+          end,
+          "Temp Spec"
+        },
       },
     },
 
