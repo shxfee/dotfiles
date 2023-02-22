@@ -1,16 +1,24 @@
 return {
   {
-    "shxfee/nord-vim",
-    enabled = false,
+    "folke/tokyonight.nvim",
     priority = 1000,
-    -- config = function ()
-    --   vim.cmd([[colorscheme nord]])
-    -- end
+    opts = {
+      style = "moon",
+      transparent = true,
+      styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
+      }
+    },
+    config = function (_, opts)
+      require("tokyonight").setup(opts)
+      vim.cmd.colorscheme("tokyonight")
+    end,
   },
 
   {
     "andersevenrud/nordic.nvim",
-    enabled = true,
+    enabled = false,
     priority = 1000,
     config = function ()
       vim.g.nord_underline_option = 'none'

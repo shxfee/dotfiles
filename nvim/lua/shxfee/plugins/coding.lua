@@ -2,7 +2,10 @@ return {
   -- git fugitive
   {
     "tpope/vim-fugitive",
-    cmd = "Git",
+    cmd = {
+      "Git",
+      "Gread",
+    },
     keys = {
       {
         "<leader>gg",
@@ -82,18 +85,14 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    config = function(_, opts)
-      require("nvim-autopairs").setup(opts)
-    end,
+    opts = true,
   },
 
   -- auto html tag completion
   {
     "windwp/nvim-ts-autotag",
     event = "InsertEnter",
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end,
+    opts = true,
   },
 
   -- tabularize lines of code
