@@ -217,4 +217,7 @@ return {
     "tpope/vim-abolish",
     cmd = "Subvert",
   },
+
+  -- neorg
+  { "nvim-neorg/neorg" },
 }

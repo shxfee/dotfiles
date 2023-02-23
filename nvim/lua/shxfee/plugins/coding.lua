@@ -1,4 +1,10 @@
 return {
+  -- lsp more in etc
+  { "hrsh7th/nvim-cmp" },
+
+  -- treesitter more in etc
+  { "nvim-treesitter/nvim-treesitter" },
+
   -- git fugitive
   {
     "tpope/vim-fugitive",
