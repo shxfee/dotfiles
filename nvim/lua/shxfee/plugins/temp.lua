@@ -130,4 +130,50 @@ return {
       },
     },
   },
+
+  -- orgmode
+  {
+    "nvim-orgmode/orgmode",
+    build = function()
+      require('orgmode').setup_ts_grammar()
+      vim.cmd("TSUpdate org")
+    end,
+    dependencies = {
+      {
+        "nvim-treesitter",
+        opts = function(_, opts)
+          local newOpts = {
+            highlight = {
+              additional_vim_regex_highlighting = { 'org' }
+            },
+            ensure_installed = { 'org' },
+          }
+
+          return vim.tbl_deep_extend("force", opts, newOpts)
+        end,
+      },
+      {
+        "nvim-cmp",
+        opts = function(_, opts)
+          local newOpts = {
+            sources = {
+              { name = 'orgmode' },
+            },
+          }
+
+          return vim.tbl_deep_extend("force", opts, newOpts)
+        end,
+      },
+    },
+    opts = {
+      org_agenda_files = { '~/documents/org/*' },
+      org_default_notes_file = '~/documents/org/refile.org',
+    },
+    config = function(_, opts)
+      local org = require('orgmode')
+
+      org.setup_ts_grammar()
+      org.setup(opts)
+    end,
+  },
 }
