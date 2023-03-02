@@ -35,14 +35,6 @@ wk.register(
         end,
         "Config Autocommands",
       },
-      -- the one I am 
-      c = {
-        function ()
-          local config_dir = vim.fn.stdpath("config")
-          vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/editor.lua")
-        end,
-        "Config Config I am Editing",
-      },
       d = {
         function ()
           local config_dir = vim.fn.stdpath("config")
@@ -85,6 +77,14 @@ wk.register(
       },
       p = {
         name = "+plugins",
+        C = {
+          -- edit plugins/colorscheme.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/colorscheme.lua")
+          end,
+          "Colorscheme Spec",
+        },
         c = {
           -- edit plugins/coding.lua
           function ()
@@ -109,14 +109,6 @@ wk.register(
           end,
           "Editor Spec"
         },
-        u = {
-          -- edit plugins/ui.lua
-          function ()
-            local config_dir = vim.fn.stdpath("config")
-            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/ui.lua")
-          end,
-          "UI Spec"
-        },
         t = {
           -- edit plugins/temp.lua
           function ()
@@ -124,6 +116,14 @@ wk.register(
             vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/temp.lua")
           end,
           "Temp Spec"
+        },
+        u = {
+          -- edit plugins/ui.lua
+          function ()
+            local config_dir = vim.fn.stdpath("config")
+            vim.cmd.edit(config_dir .. "/lua/shxfee/plugins/ui.lua")
+          end,
+          "UI Spec"
         },
       },
     },
