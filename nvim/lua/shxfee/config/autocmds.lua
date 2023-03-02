@@ -73,7 +73,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- transparent backgrounds
-vim.api.nvim_create_autocmd({"VimEnter", "Colorscheme"}, {
+vim.api.nvim_create_autocmd({ "VimEnter", "Colorscheme" }, {
   callback = function ()
     local groups = {
       "Normal",
@@ -86,17 +86,16 @@ vim.api.nvim_create_autocmd({"VimEnter", "Colorscheme"}, {
       "GitSignsChange",
       "GitSignsDelete",
       "Pmenu",
-      "PmenuSel",
       "WinSeparator",
       "TelescopeNormal",
       "TelescopeBorder",
       "TelescopeSelection",
       "TelescopePreviewNormal",
       "WhichKeyFloat",
+      "CmpItemMenu",
     }
 
     for _, group in ipairs(groups) do
-      -- :hi Comment ctermfg=Cyan ctermbg=None guifg=#80a0ff gui=bold
       vim.cmd("hi " .. group .. " ctermbg=None guibg=NONE")
     end
 
