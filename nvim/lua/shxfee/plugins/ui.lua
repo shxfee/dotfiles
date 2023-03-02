@@ -36,14 +36,6 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local function fg(name)
-        return function()
-          ---@type {foreground?:number}?
-          local hl = vim.api.nvim_get_hl_by_name(name, true)
-          return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
-        end
-      end
-
       return {
         options = {
           theme = "auto",
@@ -71,14 +63,6 @@ return {
 
           lualine_y = {
             { "filetype", icon_only = false, padding = { left = 1, right = 1 } },
-            -- minimal tabs in status line
-            -- {
-            --   'tabs',
-            --   tabs_color = {
-            --     active = 'lualine_b_normal',
-            --     inactive = 'lualine_c_normal',
-            --   },
-            -- },
           },
 
           lualine_z = {
@@ -95,6 +79,8 @@ return {
     event = "BufReadPre",
     opts = {
       char = "│",
+      -- char = "┊",
+      -- char = "⁞",
       show_end_of_line = true,
       filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "norg" },
       show_trailing_blankline_indent = false,
