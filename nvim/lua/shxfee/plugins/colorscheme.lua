@@ -1,6 +1,7 @@
 return {
   {
     "folke/tokyonight.nvim",
+    enabled = true,
     priority = 1000,
     opts = {
       style = "moon",
@@ -8,7 +9,8 @@ return {
       styles = {
         comments = { italic = true },
         keywords = { italic = true },
-      }
+      },
+      sidebars = {},
     },
     config = function (_, opts)
       require("tokyonight").setup(opts)
@@ -20,7 +22,9 @@ return {
     "andersevenrud/nordic.nvim",
     enabled = false,
     priority = 1000,
+    branch = "feat/transparent-bg",
     config = function ()
+      vim.g.nord_transparent_backgrounds = true
       vim.g.nord_underline_option = 'none'
       vim.g.nord_italic = false
       vim.g.nord_italic_comments = false

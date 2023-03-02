@@ -22,113 +22,9 @@ return {
   },
 
   -- fuzzy finder
+  -- plugins/etc/telescope.lua
   {
     "nvim-telescope/telescope.nvim",
-    version = false,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-fzy-native.nvim",
-    },
-
-    opts = {
-      defaults = {
-        layout_config = {
-          preview_width = 0.6,
-        },
-        path_display = {
-          truncate = 3,
-        },
-      },
-      pickers = {
-        find_files = {
-          mappings = {
-            n = {
-              ["kj"] = "close",
-            },
-          },
-        },
-      },
-    },
-
-    config = function(_, opts)
-      require("telescope").setup(opts)
-    end,
-
-    keys = {
-      {
-        "<leader>fc",
-        function()
-          return require("telescope.builtin").find_files({
-            cwd = vim.fn.stdpath("config"),
-          })
-        end,
-        desc = "Find a Config File",
-      },
-      {
-        "<leader>fd",
-        function()
-          return require("telescope.builtin").find_files({
-            -- find directories using fd ignoring .git
-            find_command = { "fd", "--type", "d", "--hidden", "--exclude", ".git" },
-            previewer = false,
-          })
-        end,
-        desc = "Find a Directory",
-      },
-      {
-        "<leader>ff",
-        function()
-          return require("telescope.builtin").find_files()
-        end,
-        desc = "Find a File",
-      },
-      {
-        "<leader>fg",
-        function()
-          return require("telescope.builtin").live_grep()
-        end,
-        desc = "Live grep",
-      },
-      {
-        "<leader>fh",
-        function()
-          return require("telescope.builtin").help_tags()
-        end,
-        desc = "Find a Help Tag",
-      },
-      {
-        "<leader>fH",
-        function()
-          return require("telescope.builtin").highlights()
-        end,
-        desc = "Find a Hightlight Group",
-      },
-      {
-        "<leader>fk",
-        function()
-          return require("telescope.builtin").colorscheme()
-        end,
-        desc = "Find a Kolorscheme",
-      },
-      {
-        "<leader>fp",
-        function()
-          return require("telescope.builtin").find_files({
-            find_command = { "fd", "--type", "d" },
-            cwd = vim.fn.stdpath("data") .. "/lazy/",
-            previewer = false,
-          })
-        end,
-        desc = "Find a Plugin File",
-      },
-      {
-        "<leader>fr",
-        function()
-          return require("telescope.builtin").resume()
-        end,
-        desc = "Find Resume Last Search",
-      },
-    },
   },
 
   -- leap motion
@@ -139,13 +35,13 @@ return {
         "s",
         "<Plug>(leap-forward-to)",
         mode = { "n", "v" },
-        desc = "Leap forward to",
+        desc = "Leap Forward to",
       },
       {
         "S",
         "<Plug>(leap-backward-to)",
         mode = { "n", "v" },
-        desc = "Leap backward to",
+        desc = "Leap Backward to",
       },
 
       -- using z for operators because s is taken by surround
@@ -153,13 +49,13 @@ return {
         "z",
         "<Plug>(leap-forward-to)",
         mode = { "o" },
-        desc = "Leap forward to",
+        desc = "Leap Forward to",
       },
       {
         "Z",
         "<Plug>(leap-backward-to)",
         mode = { "o" },
-        desc = "Leap backward to",
+        desc = "Leap Backward to",
       }
     },
     config = function()
@@ -171,10 +67,11 @@ return {
   {
     "kylechui/nvim-surround",
     keys = {
-      {"ys"},
-      {"ds"},
-      {"cs"},
-      {"S", mode = "v"},
+      { "ys" },
+      { "ds" },
+      { "cs", desc = "Change Surrounding Pair" },
+      
+      { "S", mode = "v" },
     },
     config = function()
       require("nvim-surround").setup()
@@ -210,12 +107,6 @@ return {
         position = "bottom",
       },
     },
-  },
-
-  -- word substitutions for code cases (snake, camel, dot etc)
-  {
-    "tpope/vim-abolish",
-    cmd = "Subvert",
   },
 
   -- neorg
