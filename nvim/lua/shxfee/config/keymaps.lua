@@ -224,3 +224,14 @@ keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search
 -- save file in all modes
 keymap.set({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 keymap.set({ "n" }, "<C-q>", "<cmd>q<cr>", { desc = "Save file" })
+
+keymap.set({ "n" }, "<C-l>", function ()
+  vim.cmd.nohlsearch()
+  vim.cmd.diffupdate()
+  vim.cmd.redraw()
+
+  -- refresh indent lines
+  if vim.g.indent_blankline_enabled then
+    vim.cmd("IndentBlanklineRefresh")
+  end
+end, { desc = "Clear search highlight" })
