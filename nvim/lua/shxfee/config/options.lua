@@ -24,6 +24,7 @@ opt.winminwidth = 30
 
 -- text
 opt.wrap = false
+opt.breakindent = true
 opt.autoindent = true
 opt.shiftwidth = 4
 opt.tabstop = 4
