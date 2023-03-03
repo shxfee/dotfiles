@@ -201,4 +201,33 @@ return {
       },
     },
   },
+
+  -- split/join code blocks
+  {
+    "Wansmer/treesj",
+    opts = {
+      use_default_keymaps = false,
+      max_join_length = 200,
+    },
+    keys = {
+      { "gs", "<Cmd>TSJSplit<CR>", "Split Code" },
+      { "gj", "<Cmd>TSJJoin<CR>", "Join Code" },
+    },
+  },
+
+  -- Syntax and indent files
+  -- blade
+  {
+    "jwalton512/vim-blade",
+  },
+
+  -- php
+  {
+    "StanAngeloff/php.vim",
+  },
+
+  -- vue
+  {
+    "posva/vim-vue",
+  },
 }
