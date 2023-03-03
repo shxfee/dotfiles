@@ -1,7 +1,10 @@
 * TODO
+** Gotta fix treesitter first
+   - RTFM!
+
 ** The file type plugins are a mess. My config is fucked up
-   - ( ) commit everything and get to a stable point
-   - ( ) delete all the file type plugins
+   - (x) commit everything and get to a stable point
+   - (x) delete all the file type plugins
    - ( ) ensure php indentation works
    - ( ) ensure vue indentation works
    - ( ) ensure blade indent works
