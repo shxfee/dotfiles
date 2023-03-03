@@ -1,6 +1,16 @@
 * TODO
+** The file type plugins are a mess. My config is fucked up
+   - ( ) commit everything and get to a stable point
+   - ( ) delete all the file type plugins
+   - ( ) ensure php indentation works
+   - ( ) ensure vue indentation works
+   - ( ) ensure blade indent works
+
+
 ** Friction Points
    - commas in pairs? check reddit
+   - blade files are fucked up.
+   > try removing tree sitter support and see what happens
 
    - git
    > key maps for moving between hunks? 
@@ -22,8 +32,8 @@
 ** Projects
    - add lsp name to status line
    - todo plugin do.nvim modifications
+   - bug: `cs<esc>` results in error
 
 ** Ugly Shits
    - show lsp name in the status line
-   - make lsp spinner faster
    - indent blank line vs ufo

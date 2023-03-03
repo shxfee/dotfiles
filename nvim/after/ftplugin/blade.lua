@@ -1,1 +1,1 @@
-vim.opt_local.filetype = "html"
+vim.opt_local.shiftwidth = 2
