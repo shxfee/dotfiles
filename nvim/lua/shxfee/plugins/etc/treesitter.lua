@@ -13,21 +13,26 @@ return {
       highlight = {
         enable = true,
         disable = {
-          "blade",
+          -- "vue",
         },
-        -- support for these suck in treesitter atm 2023-02-05
+        -- support for these suck in treesitter atm 2023-03-03
         additional_vim_regex_highlighting = {
           "php",
+          "vue",
         },
       },
       indent = {
         enable = true,
-        disable = { "vue", "blade" },
+        disable = {
+          -- indent files from the old plugin still works better
+          "vue",
+        },
       },
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",
         "css",
+        "scss",
         "help",
         "html",
         "javascript",

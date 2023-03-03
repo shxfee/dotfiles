@@ -43,6 +43,7 @@
   "oil.nvim": { "branch": "master", "commit": "0b2a4ddde1c8a881c2d1620a673c12914bd6d1dc" },
   "orgmode": { "branch": "master", "commit": "313ce5a04e7fc3d677ad906a94fc49c1f54d1572" },
   "php.vim": { "branch": "master", "commit": "930aec5c7026297a6630bd2940c08c5ff552cf2a" },
+  "playground": { "branch": "master", "commit": "4044b53c4d4fcd7a78eae20b8627f78ce7dc6f56" },
   "plenary.nvim": { "branch": "master", "commit": "253d34830709d690f013daf2853a9d21ad7accab" },
   "promise-async": { "branch": "main", "commit": "7fa127fa80e7d4d447e0e2c78e99af4355f4247b" },
   "refactoring.nvim": { "branch": "master", "commit": "57c32c6b7a211e5a3a5e4ddc4ad2033daff5cf9a" },
@@ -57,7 +58,6 @@
   "vim-blade": { "branch": "master", "commit": "9534101808cc320eef003129a40cab04b026a20c" },
   "vim-fugitive": { "branch": "master", "commit": "fa33145cc12003005b92d7e536025ed5833b9c4f" },
   "vim-test": { "branch": "master", "commit": "c63b94c1e5089807f4532e05f087351ddb5a207c" },
-  "vim-vue": { "branch": "master", "commit": "c424294e769b26659176065f9713c395731f7b3a" },
   "vim-wakatime": { "branch": "master", "commit": "62113bb063aa1923146e59270d71563441ceabe5" },
   "which-key.nvim": { "branch": "main", "commit": "fb027738340502b556c3f43051f113bcaa7e8e63" }
 }

@@ -216,18 +216,25 @@ return {
   },
 
   -- Syntax and indent files
+  -- loading this on ft because that seems to work better for some reason
+  -- otherwise indents for example only work after set ft=blade
   -- blade
   {
     "jwalton512/vim-blade",
+    ft = "blade",
   },
 
   -- php
   {
     "StanAngeloff/php.vim",
+    ft = "php",
   },
 
   -- vue
   {
-    "posva/vim-vue",
+    -- "posva/vim-vue",
+    "leafOfTree/vim-vue-plugin",
+    enabled = false,
+    ft = "vue",
   },
 }
