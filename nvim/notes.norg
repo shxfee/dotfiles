@@ -1,8 +1,6 @@
 * TODO
 ** Friction Points
    - commas in pairs? check reddit
-   - blade files are fucked up.
-   > try removing tree sitter support and see what happens
 
    - git
    > key maps for moving between hunks? 

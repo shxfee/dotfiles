@@ -58,6 +58,30 @@ return {
           },
 
           lualine_x = {
+            {
+              function ()
+                -- get the first lsp client that is attached to the current buffer
+                local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+                local ignored_clients = {
+                  "diagnosticls",
+                  "copilot",
+                  "null-ls",
+                }
+
+                if #clients == 0 then
+                  return ""
+                end
+
+                -- find the first client that is not ignored
+                for _, client in ipairs(clients) do
+                  if not vim.tbl_contains(ignored_clients, client.name) then
+                    return client.name
+                  end
+                end
+
+                return ""
+              end
+            },
             { "diagnostics" },
           },
 
