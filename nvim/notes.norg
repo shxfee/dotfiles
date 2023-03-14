@@ -1,6 +1,7 @@
 * TODO
 ** Friction Points
    - commas in pairs? check reddit
+   - try sj? maybe!
 
    - git
    > key maps for moving between hunks? 
@@ -20,7 +21,6 @@
    > telescope mapping still not working
 
 ** Projects
-   - add lsp name to status line
    - todo plugin do.nvim modifications
    - bug: `cs<esc>` results in error
 
