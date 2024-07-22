@@ -5,12 +5,6 @@
 
 local cmd = vim.cmd
 
-cmd [[cabbrev DD DB describe]]
-cmd [[cabbrev PI PackerInstall]]
-cmd [[cabbrev PU PackerUpdate]]
-cmd [[cabbrev PC PackerClean]]
-cmd [[cabbrev h vertical help]]
-cmd [[cabbrev sail ./vendor/bin/sail]]
 cmd [[iabbrev <expr> dts strftime("%c (MVT)")]]
 cmd [[iabbrev <expr> ds strftime("%Y-%m-%d")]]
 

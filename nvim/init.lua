@@ -7,9 +7,6 @@
 -- commands and abbreviations. customizations.lua is for all customizations
 -- that do not fit into the other categories.
 --
--- filetype configurations are in after/ftplugin. they set buffer local options
--- for different filetypes like shiftwidth, tabstop, etc.
---
 -- i have borrowed heavily from tjdevries and lazyvim
 --
 -- references
@@ -18,20 +15,25 @@
 
 
 vim.g.mapleader = " "
+vim.g.localleader = "\\"
 
--- Plugin manager
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
+
 
 -- Lazy automatically loads all specs form the plugins dir
 require("lazy").setup({
@@ -48,7 +50,7 @@ require("lazy").setup({
         "tarPlugin",
         "tohtml",
         "tutor",
-        "matchit",
+        -- "matchit",
         "matchparen",
         "netrwPlugin",
         "zipPlugin",
@@ -76,4 +78,5 @@ require("shxfee.config.abbreviations")
 require("shxfee.config.customizations")
 
 -- statuscolumn
-require("shxfee.config.statuscolumn")
+-- some errors since updating to 10
+-- require("shxfee.config.statuscolumn")

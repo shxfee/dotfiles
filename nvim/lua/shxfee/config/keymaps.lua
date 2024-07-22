@@ -6,13 +6,20 @@ wk.register(
   {
     -- artisan
     a = {
-      name = "+artisan",
-      c = {
+      name = "+application",
+      a = {
         function ()
           local cmd = ":T ./vendor/bin/sail artisan "
           vim.api.nvim_feedkeys(cmd, "n", true)
         end,
-        "Artisan Cmd"
+        "artisan"
+      },
+      s = {
+        function ()
+          local cmd = ":T ./vendor/bin/sail "
+          vim.api.nvim_feedkeys(cmd, "n", true)
+        end,
+        "sail"
       },
     },
 
@@ -34,6 +41,13 @@ wk.register(
           vim.cmd.edit(config_dir .. "/lua/shxfee/config/autocmds.lua")
         end,
         "Config Autocommands",
+      },
+      A = {
+        function ()
+          local config_dir = vim.fn.stdpath("config")
+          vim.cmd.edit(config_dir .. "/lua/shxfee/config/abbreviations.lua")
+        end,
+        "Config Abbreviations",
       },
       d = {
         function ()

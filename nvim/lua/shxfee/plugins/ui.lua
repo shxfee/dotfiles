@@ -100,14 +100,15 @@ return {
   -- indent guides
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPre",
+    main = "ibl",
     opts = {
-      char = "│",
-      -- char = "┊",
-      -- char = "⁞",
-      show_end_of_line = true,
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "norg" },
-      show_trailing_blankline_indent = false,
+      indent = {
+        char = "│",
+      },
+      scope = {
+        show_start = false,
+        show_end = false,
+      },
     },
   },
 
@@ -148,42 +149,11 @@ return {
     end
   },
 
-  -- animations
-  {
-    "echasnovski/mini.animate",
-    opts = function()
-      local animate = require("mini.animate")
-
-      local options = {
-        scroll = {
-          enable = true,
-          timing = animate.gen_timing.linear({ duration = 10, unit = "total" }),
-        },
-
-        resize = {
-          enable = true,
-          timing = animate.gen_timing.linear({ duration = 10, unit = "total" }),
-        },
-
-        -- Cursor path: janky cursor on NC
-        cursor = { enable = false },
-
-        -- Window: janky backgrounds
-        open = { enable = false },
-        close = { enable = false },
-      }
-
-      return options
-    end,
-
-    config = function(_, opts)
-      require("mini.animate").setup(opts)
-    end,
-  },
 
   -- UI for nvim-lsp progress
   {
     "j-hui/fidget.nvim",
+    tag = "legacy",
     event = "LspAttach",
     opts = {
       window = {
@@ -194,5 +164,30 @@ return {
         spinner = "dots",
       },
     },
+  },
+
+  -- Transparency
+  {
+    "xiyaowong/transparent.nvim",
+    config = function()
+      require("transparent").setup({
+        extra_groups = {
+          "NormalFloat",
+          "FloatBorder",
+          "Float",
+          "GitSignsAdd",
+          "GitSignsChange",
+          "GitSignsDelete",
+          "Pmenu",
+          "WinSeparator",
+          "TelescopeNormal",
+          "TelescopeBorder",
+          "TelescopeSelection",
+          "TelescopePreviewNormal",
+          "WhichKeyFloat",
+          "CmpItemMenu",
+        },
+      })
+    end,
   },
 }

@@ -123,7 +123,13 @@ return {
   {
     "windwp/nvim-ts-autotag",
     event = "InsertEnter",
-    opts = true,
+    opts = {
+      filetypes = {
+        "html",
+        "vue",
+        "blade",
+      },
+    },
   },
 
   -- tabularize lines of code

@@ -1,24 +1,8 @@
 return {
-  -- file explorer
+  -- file manager
   {
-    "stevearc/oil.nvim",
+    "justinmk/vim-dirvish",
     lazy = false,
-    keys = {
-      {
-        "-",
-        function()
-          return require("oil").open()
-        end,
-        desc = "Open file explorer",
-      },
-    },
-    opts = {
-      keymaps = {
-        ["."] = "actions.open_cmdline",
-        ["<C-r>"] = "actions.refresh",
-      },
-      skip_confirm_for_simple_edits = true,
-    },
   },
 
   -- fuzzy finder
@@ -70,7 +54,7 @@ return {
       { "ys" },
       { "ds" },
       { "cs", desc = "Change Surrounding Pair" },
-      
+
       { "S", mode = "v" },
     },
     config = function()
@@ -109,6 +93,13 @@ return {
     },
   },
 
-  -- neorg
-  { "nvim-neorg/neorg" },
+  -- notes
+  {
+    'MeanderingProgrammer/markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    config = function()
+      require('render-markdown').setup({})
+    end,
+  }
+
 }
